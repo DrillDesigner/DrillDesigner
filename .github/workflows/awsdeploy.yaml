@@ -23,7 +23,7 @@ jobs:
       #   uses: mxschmitt/action-tmate@v3.17
 
       - name: Build app
-        run: npm run build
+        run: ls -la 
 
       # - name: Upload to S3
       #   uses: jakejarvis/s3-sync-action@master

@@ -2,7 +2,7 @@ name: Upload Website
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "Spencer/AWSDeploy" ]
   pull_request:
     branches: [ "main" ]
 

@@ -26,14 +26,14 @@ jobs:
         run: cd Web-Drill-Designer
 
       - name: Build app
-        run: ls -la; npm run build
+        run: cd Web-Drill-Designer; ls -la; npm run build
 
       - name: Upload to S3
         uses: jakejarvis/s3-sync-action@master
         with:
           args: --acl public-read
         env:
-          SOURCE_DIR: build/
+          SOURCE_DIR: Web-Drill-Designer/dist/
           AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

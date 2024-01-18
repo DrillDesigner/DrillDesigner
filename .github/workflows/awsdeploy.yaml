@@ -21,12 +21,12 @@ jobs:
 
       # - name: Debugging with tmate
       #   uses: mxschmitt/action-tmate@v3.17
-      
-      - name: cd into repo dir
-        run: cd Web-Drill-Designer
+
+      - name: npm install
+        run: npm install
 
       - name: Build app
-        run: cd Web-Drill-Designer; ls -la; npm run build
+        run: npm run build
 
       - name: Upload to S3
         uses: jakejarvis/s3-sync-action@master

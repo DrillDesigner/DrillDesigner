@@ -22,8 +22,11 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Debugging with tmate
+        uses: mxschmitt/action-tmate@v3.17
+
       - name: Build app
-        run: npm run build
+        run: npm run bui
 
       - name: Upload to S3
         uses: jakejarvis/s3-sync-action@master

@@ -26,7 +26,7 @@ jobs:
         run: cd Web-Drill-Designer
 
       - name: Build app
-        run: npm run build
+        run: ls -la; npm run build
 
       - name: Upload to S3
         uses: jakejarvis/s3-sync-action@master

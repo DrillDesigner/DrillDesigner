@@ -17,7 +17,7 @@ function App() {
         </a>
       </div>
       <div className="card">
-        <button onClick={() => setCount((count) => count = Math.random() % 10)}>
+        <button onClick={() => setCount((count) => (count + Math.random()) % 10)}>
           {count}
         </button>
         <p>

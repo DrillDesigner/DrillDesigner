@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import freddy from './assets/freddy.jpg'
-import spencer from '.assets/spencer.jpg'
+import spencer from './assets/spencer.jpg'
 import './App.css'
 
 function App() {

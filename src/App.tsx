@@ -10,14 +10,14 @@ function App() {
     <>
       <div>
         <a href="https://github.com/suspencer14" target="_blank">
-          <img src={spencer} className="logo" alt="Spencer" />
+          <img src={spencer} className="logo react" alt="Spencer" />
         </a>
         <a href="https://github.com/fzwirb/" target="_blank">
           <img src={freddy} className="logo react" alt="Freddy" />
         </a>
       </div>
       <div className="card">
-        <button onClick={() => setCount((count) => (count + Math.random()) % 10)}>
+        <button onClick={() => setCount((count) => (count + Math.random()) * 10)}>
           {count}
         </button>
         <p>

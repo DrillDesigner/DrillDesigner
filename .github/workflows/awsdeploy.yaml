@@ -23,7 +23,7 @@ jobs:
       #   uses: mxschmitt/action-tmate@v3.17
 
       - name: yarn install
-        run: yarn run install
+        run: yarn install
 
       - name: Build app
         run: yarn run build

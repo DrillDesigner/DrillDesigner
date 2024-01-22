@@ -28,7 +28,7 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .jpg {
+  a:nth-of-type(2) img {
     animation: logo-spin infinite 2s linear;
   }
 }

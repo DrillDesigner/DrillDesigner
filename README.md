@@ -1,2 +1,5 @@
-# WebDrillDesigner
-basic pyware clone written as a web app
+WebDrillDeveloper
+
+### To run in dev environment:
+- $ npm install
+- $ npm dev

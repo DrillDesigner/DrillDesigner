@@ -4,7 +4,13 @@ import spencer from './assets/spencer.jpg'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [spin, setStyle] = useState("animation: logo-spin infinite 1s linear;")
+  const [count, setCount] = useState(1);
+
+  const changeSpeed = () => {
+    setStyle("animation: logo-spin infinite " + String(count * 0.9) + "s linear;");
+    setCount(count + 1);
+  }
 
   return (
     <>
@@ -13,11 +19,11 @@ function App() {
           <img src={spencer} className="logo react" alt="Spencer" />
         </a>
         <a href="https://github.com/fzwirb/" target="_blank">
-          <img src={freddy} className="logo react" alt="Freddy" />
+          <img style={spin} src={freddy} className="logo react" alt="Freddy" />
         </a>
       </div>
       <div className="card">
-        <button onClick={() => setCount((count) => (count + Math.random()) * 10)}>
+        <button onClick={changeSpeed}>
           {count}
         </button>
         <p>

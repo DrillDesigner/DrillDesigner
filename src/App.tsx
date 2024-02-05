@@ -1,35 +1,69 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Breadcrumb, Layout, Menu, theme } from 'antd';
+import type { MenuProps } from 'antd';
+import './app.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+const { Header, Content, Footer } = Layout;
+
+
+const items: MenuProps['items'] = [
+  {
+    label: 'Designer',
+    key: 'designer'
+  }
+];
+
+const App: React.FC = () => {
+  const {
+    token: { colorBgContainer, borderRadiusLG },
+  } = theme.useToken();
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <Layout style={{ minHeight: "100vh" }}>
+      <Header style={{ display: 'flex', alignItems: 'center' }}>
+        <div className="demo-logo" />
+        <Menu
+          theme="dark"
+          mode="horizontal"
+          defaultSelectedKeys={['2']}
+          items={items}
+          style={{ flex: 1, minWidth: 0 }}
+        />
+      </Header>
+      <Content style={{ padding: '0 48px' }}>
+        <Breadcrumb style={{ margin: '16px 0' }}>
+          <Breadcrumb.Item>Home</Breadcrumb.Item>
+          <Breadcrumb.Item>List</Breadcrumb.Item>
+          <Breadcrumb.Item>App</Breadcrumb.Item>
+        </Breadcrumb>
+        <div
+          style={{
+            background: colorBgContainer,
+            minHeight: 280,
+            padding: 24,
+            borderRadius: borderRadiusLG,
+          }}
+        >
+          Content
+          Content
+          Content
+          Content
+          Content
+          Content
+          Content
+          Content
+          Content
+          Content
+          Content
+          Content
+          Content
+        </div>
+      </Content>
+      <Footer style={{ textAlign: 'center' }}>
+        WebDrillDesigner
+      </Footer>
+    </Layout>
+  );
+};
 
-export default App
+export default App;

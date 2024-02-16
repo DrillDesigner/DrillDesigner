@@ -1,7 +1,6 @@
 import { useState } from 'react'
-import { Breadcrumb, Layout, Menu, theme } from 'antd';
+import { Breadcrumb, Layout, Menu, theme, ConfigProvider } from 'antd';
 import type { MenuProps } from 'antd';
-import './app.css'
 
 const { Header, Content, Footer } = Layout;
 
@@ -21,7 +20,6 @@ const App: React.FC = () => {
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Header style={{ display: 'flex', alignItems: 'center' }}>
-        <div className="demo-logo" />
         <Menu
           theme="dark"
           mode="horizontal"
@@ -63,6 +61,8 @@ const App: React.FC = () => {
         WebDrillDesigner
       </Footer>
     </Layout>
+    
+    
   );
 };
 

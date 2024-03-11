@@ -1,3 +1,5 @@
+import { Performer } from "../features/canvas/types/Performer";
+
 function generateShapes() {
   return [...Array(10)].map((_, i) => ({
     id: i.toString(),
@@ -9,3 +11,4 @@ function generateShapes() {
 }
 
 export {generateShapes};
+

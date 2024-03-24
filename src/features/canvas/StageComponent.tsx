@@ -5,6 +5,8 @@ import { Performer } from './types/Performer';
 import { usePerformersState } from '../../utils/StateHandlingFunction';
 import { generateShapes } from '../../utils/helpers';
 import useImage from 'use-image';
+import BackgroundImage from './assets/chart_border_nums.png'
+import Background from './components/Background'
 
 interface StageComponentProps {
   width: number;
@@ -16,7 +18,7 @@ const INITIAL_STATE: Performer[] = generateShapes();
 
 const StageComponent: React.FC<StageComponentProps> = ({ width, height }) => {
   const { performers, handleDragStart, handleDragEnd } = usePerformersState(INITIAL_STATE);
-
+  const [image] = useImage(BackgroundImage)
   return (
     <Stage width={width} height={height}>
       <Layer>
@@ -25,7 +27,6 @@ const StageComponent: React.FC<StageComponentProps> = ({ width, height }) => {
           <PerformerComponent
             key={performer.id}
             performer={performer}
-            src={'https://www.buffalo.edu/content/www/studentlife/life-on-campus/clubs-and-activities/search/marching-band/_jcr_content/top/image_431416615_copy_1347151458.img.292.auto.jpg/1656522108396.jpg'}
           />
         ))}
       </Layer>

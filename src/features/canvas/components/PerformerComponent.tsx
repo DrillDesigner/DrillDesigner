@@ -2,14 +2,14 @@ import React, { useRef, useEffect, useState } from 'react';
 import { Image, Transformer } from 'react-konva';
 import useImage from 'use-image';
 import { Performer } from '../types/Performer';
+import PerformerImage from '../assets/performer.png'
 
 interface PerformerComponentProps {
   performer: Performer;
-  src: string;
 }
 
-const PerformerComponent: React.FC<PerformerComponentProps> = ({ performer, src }) => {
-  const [image] = useImage(src);
+const PerformerComponent: React.FC<PerformerComponentProps> = ({ performer }) => {
+  const [image] = useImage(PerformerImage);
   const [isSelected, setSelected] = useState(false);
   const trRef = useRef<any>(null);
 
@@ -38,6 +38,8 @@ const PerformerComponent: React.FC<PerformerComponentProps> = ({ performer, src 
         onDragEnd={handleDragEnd}
         onClick={handleSelect}
         onTap={handleSelect}
+        width={50}
+        height={50}
       />
       {isSelected && (
         <Transformer

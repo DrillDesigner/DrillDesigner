@@ -6,7 +6,7 @@ import { Stage, Layer, Star, Text } from 'react-konva';
 
 import StageComponent from './components/StageComponent';
 
-const { Header, Content, Footer } = Layout;
+const { Header, Content, Footer, Sider } = Layout;
 
 
 const items: MenuProps['items'] = [
@@ -29,8 +29,12 @@ const App: React.FC = () => {
 
 
   return (
-    <Layout style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <Header style={{ display: 'flex', alignItems: 'center' }}>
+    <Layout style={{ height: '100vh' }}>
+      <Sider width="100">
+        <div className="left-sidebar" />
+        <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} />
+      </Sider>
+      {/* <Header style={{ display: 'flex', alignItems: 'center' }}>
         <div className="demo-logo" />
         <Menu
           theme="dark"
@@ -39,10 +43,14 @@ const App: React.FC = () => {
           items={items}
           style={{ flex: 1, minWidth: 0 }}
         />
-      </Header>
-      <Content style={{ flex: 1, padding: '0 48px', overflow: 'hidden' }}>
-        <StageComponent width={windowSize.width} height={windowSize.height} />
+      </Header> */}
+      <Content style={{ }}>
+        <StageComponent width={windowSize.width-200} height={windowSize.height} />
       </Content>
+      <Sider width="100">
+        <div className="right-sidebar" />
+        <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} />
+      </Sider>
     </Layout>
   );
 };

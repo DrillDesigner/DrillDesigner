@@ -3,11 +3,9 @@ import type { MenuProps } from 'antd';
 import { createRoot } from 'react-dom/client';
 import React, { useState, useEffect } from 'react';
 import { Stage, Layer, Star, Text } from 'react-konva';
-
 import StageComponent from './components/StageComponent';
-import { AppConfig } from './types/AppConfig';
-
 const { Header, Content, Footer, Sider } = Layout;
+import config from './config/AppConfig';
 
 
 const items: MenuProps['items'] = [
@@ -17,7 +15,7 @@ const items: MenuProps['items'] = [
   }
 ];
 
-const App: React.FC<{config: AppConfig}> = ({ config }) => {
+const App: React.FC<{}> = () => {
   const [windowSize, setWindowSize] = useState({ width: window.innerWidth, height: window.innerHeight });
 
   useEffect(() => {
@@ -31,7 +29,7 @@ const App: React.FC<{config: AppConfig}> = ({ config }) => {
 
   return (
     <Layout style={{ height: '100vh' }}>
-      <Sider width={(windowSize.width - config.canvasWidth) / 2}>
+      <Sider width={(windowSize.width - config.canvasWidth) / 2}> 
         <div className="left-sidebar" />
         <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} />
       </Sider>

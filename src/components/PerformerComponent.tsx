@@ -4,8 +4,6 @@ import useImage from 'use-image';
 import { Performer } from '../types/Performer';
 import PerformerImage from '../assets/PerformerEmoji.png'
 
-console.log(PerformerImage);
-
 interface PerformerComponentProps {
   performer: Performer;
   imageSrc: string;
@@ -41,8 +39,8 @@ const PerformerComponent: React.FC<PerformerComponentProps> = ({ performer, imag
         onDragEnd={handleDragEnd}
         onClick={handleSelect}
         onTap={handleSelect}
-        width={30}
-        height={30}
+        width={20}
+        height={20}
       />
       {isSelected && (
         <Transformer

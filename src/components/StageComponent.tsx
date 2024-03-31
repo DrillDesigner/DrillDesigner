@@ -6,6 +6,8 @@ import { usePerformersState } from '../utils/StateHandlingFunction';
 import { generateShapes } from '../utils/helpers';
 import { StageComponentProps } from '../types/StageComponentProps';
 import BackgroundComponent from './BackgroundComponent'
+import config from '../config/AppConfig';
+import App from '../App';
 
 const INITIAL_STATE: Performer[] = generateShapes();
 
@@ -15,7 +17,7 @@ const StageComponent: React.FC<StageComponentProps> = ({ width, height }) => {
     <Stage width={width} height={height}>
       <Layer>
         <BackgroundComponent
-          imagePath='src/assets/ChartBorderNums.png'
+          imageSrc={config.backgroundImageSrc}
           width={width}
           height={height} // TODO: autosize
         />
@@ -23,7 +25,7 @@ const StageComponent: React.FC<StageComponentProps> = ({ width, height }) => {
           <PerformerComponent
             key={performer.id}
             performer={performer}
-            imageSrc='src/assets/PerformerEmoji.png'
+            imageSrc={config.performerImageSrc}
           />
         ))}
       </Layer>

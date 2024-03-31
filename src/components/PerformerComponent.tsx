@@ -4,12 +4,15 @@ import useImage from 'use-image';
 import { Performer } from '../types/Performer';
 import PerformerImage from '../assets/PerformerEmoji.png'
 
+console.log(PerformerImage);
+
 interface PerformerComponentProps {
   performer: Performer;
+  imageSrc: string;
 }
 
-const PerformerComponent: React.FC<PerformerComponentProps> = ({ performer }) => {
-  const [image] = useImage(PerformerImage);
+const PerformerComponent: React.FC<PerformerComponentProps> = ({ performer, imageSrc}) => {
+  const [image] = useImage(imageSrc);
   const [isSelected, setSelected] = useState(false);
   const trRef = useRef<any>(null);
 

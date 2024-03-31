@@ -10,12 +10,12 @@ import BackgroundComponent from './BackgroundComponent'
 const INITIAL_STATE: Performer[] = generateShapes();
 
 const StageComponent: React.FC<StageComponentProps> = ({ width, height }) => {
-  const { performers, handleDragStart, handleDragEnd } = usePerformersState(INITIAL_STATE);
+  const { performers } = usePerformersState(INITIAL_STATE);
   return (
     <Stage width={width} height={height}>
       <Layer>
         <BackgroundComponent
-          imagePath={'./assets/ChartBorderNums.png'}
+          imagePath='src/assets/ChartBorderNums.png'
           width={width}
           height={height} // TODO: autosize
         />
@@ -23,6 +23,7 @@ const StageComponent: React.FC<StageComponentProps> = ({ width, height }) => {
           <PerformerComponent
             key={performer.id}
             performer={performer}
+            imageSrc='src/assets/PerformerEmoji.png'
           />
         ))}
       </Layer>

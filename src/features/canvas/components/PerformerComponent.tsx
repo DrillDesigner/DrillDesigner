@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import { Image, Transformer } from 'react-konva';
 import useImage from 'use-image';
 import { Performer } from '../types/Performer';
-import PerformerImage from '../assets/performer.png'
+import PerformerImage from '../assets/PerformerEmoji.png'
 
 interface PerformerComponentProps {
   performer: Performer;
@@ -38,8 +38,8 @@ const PerformerComponent: React.FC<PerformerComponentProps> = ({ performer }) =>
         onDragEnd={handleDragEnd}
         onClick={handleSelect}
         onTap={handleSelect}
-        width={50}
-        height={50}
+        width={30}
+        height={30}
       />
       {isSelected && (
         <Transformer

@@ -11,14 +11,10 @@ const { Header, Content, Footer } = Layout;
 
 const items: MenuProps['items'] = [
   {
-    label: 'Designer',
+    label: 'Drill Designer',
     key: 'designer'
   }
 ];
-
-
-
-
 
 const App: React.FC = () => {
   const [windowSize, setWindowSize] = useState({ width: window.innerWidth, height: window.innerHeight });
@@ -47,7 +43,6 @@ const App: React.FC = () => {
       <Content style={{ flex: 1, padding: '0 48px', overflow: 'hidden' }}>
         <StageComponent width={windowSize.width} height={windowSize.height} />
       </Content>
-      <Footer style={{ textAlign: 'center' }}>WebDrillDesigner</Footer>
     </Layout>
   );
 };

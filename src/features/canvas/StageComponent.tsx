@@ -1,28 +1,24 @@
 import React from 'react';
-import { Stage, Layer, Text } from 'react-konva';
+import { Stage, Layer, Text, Image } from 'react-konva';
 import PerformerComponent from './components/PerformerComponent';
 import { Performer } from './types/Performer';
 import { usePerformersState } from '../../utils/StateHandlingFunction';
 import { generateShapes } from '../../utils/helpers';
-import useImage from 'use-image';
-import BackgroundImage from './assets/chart_border_nums.png'
-import Background from './components/Background'
-
-interface StageComponentProps {
-  width: number;
-  height: number;
-}
+import { StageComponentProps } from './types/StageComponentProps';
+import BackgroundComponent from './components/BackgroundComponent'
 
 const INITIAL_STATE: Performer[] = generateShapes();
 
-
 const StageComponent: React.FC<StageComponentProps> = ({ width, height }) => {
   const { performers, handleDragStart, handleDragEnd } = usePerformersState(INITIAL_STATE);
-  const [image] = useImage(BackgroundImage)
   return (
     <Stage width={width} height={height}>
       <Layer>
-        <Text text="Try to drag a performer" />
+        <BackgroundComponent
+          imagePath={'./assets/ChartBorderNums.png'}
+          width={width}
+          height={height} // TODO: autosize
+        />
         {performers.map((performer) => (
           <PerformerComponent
             key={performer.id}

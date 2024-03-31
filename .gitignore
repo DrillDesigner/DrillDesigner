@@ -36,3 +36,6 @@ typings/
 
 # visual studio files
 .vs
+
+# vite files
+.vite/

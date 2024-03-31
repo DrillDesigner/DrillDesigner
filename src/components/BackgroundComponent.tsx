@@ -1,6 +1,5 @@
 import Konva from 'konva';
 import { Stage, Layer, Star, Text, Image } from 'react-konva';
-import BackgroundImage from './assets/ChartBorderNums.png'
 import useImage from 'use-image';
 
 interface BackgroundComponentProps {

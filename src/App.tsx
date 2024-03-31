@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { Stage, Layer, Star, Text } from 'react-konva';
 
 import StageComponent from './components/StageComponent';
+import { AppConfig } from './types/AppConfig';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -16,7 +17,7 @@ const items: MenuProps['items'] = [
   }
 ];
 
-const App: React.FC = () => {
+const App: React.FC<{config: AppConfig}> = ({ config }) => {
   const [windowSize, setWindowSize] = useState({ width: window.innerWidth, height: window.innerHeight });
 
   useEffect(() => {
@@ -30,24 +31,14 @@ const App: React.FC = () => {
 
   return (
     <Layout style={{ height: '100vh' }}>
-      <Sider width="100">
+      <Sider width={(windowSize.width - config.canvasWidth) / 2}>
         <div className="left-sidebar" />
         <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} />
       </Sider>
-      {/* <Header style={{ display: 'flex', alignItems: 'center' }}>
-        <div className="demo-logo" />
-        <Menu
-          theme="dark"
-          mode="horizontal"
-          defaultSelectedKeys={['2']}
-          items={items}
-          style={{ flex: 1, minWidth: 0 }}
-        />
-      </Header> */}
       <Content style={{ }}>
-        <StageComponent width={windowSize.width-200} height={windowSize.height} />
+        <StageComponent width={1239} height={710} />
       </Content>
-      <Sider width="100">
+      <Sider width={(windowSize.width - config.canvasWidth) / 2}>
         <div className="right-sidebar" />
         <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} />
       </Sider>

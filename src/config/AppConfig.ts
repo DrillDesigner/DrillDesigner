@@ -3,6 +3,7 @@ const config = {
   canvasHeight: 710,
   performerImageSrc: 'src/assets/PerformerEmoji.png',
   backgroundImageSrc: 'src/assets/ChartBorderNums.png',
+  defaultNumPerformers: 10,
 };
 
 export default config;

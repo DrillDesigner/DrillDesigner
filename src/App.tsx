@@ -6,13 +6,18 @@ import { Stage, Layer, Star, Text } from 'react-konva';
 import StageComponent from './components/StageComponent';
 const { Header, Content, Footer, Sider } = Layout;
 import config from './config/AppConfig';
+import PositionButtonComponent from './components/PositionButtonComponent';
 
 
 const items: MenuProps['items'] = [
   {
     label: 'Drill Designer',
     key: 'designer'
-  }
+  },
+  {
+    label: 'Box', 
+    key: 'box', 
+  },
 ];
 
 const App: React.FC<{}> = () => {
@@ -38,7 +43,7 @@ const App: React.FC<{}> = () => {
       </Content>
       <Sider width={(windowSize.width - config.canvasWidth) / 2}>
         <div className="right-sidebar" />
-        <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} />
+        <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" />
       </Sider>
     </Layout>
   );

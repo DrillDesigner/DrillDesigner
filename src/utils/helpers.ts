@@ -1,4 +1,4 @@
-import { Performer } from "../features/canvas/types/Performer";
+import { Performer } from "../types/Performer";
 
 function generateShapes() {
   return [...Array(10)].map((_, i) => ({

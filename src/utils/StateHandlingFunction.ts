@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Performer } from '../features/canvas/types/Performer';
+import { Performer } from '../types/Performer';
 
 export const usePerformersState = (initialState: Performer[]) => {
   const [performers, setPerformers] = useState(initialState);

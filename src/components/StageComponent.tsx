@@ -1,11 +1,11 @@
 import React from 'react';
 import { Stage, Layer, Text, Image } from 'react-konva';
-import PerformerComponent from './components/PerformerComponent';
-import { Performer } from './types/Performer';
-import { usePerformersState } from '../../utils/StateHandlingFunction';
-import { generateShapes } from '../../utils/helpers';
-import { StageComponentProps } from './types/StageComponentProps';
-import BackgroundComponent from './components/BackgroundComponent'
+import PerformerComponent from './PerformerComponent';
+import { Performer } from '../types/Performer';
+import { usePerformersState } from '../utils/StateHandlingFunction';
+import { generateShapes } from '../utils/helpers';
+import { StageComponentProps } from '../types/StageComponentProps';
+import BackgroundComponent from './BackgroundComponent'
 
 const INITIAL_STATE: Performer[] = generateShapes();
 

@@ -4,7 +4,7 @@ import { createRoot } from 'react-dom/client';
 import React, { useState, useEffect } from 'react';
 import { Stage, Layer, Star, Text } from 'react-konva';
 
-import StageComponent from './features/canvas/StageComponent';
+import StageComponent from './components/StageComponent';
 
 const { Header, Content, Footer } = Layout;
 

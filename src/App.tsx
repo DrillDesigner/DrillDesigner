@@ -26,7 +26,7 @@ const App: React.FC<{}> = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-    const handleAddPerformer = () => {
+  const handleAddPerformer = () => {
     const newPerformer: Performer = {
       id: String(performers!.length + 1), 
       x: Math.random() * config.canvasWidth, 
@@ -34,13 +34,8 @@ const App: React.FC<{}> = () => {
       rotation: Math.random() * 180, 
       isDragging: false,
     };
-    addPerformer(newPerformer); 
+    setPerformers((prevPerformers) => [...prevPerformers, newPerformer]);
   };
-
-  const addPerformer = (performer: Performer) => {
-    setPerformers((prevPerformers) => [...prevPerformers, performer]);
-  };
-
 
   return (
     <Layout style={{ height: '100vh' }}>

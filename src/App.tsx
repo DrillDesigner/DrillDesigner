@@ -7,21 +7,16 @@ import StageComponent from './components/StageComponent';
 const { Header, Content, Footer, Sider } = Layout;
 import config from './config/AppConfig';
 import PositionButtonComponent from './components/PositionButtonComponent';
+import MenuComponent from './components/MenuComponent';
+import { Performer } from './types/Performer';
+import helper from './utils/helpers';
 
-
-const items: MenuProps['items'] = [
-  {
-    label: 'Drill Designer',
-    key: 'designer'
-  },
-  {
-    label: 'Box', 
-    key: 'box', 
-  },
-];
+const INITIAL_STATE: Performer[] = helper.generateShapes(config.defaultNumPerformers);
 
 const App: React.FC<{}> = () => {
   const [windowSize, setWindowSize] = useState({ width: window.innerWidth, height: window.innerHeight });
+  const [performers, setPerformers] = useState(INITIAL_STATE);
+
 
   useEffect(() => {
     const handleResize = () => {
@@ -32,14 +27,34 @@ const App: React.FC<{}> = () => {
   }, []);
 
 
+  const handleClick = () => {
+    console.log("clicked");
+  }
+
+    const handleAddPerformer = () => {
+    const newPerformer: Performer = {
+      id: String(performers!.length + 1), 
+      x: Math.random() * config.canvasWidth, 
+      y: Math.random() * config.canvasHeight, 
+      rotation: Math.random() * 180, 
+      isDragging: false,
+    };
+    addPerformer(newPerformer); 
+  };
+
+  const addPerformer = (performer: Performer) => {
+    setPerformers((prevPerformers) => [...prevPerformers, performer]);
+  };
+
+
   return (
     <Layout style={{ height: '100vh' }}>
       <Sider width={(windowSize.width - config.canvasWidth) / 2}> 
         <div className="left-sidebar" />
-        <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} />
+       <MenuComponent onClick={handleAddPerformer}/>
       </Sider>
       <Content style={{ }}>
-        <StageComponent width={1239} height={710} />
+        <StageComponent width={1239} height={710} onAddPerformer={handleClick} performers={performers}/>
       </Content>
       <Sider width={(windowSize.width - config.canvasWidth) / 2}>
         <div className="right-sidebar" />

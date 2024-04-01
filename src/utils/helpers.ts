@@ -22,6 +22,7 @@ const helper = {
       isDragging: false,
     }));
   }
+  
 };
 
 export default helper;

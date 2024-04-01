@@ -18,5 +18,9 @@ export const usePerformersState = (initialState: Performer[]) => {
     );
   };
 
-  return { performers, handleDragStart, handleDragEnd };
+  const addPerformer = (performer: Performer) => {
+    setPerformers((prevPerformers) => [...prevPerformers, performer]);
+  };
+
+  return { performers, handleDragStart, handleDragEnd, addPerformer };
 };

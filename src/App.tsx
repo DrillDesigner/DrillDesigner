@@ -26,11 +26,6 @@ const App: React.FC<{}> = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-
-  const handleClick = () => {
-    console.log("clicked");
-  }
-
     const handleAddPerformer = () => {
     const newPerformer: Performer = {
       id: String(performers!.length + 1), 
@@ -54,7 +49,7 @@ const App: React.FC<{}> = () => {
        <MenuComponent onClick={handleAddPerformer}/>
       </Sider>
       <Content style={{ }}>
-        <StageComponent width={1239} height={710} onAddPerformer={handleClick} performers={performers}/>
+        <StageComponent width={config.canvasWidth} height={config.canvasHeight} performers={performers}/>
       </Content>
       <Sider width={(windowSize.width - config.canvasWidth) / 2}>
         <div className="right-sidebar" />

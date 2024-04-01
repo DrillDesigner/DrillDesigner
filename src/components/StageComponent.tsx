@@ -16,11 +16,10 @@ export interface StageComponentProps {
   performers?: Performer[]; // TODO: 
   handleDragStart?: (e: any) => void; // You should replace `any` with appropriate event type
   handleDragEnd?: () => void;
-  onAddPerformer: (el : any) => void;
 }
 
 
-const StageComponent: React.FC<StageComponentProps> = ({ width, height, onAddPerformer, performers }) => {
+const StageComponent: React.FC<StageComponentProps> = ({ width, height, performers }) => {
 
   return (
     <Stage width={width} height={height}>

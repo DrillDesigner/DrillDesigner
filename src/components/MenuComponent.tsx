@@ -1,11 +1,28 @@
 import { Breadcrumb, Layout, Menu, theme, ConfigProvider } from 'antd';
-import type { MenuProps } from 'antd';
+import type { MenuProps,  } from 'antd';
 
 interface MenuComponentProps {
-  onClick: any;
+  boxOnClick: () => void;
+  saveStateOnClick: () => void;
+  loadStateOnClick: () => void;
 }
 
 const MenuComponent = (props : MenuComponentProps) => {
+    function getItem(
+    label: React.ReactNode,
+    key?: React.Key | null,
+    icon?: React.ReactNode,
+    children?: MenuItem[],
+    ): MenuItem {
+    return {
+        key,
+        icon,
+        children,
+        label,
+    } as MenuItem;
+    }
+
+
     const items: MenuProps['items'] = [
     {
         label: 'Drill Designer',
@@ -14,20 +31,30 @@ const MenuComponent = (props : MenuComponentProps) => {
     {
         label: 'Box', 
         key: 'box', 
-        onClick: () => {
-        console.log('Box clicked!');
-        // Add your logic here
-        }
+        onClick: props.boxOnClick
     },
+    {
+        label: 'Save state',
+        key: 'saveState',
+        onClick: props.saveStateOnClick
+    },
+    {
+        label: 'Load State',
+        key: 'loadState',
+        onClick: props.loadStateOnClick
+    },
+    // {
+    //   label: 'Upload',
+    //   key: 'upload',
+    //   content: (
+    //     <Upload onChange={props.uploadOnChange}>
+    //       <button className="ant-btn">Click to Upload</button>
+    //     </Upload>
+    //   )
+    // }
     ];
 
-    const onClick: MenuProps['onClick'] = (e) => {
-        console.log('click ', e);
-    };
-
-
     return <Menu 
-            onClick={props.onClick}
             theme="dark" 
             defaultSelectedKeys={['1']} 
             mode="inline" 

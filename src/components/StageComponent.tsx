@@ -2,12 +2,10 @@ import React from 'react';
 import { Stage, Layer, Text, Image } from 'react-konva';
 import PerformerComponent from './PerformerComponent';
 import { Performer } from '../types/Performer';
-import { usePerformersState } from '../utils/StateHandlingFunction';
 import helper from '../utils/helpers';
 import BackgroundComponent from './BackgroundComponent'
 import config from '../config/AppConfig';
 import {useState} from 'react';
-
 
 
 export interface StageComponentProps {
@@ -17,7 +15,6 @@ export interface StageComponentProps {
   handleDragStart?: (e: any) => void; // You should replace `any` with appropriate event type
   handleDragEnd?: () => void;
 }
-
 
 const StageComponent: React.FC<StageComponentProps> = ({ width, height, performers }) => {
 

@@ -9,14 +9,20 @@ import config from './config/AppConfig';
 import MenuComponent from './components/MenuComponent';
 import { Performer } from './types/Performer';
 import helper from './utils/helpers';
-import { usePerformersState } from './utils/PerformersState';
+import { useShowState } from './utils/PerformersState';
+import { Show } from './types/Show';
 
-const INITIAL_STATE: Performer[] = helper.generateShapes(config.defaultNumPerformers);
+const initialShow: Show = {
+  id: 'show-1',
+  name: 'My Awesome Show',
+  performers: {
+    1: helper.generateShapes(config.defaultNumPerformers),
+  },
+};
 
 const App: React.FC<{}> = () => {
   const [windowSize, setWindowSize] = useState({ width: window.innerWidth, height: window.innerHeight });
-  // const [performers, setPerformers] = useState(INITIAL_STATE);
-  const { performers, handleDragStart, handleDragEnd, addPerformer, positionPerformersInLine, saveState, loadState } = usePerformersState(INITIAL_STATE);
+  const { show, handleDragStart, handleDragEnd, addPerformer, positionPerformersInLine, saveState, loadState, set } = useShowState(initialShow);
   
   // empty array means invoked once, adds listener to update windowSize var on 'resize' event
   useEffect(() => {
@@ -31,10 +37,10 @@ const App: React.FC<{}> = () => {
     <Layout style={{ height: '100vh' }}>
       <Sider width={(windowSize.width - config.canvasWidth) / 2}> 
         <div className="left-sidebar" />
-       <MenuComponent boxOnClick={positionPerformersInLine} saveStateOnClick={saveState} loadStateOnClick={loadState}/>
+       <MenuComponent lineOnClick={positionPerformersInLine} saveShowOnClick={saveState} loadStateOnClick={(loadState)}/>
       </Sider>
       <Content style={{ }}>
-        <StageComponent width={config.canvasWidth} height={config.canvasHeight} performers={performers}/>
+        <StageComponent width={config.canvasWidth} height={config.canvasHeight} show={show} count={set} />
       </Content>
       <Sider width={(windowSize.width - config.canvasWidth) / 2}>
         <div className="right-sidebar" />

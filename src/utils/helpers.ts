@@ -1,7 +1,6 @@
 import { Performer } from "../types/Performer";
 import config from "../config/AppConfig";
 
-
 const helper = {
   generateShapes: (numPerformers: number) => {
     return [...Array(numPerformers)].map((_, i) => ({

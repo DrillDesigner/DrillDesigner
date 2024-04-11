@@ -1,64 +1,110 @@
 import { useState } from 'react';
 import { Performer } from '../types/Performer';
+import { UploadFile } from 'antd';
 import config from '../config/AppConfig';
 import * as FileSaver from 'file-saver';
+import { message } from 'antd';
+import { Show } from '../types/Show'; 
 
-export const usePerformersState = (initialState: Performer[]) => {
-  const [performers, setPerformers] = useState(initialState);
+export const useShowState = (initialShow: Show) => {
+  const [show, setShow] = useState<Show>(initialShow);
+  const [position, setPosition] = useState<number>(0);
+  const [count, setCount] = useState<number>(1);
 
   const handleDragStart = (id: string) => {
-    setPerformers((prevPerformers) =>
-      prevPerformers.map((performer) =>
-        performer.id === id ? { ...performer, isDragging: true } : performer
-      )
-    );
+    setShow((prevShow) => ({
+      ...prevShow,
+      performers: {
+        ...prevShow.performers,
+        [position]: {
+          ...prevShow.performers[position],
+          isDragging: true,
+        },
+      },
+    }));
   };
 
   const handleDragEnd = () => {
-    setPerformers((prevPerformers) =>
-      prevPerformers.map((performer) => ({ ...performer, isDragging: false }))
-    );
+    setShow((prevShow) => ({
+      ...prevShow,
+      performers: {
+        ...prevShow.performers,
+        [position]: {
+          ...prevShow.performers[position],
+          isDragging: false,
+        },
+      },
+    }));
   };
 
   const addPerformer = () => {
     const newPerformer: Performer = {
-      id: String(performers!.length + 1), 
-      x: Math.random() * config.canvasWidth, 
-      y: Math.random() * config.canvasHeight, 
-      rotation: Math.random() * 180, 
+      id: String(Object.keys(show.performers[count]).length + 1),
+      x: Math.random() * config.canvasWidth,
+      y: Math.random() * config.canvasHeight,
+      rotation: Math.random() * 180,
       isDragging: false,
     };
-    setPerformers((prevPerformers) => [...prevPerformers, newPerformer]);
+
+    setShow((prevShow) => ({
+      ...prevShow,
+      performers: {
+        ...prevShow.performers,
+        [count]: [...prevShow.performers[count], newPerformer],
+      },
+    }));
+
+    setPosition(Object.keys(show.performers[count]).length);
   };
 
   const positionPerformersInLine = (): void => {
-      const distanceBetween = (config.canvasWidth / performers.length);
-      for (let i = 0; i < performers.length; i++) {
-          performers[i].x = distanceBetween * i;
-          performers[i].y = config.canvasHeight/2;
-      }
-      setPerformers((prevPerformers) => [...prevPerformers]);
+    const distanceBetween = config.canvasWidth / show.performers[count].length;
+    const updatedPerformers = Object.keys(show.performers[count]).map((key, index) => ({
+      ...show.performers[count][parseInt(key)],
+      x: distanceBetween * index,
+      y: config.canvasHeight / 2,
+    }));
+
+    setShow((prevShow) => ({
+      ...prevShow,
+      performers: {
+        ...prevShow.performers,
+        [count]: updatedPerformers,
+      },
+    }));
+    setPosition(0);
   };
 
   const saveState = (): void => {
-    const serializedData = JSON.stringify(performers);
+    const serializedData = JSON.stringify(show);
     const blob = new Blob([serializedData], { type: 'application/json' });
-    FileSaver.saveAs(blob, 'performers.json');
+    FileSaver.saveAs(blob, 'show.json');
   };
 
-  const loadState = (file: File): void => {
+  const loadState = (file: UploadFile[]): void => {
     const reader = new FileReader();
     reader.onload = (event) => {
+      const jsonData = event.target?.result;
       try {
-        const parsedData = JSON.parse(event.target!.result as string);
-        setPerformers(parsedData);
+        const parsedData = JSON.parse(jsonData as string);
+        setShow(parsedData);
+        setPosition(0);
       } catch (error) {
-        console.error('Error parsing JSON file:', error);
+        message.success(`Error parsing JSON: ${error}`);
       }
     };
-    reader.readAsText(file);
+    reader.readAsText(file[0].originFileObj as File);
   };
 
-
-  return { performers, handleDragStart, handleDragEnd, addPerformer, positionPerformersInLine, saveState, loadState };
+  return {
+    show,
+    position,
+    handleDragStart,
+    handleDragEnd,
+    addPerformer,
+    positionPerformersInLine,
+    saveState,
+    loadState,
+    set: count,
+  };
 };

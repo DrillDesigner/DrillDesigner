@@ -2,7 +2,6 @@ import React, { useRef, useEffect, useState } from 'react';
 import { Image, Transformer } from 'react-konva';
 import useImage from 'use-image';
 import { Performer } from '../types/Performer';
-import PerformerImage from '../assets/PerformerEmoji.png'
 
 interface PerformerComponentProps {
   performer: Performer;
@@ -25,7 +24,7 @@ const PerformerComponent: React.FC<PerformerComponentProps> = ({ performer, imag
     setSelected(true);
   };
 
-  const handleDragEnd = (e: any) => {
+  const handleDragEnd = () => {
     setSelected(false);
   };
 
@@ -47,7 +46,6 @@ const PerformerComponent: React.FC<PerformerComponentProps> = ({ performer, imag
           ref={trRef}
           enabledAnchors={['middle-left', 'middle-right']}
           boundBoxFunc={(oldBox, newBox) => {
-            // limit resize
             if (newBox.width < 5 || newBox.height < 5) {
               return oldBox;
             }

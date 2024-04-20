@@ -1,4 +1,4 @@
-import config from '../config/AppConfig';
+import config from "../config/AppConfig";
 
 const helper = {
   generateShapes: (numPerformers: number) => {
@@ -19,7 +19,7 @@ const helper = {
       rotation: Math.random() * 180,
       isDragging: false,
     }));
-  }
+  },
 };
 
 export default helper;

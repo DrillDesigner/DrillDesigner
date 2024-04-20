@@ -1,8 +1,8 @@
 const config = {
-  canvasWidth: 1239,
-  canvasHeight: 710,
-  performerImageSrc: 'src/assets/PerformerEmoji.png',
-  backgroundImageSrc: 'src/assets/ChartBorderNums.png',
+  canvasWidth: 1141,
+  canvasHeight: 654,
+  performerImageSrc: "src/assets/PerformerEmoji.png",
+  backgroundImageSrc: "src/assets/ChartBorderNums.png",
   defaultNumPerformers: 10,
 };
 

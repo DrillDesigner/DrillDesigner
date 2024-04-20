@@ -1,16 +1,15 @@
-import { useState } from 'react';
-import { Performer } from '../types/Performer';
-import { UploadFile } from 'antd';
-import config from '../config/AppConfig';
-import * as FileSaver from 'file-saver';
-import { message } from 'antd';
-import { Show } from '../types/Show'; 
+import { useState } from "react";
+import { Performer } from "../types/Performer";
+import { UploadFile } from "antd";
+import config from "../config/AppConfig";
+import * as FileSaver from "file-saver";
+import { message } from "antd";
+import { Show } from "../types/Show";
 
 export const useShowState = (initialShow: Show) => {
   const [show, setShow] = useState<Show>(initialShow);
   const [position, setPosition] = useState<number>(0);
   const [count, setCount] = useState<number>(1);
-
 
   const addPerformer = () => {
     const newPerformer: Performer = {
@@ -34,11 +33,13 @@ export const useShowState = (initialShow: Show) => {
 
   const positionPerformersInLine = (): void => {
     const distanceBetween = config.canvasWidth / show.performers[count].length;
-    const updatedPerformers = Object.keys(show.performers[count]).map((key, index) => ({
-      ...show.performers[count][parseInt(key)],
-      x: distanceBetween * index,
-      y: config.canvasHeight / 2,
-    }));
+    const updatedPerformers = Object.keys(show.performers[count]).map(
+      (key, index) => ({
+        ...show.performers[count][parseInt(key)],
+        x: distanceBetween * index,
+        y: config.canvasHeight / 2,
+      }),
+    );
 
     setShow((prevShow) => ({
       ...prevShow,
@@ -52,8 +53,8 @@ export const useShowState = (initialShow: Show) => {
 
   const saveState = (): void => {
     const serializedData = JSON.stringify(show);
-    const blob = new Blob([serializedData], { type: 'application/json' });
-    FileSaver.saveAs(blob, 'show.json');
+    const blob = new Blob([serializedData], { type: "application/json" });
+    FileSaver.saveAs(blob, "show.json");
   };
 
   const loadState = (file: UploadFile[]): void => {
@@ -71,6 +72,10 @@ export const useShowState = (initialShow: Show) => {
     reader.readAsText(file[0].originFileObj as File);
   };
 
+  const handleCountChange = (count: number): void => {
+    setCount(count);
+  }
+
   return {
     show,
     position,
@@ -79,5 +84,6 @@ export const useShowState = (initialShow: Show) => {
     saveState,
     loadState,
     set: count,
+    handleCountChange,
   };
 };

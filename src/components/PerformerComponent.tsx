@@ -6,11 +6,13 @@ import { Performer } from "../types/Performer";
 interface PerformerComponentProps {
   performer: Performer;
   imageSrc: string;
+  onUpdatePosition: (id: string, x: number, y: number) => void; // Callback function to update position
 }
 
 const PerformerComponent: React.FC<PerformerComponentProps> = ({
   performer,
   imageSrc,
+  onUpdatePosition,
 }) => {
   const [image] = useImage(imageSrc);
   const [isSelected, setSelected] = useState(false);
@@ -29,6 +31,7 @@ const PerformerComponent: React.FC<PerformerComponentProps> = ({
 
   const handleDragEnd = () => {
     setSelected(false);
+    onUpdatePosition(performer.id, performer.x, performer.y);
   };
 
   return (

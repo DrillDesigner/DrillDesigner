@@ -10,6 +10,7 @@ export interface StageComponentProps {
   height: number;
   show?: Show;
   count: number;
+  updatePosition: (id: string, x: number, y: number) => void;
 }
 
 const StageComponent: React.FC<StageComponentProps> = ({
@@ -17,6 +18,7 @@ const StageComponent: React.FC<StageComponentProps> = ({
   height,
   show: Show,
   count,
+  updatePosition
 }) => {
   return (
     <Stage width={width} height={height}>
@@ -31,6 +33,7 @@ const StageComponent: React.FC<StageComponentProps> = ({
             key={performer.id}
             performer={performer}
             imageSrc={config.performerImageSrc}
+            onUpdatePosition={updatePosition}
           />
         ))}
       </Layer>

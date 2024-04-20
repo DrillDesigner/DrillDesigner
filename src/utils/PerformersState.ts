@@ -8,28 +8,7 @@ import { Show } from "../types/Show";
 
 export const useShowState = (initialShow: Show) => {
   const [show, setShow] = useState<Show>(initialShow);
-  const [position, setPosition] = useState<number>(0);
   const [count, setCount] = useState<number>(1);
-
-  const addPerformer = () => {
-    const newPerformer: Performer = {
-      id: String(Object.keys(show.performers[count]).length + 1),
-      x: Math.random() * config.canvasWidth,
-      y: Math.random() * config.canvasHeight,
-      rotation: Math.random() * 180,
-      isDragging: false,
-    };
-
-    setShow((prevShow) => ({
-      ...prevShow,
-      performers: {
-        ...prevShow.performers,
-        [count]: [...prevShow.performers[count], newPerformer],
-      },
-    }));
-
-    setPosition(Object.keys(show.performers[count]).length);
-  };
 
   const positionPerformersInLine = (): void => {
     const distanceBetween = config.canvasWidth / show.performers[count].length;
@@ -48,7 +27,6 @@ export const useShowState = (initialShow: Show) => {
         [count]: updatedPerformers,
       },
     }));
-    setPosition(0);
   };
 
   const saveState = (): void => {
@@ -64,7 +42,6 @@ export const useShowState = (initialShow: Show) => {
       try {
         const parsedData = JSON.parse(jsonData as string);
         setShow(parsedData);
-        setPosition(0);
       } catch (error) {
         message.success(`Error parsing JSON: ${error}`);
       }
@@ -76,14 +53,33 @@ export const useShowState = (initialShow: Show) => {
     setCount(count);
   }
 
+  const updatePositions = (id: string, x: number, y: number): void => {
+    const updatedPerformers = show.performers[count].map((performer) => {
+      console.log("Here!");
+      if (performer.id === id) {
+        console.log("here!!")
+        return { ...performer, x, y };
+      }
+      return performer; 
+
+    });
+
+    setShow((prevShow) => ({
+      ...prevShow,
+      performers: {
+        ...prevShow.performers,
+        [count]: updatedPerformers,
+      },
+    }));
+  };
+
   return {
     show,
-    position,
-    addPerformer,
     positionPerformersInLine,
     saveState,
     loadState,
     set: count,
     handleCountChange,
+    updatePositions
   };
 };

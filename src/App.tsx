@@ -6,8 +6,6 @@ import MenuComponent from './components/MenuComponent';
 import helper from './utils/helpers';
 import { useShowState } from "./utils/PerformersState";
 import { Show } from "./types/Show";
-import MenuComponent from "./components/MenuComponent";
-import StageComponent from "./components/StageComponent";
 import CountSliderComponent from "./components/CountSliderComponent";
 
 const { Content, Sider, Footer } = Layout;
@@ -16,10 +14,16 @@ const initialShow: Show = {
   id: "show-1",
   name: "My Awesome Show",
   performers: Object.fromEntries(
-    Array.from({ length: 101 }, (_, i) => [i, helper.generateShapes(config.defaultNumPerformers)])
+    Array.from({ length: 101 }, (_, i) => [
+      i,
+      i === 0
+        ? [{ id: "0", x: 0, y: 0, rotation: 0, isDragging: false }, ...helper.generateShapes(config.defaultNumPerformers - 1)]
+        : helper.generateShapes(config.defaultNumPerformers)
+    ])
   ),
   count: 1,
 };
+
 
 const App: React.FC<object> = () => {
   const [windowSize, setWindowSize] = useState({
@@ -28,12 +32,12 @@ const App: React.FC<object> = () => {
   });
   const {
     show,
-    addPerformer,
     positionPerformersInLine,
     saveState,
     loadState,
     set,
-    handleCountChange
+    handleCountChange,
+    updatePositions
   } = useShowState(initialShow);
 
   // empty array means invoked once, adds listener to update windowSize var on 'resize' event
@@ -62,6 +66,7 @@ const App: React.FC<object> = () => {
             height={config.canvasHeight}
             show={show}
             count={set}
+            updatePosition={updatePositions}
           />
         </Content>
         <Footer style={{ textAlign: 'center' }}>

@@ -1,7 +1,9 @@
+import { Layout, Menu } from 'antd';
 import React, { useState, useEffect } from "react";
-import helper from "./utils/helpers";
+import StageComponent from './components/StageComponent';
 import config from "./config/AppConfig";
-import { Layout, Menu } from "antd";
+import MenuComponent from './components/MenuComponent';
+import helper from './utils/helpers';
 import { useShowState } from "./utils/PerformersState";
 import { Show } from "./types/Show";
 import MenuComponent from "./components/MenuComponent";

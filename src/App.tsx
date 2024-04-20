@@ -1,13 +1,9 @@
-import { Breadcrumb, Layout, Menu, theme, ConfigProvider } from 'antd';
-import type { MenuProps } from 'antd';
-import { createRoot } from 'react-dom/client';
+import { Layout, Menu } from 'antd';
 import React, { useState, useEffect } from 'react';
-import { Stage, Layer, Star, Text } from 'react-konva';
 import StageComponent from './components/StageComponent';
-const { Header, Content, Footer, Sider } = Layout;
+const { Content, Sider } = Layout;
 import config from './config/AppConfig';
 import MenuComponent from './components/MenuComponent';
-import { Performer } from './types/Performer';
 import helper from './utils/helpers';
 import { useShowState } from './utils/PerformersState';
 import { Show } from './types/Show';
@@ -20,9 +16,9 @@ const initialShow: Show = {
   },
 };
 
-const App: React.FC<{}> = () => {
+const App: React.FC<object> = () => {
   const [windowSize, setWindowSize] = useState({ width: window.innerWidth, height: window.innerHeight });
-  const { show, handleDragStart, handleDragEnd, addPerformer, positionPerformersInLine, saveState, loadState, set } = useShowState(initialShow);
+  const { show, addPerformer, positionPerformersInLine, saveState, loadState, set } = useShowState(initialShow);
   
   // empty array means invoked once, adds listener to update windowSize var on 'resize' event
   useEffect(() => {

@@ -11,31 +11,6 @@ export const useShowState = (initialShow: Show) => {
   const [position, setPosition] = useState<number>(0);
   const [count, setCount] = useState<number>(1);
 
-  const handleDragStart = (id: string) => {
-    setShow((prevShow) => ({
-      ...prevShow,
-      performers: {
-        ...prevShow.performers,
-        [position]: {
-          ...prevShow.performers[position],
-          isDragging: true,
-        },
-      },
-    }));
-  };
-
-  const handleDragEnd = () => {
-    setShow((prevShow) => ({
-      ...prevShow,
-      performers: {
-        ...prevShow.performers,
-        [position]: {
-          ...prevShow.performers[position],
-          isDragging: false,
-        },
-      },
-    }));
-  };
 
   const addPerformer = () => {
     const newPerformer: Performer = {
@@ -99,8 +74,6 @@ export const useShowState = (initialShow: Show) => {
   return {
     show,
     position,
-    handleDragStart,
-    handleDragEnd,
     addPerformer,
     positionPerformersInLine,
     saveState,

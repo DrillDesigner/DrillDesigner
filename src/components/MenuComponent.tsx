@@ -1,7 +1,7 @@
-import { message, Upload, Breadcrumb, Layout, Menu, theme, ConfigProvider, Button } from 'antd';
-import React, { useState } from 'react';
+import { message, Upload, Menu } from 'antd';
 import type { MenuProps, GetProp, UploadProps } from 'antd';
 import { UploadFile } from 'antd';
+import React from 'react';
 
 interface MenuComponentProps {
   lineOnClick: () => void;
@@ -14,19 +14,19 @@ type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
 const MenuComponent = (props : MenuComponentProps) => {
     function getItem(
-        label: React.ReactNode,
-        key?: React.Key | null,
-        icon?: React.ReactNode,
-        children?: MenuItem[],
-        onClick?: () => void | ((file: File) => void),
+      label: React.ReactNode,
+      key?: React.Key | null,
+      icon?: React.ReactNode,
+      children?: MenuItem[],
+      onClick?: () => void | ((file: File) => void),
     ): MenuItem {
-        return {
-            key,
-            icon,
-            children,
-            label,
-            onClick,
-        } as MenuItem;
+      return {
+          key,
+          icon,
+          children,
+          label,
+          onClick,
+      } as MenuItem;
     }
 
   const handleChange: UploadProps['onChange'] = (info) => {
@@ -35,7 +35,7 @@ const MenuComponent = (props : MenuComponentProps) => {
     }
     if (info.file.status === 'done') {
       message.success(`${info.file.name} file uploaded successfully`);
-      props.loadStateOnClick(info.fileList)
+      props.loadStateOnClick(info.fileList);
     } else if (info.file.status === 'error') {
       message.error(`${info.file.name} file upload failed.`);
     }

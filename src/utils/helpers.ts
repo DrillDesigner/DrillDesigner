@@ -1,5 +1,4 @@
-import { Performer } from "../types/Performer";
-import config from "../config/AppConfig";
+import config from '../config/AppConfig';
 
 const helper = {
   generateShapes: (numPerformers: number) => {
@@ -21,8 +20,6 @@ const helper = {
       isDragging: false,
     }));
   }
-  
 };
 
 export default helper;
-

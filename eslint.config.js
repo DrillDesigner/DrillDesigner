@@ -14,7 +14,13 @@ const compat = new FlatCompat({baseDirectory: __dirname, recommendedConfig: plug
 
 export default [
   {languageOptions: { globals: globals.browser }},
-  ...compat.extends("xo-typescript"),
-  ...tseslint.configs.recommended,
   pluginReactConfig,
+  {
+    rules: {
+        "semi": "error",
+        "no-unused-vars": "error",
+        "indent": "off",
+    },
+  },
+  ...tseslint.configs.recommended, 
 ];

@@ -1,46 +1,65 @@
-import { Layout, Menu } from 'antd';
-import React, { useState, useEffect } from 'react';
-import StageComponent from './components/StageComponent';
+import { Layout, Menu } from "antd";
+import React, { useState, useEffect } from "react";
+import StageComponent from "./components/StageComponent";
 const { Content, Sider } = Layout;
-import config from './config/AppConfig';
-import MenuComponent from './components/MenuComponent';
-import helper from './utils/helpers';
-import { useShowState } from './utils/PerformersState';
-import { Show } from './types/Show';
+import config from "./config/AppConfig";
+import MenuComponent from "./components/MenuComponent";
+import helper from "./utils/helpers";
+import { useShowState } from "./utils/PerformersState";
+import { Show } from "./types/Show";
 
 const initialShow: Show = {
-  id: 'show-1',
-  name: 'My Awesome Show',
+  id: "show-1",
+  name: "My Awesome Show",
   performers: {
     1: helper.generateShapes(config.defaultNumPerformers),
   },
 };
 
 const App: React.FC<object> = () => {
-  const [windowSize, setWindowSize] = useState({ width: window.innerWidth, height: window.innerHeight });
-  const { show, addPerformer, positionPerformersInLine, saveState, loadState, set } = useShowState(initialShow);
-  
+  const [windowSize, setWindowSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+  const {
+    show,
+    addPerformer,
+    positionPerformersInLine,
+    saveState,
+    loadState,
+    set,
+  } = useShowState(initialShow);
+
   // empty array means invoked once, adds listener to update windowSize var on 'resize' event
   useEffect(() => {
     const handleResize = () => {
       setWindowSize({ width: window.innerWidth, height: window.innerHeight });
     };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   return (
-    <Layout style={{ height: '100vh' }}>
-      <Sider width={(windowSize.width - config.canvasWidth) / 2}> 
+    <Layout style={{ height: "100vh" }}>
+      <Sider width={(windowSize.width - config.canvasWidth) / 2}>
         <div className="left-sidebar" />
-       <MenuComponent lineOnClick={positionPerformersInLine} saveShowOnClick={saveState} loadStateOnClick={(loadState)}/>
+        <MenuComponent
+          lineOnClick={positionPerformersInLine}
+          saveShowOnClick={saveState}
+          loadStateOnClick={loadState}
+        />
       </Sider>
-      <Content style={{ }}>
-        <StageComponent width={config.canvasWidth} height={config.canvasHeight} show={show} count={set} />
+      <Content style={{}}>
+        <StageComponent
+          width={config.canvasWidth}
+          height={config.canvasHeight}
+          show={show}
+          count={set}
+        />
       </Content>
       <Sider width={(windowSize.width - config.canvasWidth) / 2}>
         <div className="right-sidebar" />
-        <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" />
+        <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline" />
       </Sider>
     </Layout>
   );

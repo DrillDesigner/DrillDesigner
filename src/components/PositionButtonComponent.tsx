@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 interface PositionButtonComponentProps {
   initialValue: number;
   onChange: (value: number) => void;
 }
 
-const PositionButtonComponent: React.FC<PositionButtonComponentProps> = ({ initialValue, onChange }) => {
+const PositionButtonComponent: React.FC<PositionButtonComponentProps> = ({
+  initialValue,
+  onChange,
+}) => {
   const [value, setValue] = useState(initialValue);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

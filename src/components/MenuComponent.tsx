@@ -55,7 +55,13 @@ const MenuComponent = (props: MenuComponentProps) => {
 
   const items: MenuItem[] = [
     getItem(undefined, "designer", "Drill Designer"),
-    getItem(undefined, "box", "Position in a Line", undefined, props.lineOnClick),
+    getItem(
+      undefined,
+      "box",
+      "Position in a Line",
+      undefined,
+      props.lineOnClick,
+    ),
     getItem(
       undefined,
       "saveShow",

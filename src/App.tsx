@@ -17,7 +17,7 @@ const initialShow: Show = {
     Array.from({ length: config.defaultNumPerformers }, (_, i) => [
       i,
       helper.randomPerformerLocations(config.defaultNumPerformers),
-    ])
+    ]),
   ),
   count: 1,
 };

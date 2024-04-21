@@ -1,7 +1,6 @@
-import { message, Upload, Menu } from "antd";
-import type { MenuProps, GetProp, UploadProps } from "antd";
-import { UploadFile } from "antd";
 import React from "react";
+import { message, Upload, Menu, UploadFile } from "antd";
+import type { MenuProps, GetProp, UploadProps } from "antd";
 
 interface MenuComponentProps {
   lineOnClick: () => void;
@@ -56,11 +55,11 @@ const MenuComponent = (props: MenuComponentProps) => {
 
   const items: MenuItem[] = [
     getItem(undefined, "designer", "Drill Designer"),
-    getItem(undefined, "box", "Line", undefined, props.lineOnClick),
+    getItem(undefined, "box", "Position in a Line", undefined, props.lineOnClick),
     getItem(
       undefined,
       "saveShow",
-      <div>Save show</div>,
+      <div>Save Show</div>,
       undefined,
       props.saveShowOnClick,
     ),

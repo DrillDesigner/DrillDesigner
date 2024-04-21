@@ -1,11 +1,11 @@
-import { Layout, Menu } from "antd";
 import React, { useState, useEffect } from "react";
-import StageComponent from "./components/StageComponent";
-import config from "./config/AppConfig";
-import MenuComponent from "./components/MenuComponent";
-import helper from "./utils/helpers";
+import { Layout, Menu } from "antd";
 import { useShowState } from "./utils/PerformersState";
+import helper from "./utils/helpers";
+import config from "./config/AppConfig";
 import { Show } from "./types/Show";
+import StageComponent from "./components/StageComponent";
+import MenuComponent from "./components/MenuComponent";
 import CountSliderComponent from "./components/CountSliderComponent";
 
 const { Content, Sider, Footer } = Layout;
@@ -14,15 +14,10 @@ const initialShow: Show = {
   id: "show-1",
   name: "My Awesome Show",
   performers: Object.fromEntries(
-    Array.from({ length: 101 }, (_, i) => [
+    Array.from({ length: config.defaultNumPerformers }, (_, i) => [
       i,
-      i === 0
-        ? [
-            { id: "0", x: 0, y: 0, rotation: 0, isDragging: false },
-            ...helper.generateShapes(config.defaultNumPerformers - 1),
-          ]
-        : helper.generateShapes(config.defaultNumPerformers),
-    ]),
+      helper.randomPerformerLocations(config.defaultNumPerformers),
+    ])
   ),
   count: 1,
 };

@@ -1,17 +1,17 @@
 import config from "../config/AppConfig";
 
 const helper = {
-  generateShapes: (numPerformers: number) => {
+  randomPerformerLocations: (numPerformers: number) => {
     return [...Array(numPerformers)].map((_, i) => ({
       id: i.toString(),
-      x: i === 0 ? 0 : Math.random() * config.canvasWidth-10,
-      y: i === 0 ? 0 : Math.random() * config.canvasHeight-10,
+      x: i === 0 ? 10 : Math.random() * config.fieldWidth + config.fieldWidthAdjustment,
+      y: i === 0 ? 35 : Math.random() * config.fieldHeight + config.fieldHeightAdjustment,
       rotation: Math.random() * 180,
       isDragging: false,
     }));
   },
 
-  randomLine: (numPerformers: number) => {
+  performersToLine: (numPerformers: number) => {
     return [...Array(numPerformers)].map((_, i) => ({
       id: i.toString(),
       x: Math.random() * config.canvasWidth,

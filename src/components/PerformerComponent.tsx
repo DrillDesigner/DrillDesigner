@@ -1,8 +1,8 @@
 import React, { useRef, useEffect, useState } from "react";
+import Konva from "konva";
 import { Image, Transformer } from "react-konva";
 import useImage from "use-image";
 import { Performer } from "../types/Performer";
-import Konva from "konva";
 
 interface PerformerComponentProps {
   performer: Performer;

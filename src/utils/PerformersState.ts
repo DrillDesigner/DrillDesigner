@@ -29,6 +29,7 @@ export const useShowState = (initialShow: Show) => {
     reader.readAsText(file[0].originFileObj as File);
   };
 
+  // Callback passed to slider component
   const handleCountChange = (count: number): void => {
     setCount(count);
   };
@@ -52,7 +53,7 @@ export const useShowState = (initialShow: Show) => {
     }));
   };
 
-  const updatePositions = (id: string, x: number, y: number): void => {
+  const updatePerformerPosition = (id: string, x: number, y: number): void => {
     const updatedPerformers = Object.keys(show.performers[count]).map((key) => {
       const performer = show.performers[count][parseInt(key)];
       if (key === id) {
@@ -78,6 +79,6 @@ export const useShowState = (initialShow: Show) => {
     loadState,
     set: count,
     handleCountChange,
-    updatePositions,
+    updatePositions: updatePerformerPosition,
   };
 };

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Performer } from "../types/Performer";
 import { UploadFile } from "antd";
 import config from "../config/AppConfig";
 import * as FileSaver from "file-saver";
@@ -32,7 +31,7 @@ export const useShowState = (initialShow: Show) => {
 
   const handleCountChange = (count: number): void => {
     setCount(count);
-  }
+  };
 
   const positionPerformersInLine = (): void => {
     const distanceBetween = config.canvasWidth / show.performers[count].length;
@@ -54,16 +53,14 @@ export const useShowState = (initialShow: Show) => {
   };
 
   const updatePositions = (id: string, x: number, y: number): void => {
-  const updatedPerformers = Object.keys(show.performers[count]).map(
-    (key, index) => {
+    const updatedPerformers = Object.keys(show.performers[count]).map((key) => {
       const performer = show.performers[count][parseInt(key)];
       if (key === id) {
         return { ...performer, x, y };
       } else {
         return performer;
       }
-    }
-  );
+    });
 
     setShow((prevShow) => ({
       ...prevShow,
@@ -81,6 +78,6 @@ export const useShowState = (initialShow: Show) => {
     loadState,
     set: count,
     handleCountChange,
-    updatePositions
+    updatePositions,
   };
 };

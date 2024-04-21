@@ -2,11 +2,12 @@ import React, { useRef, useEffect, useState } from "react";
 import { Image, Transformer } from "react-konva";
 import useImage from "use-image";
 import { Performer } from "../types/Performer";
+import Konva from "konva";
 
 interface PerformerComponentProps {
   performer: Performer;
   imageSrc: string;
-  onUpdatePosition: (id: string, x: number, y: number) => void; 
+  onUpdatePosition: (id: string, x: number, y: number) => void;
 }
 
 const PerformerComponent: React.FC<PerformerComponentProps> = ({
@@ -29,13 +30,12 @@ const PerformerComponent: React.FC<PerformerComponentProps> = ({
     setSelected(true);
   };
 
-  const handleDragEnd = (event: any) => {
+  const handleDragEnd = (event: Konva.KonvaEventObject<MouseEvent>) => {
     const stage = event.target.getStage();
-    const position = stage.getPointerPosition();
+    const position = stage!.getPointerPosition();
 
-    if(position)
-    {
-    const { x, y } = position;
+    if (position) {
+      const { x, y } = position;
       onUpdatePosition(performer.id, x, y);
     }
     setSelected(false);

@@ -1,5 +1,5 @@
-import { Slider } from 'antd';
-import React from 'react';
+import { Slider } from "antd";
+import React from "react";
 
 interface CountSliderProps {
   onSlide: (value: number) => void;
@@ -10,14 +10,7 @@ const CountSliderComponent: React.FC<CountSliderProps> = ({ onSlide }) => {
     onSlide(value);
   };
 
-  return (
-    <Slider
-      defaultValue={0}
-      min={0}
-      max={5}
-      onChange={handleSlide} 
-    />
-  );
+  return <Slider defaultValue={0} min={0} max={5} onChange={handleSlide} />;
 };
 
 export default CountSliderComponent;

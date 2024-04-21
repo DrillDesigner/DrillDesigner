@@ -18,7 +18,7 @@ const StageComponent: React.FC<StageComponentProps> = ({
   height,
   show: Show,
   count,
-  updatePosition
+  updatePosition,
 }) => {
   return (
     <Stage width={width} height={height}>

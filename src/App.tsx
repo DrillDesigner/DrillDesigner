@@ -1,9 +1,9 @@
-import { Layout, Menu } from 'antd';
+import { Layout, Menu } from "antd";
 import React, { useState, useEffect } from "react";
-import StageComponent from './components/StageComponent';
+import StageComponent from "./components/StageComponent";
 import config from "./config/AppConfig";
-import MenuComponent from './components/MenuComponent';
-import helper from './utils/helpers';
+import MenuComponent from "./components/MenuComponent";
+import helper from "./utils/helpers";
 import { useShowState } from "./utils/PerformersState";
 import { Show } from "./types/Show";
 import CountSliderComponent from "./components/CountSliderComponent";
@@ -17,13 +17,15 @@ const initialShow: Show = {
     Array.from({ length: 101 }, (_, i) => [
       i,
       i === 0
-        ? [{ id: "0", x: 0, y: 0, rotation: 0, isDragging: false }, ...helper.generateShapes(config.defaultNumPerformers - 1)]
-        : helper.generateShapes(config.defaultNumPerformers)
-    ])
+        ? [
+            { id: "0", x: 0, y: 0, rotation: 0, isDragging: false },
+            ...helper.generateShapes(config.defaultNumPerformers - 1),
+          ]
+        : helper.generateShapes(config.defaultNumPerformers),
+    ]),
   ),
   count: 1,
 };
-
 
 const App: React.FC<object> = () => {
   const [windowSize, setWindowSize] = useState({
@@ -37,7 +39,7 @@ const App: React.FC<object> = () => {
     loadState,
     set,
     handleCountChange,
-    updatePositions
+    updatePositions,
   } = useShowState(initialShow);
 
   // empty array means invoked once, adds listener to update windowSize var on 'resize' event
@@ -69,17 +71,14 @@ const App: React.FC<object> = () => {
             updatePosition={updatePositions}
           />
         </Content>
-        <Footer style={{ textAlign: 'center' }}>
-          <CountSliderComponent 
-            onSlide={handleCountChange}
-          />
+        <Footer style={{ textAlign: "center" }}>
+          <CountSliderComponent onSlide={handleCountChange} />
         </Footer>
       </Layout>
       <Sider width={(windowSize.width - config.canvasWidth) / 2}>
         <div className="right-sidebar" />
         <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline" />
       </Sider>
-
     </Layout>
   );
 };

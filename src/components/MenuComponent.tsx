@@ -50,7 +50,7 @@ const MenuComponent = (props: MenuComponentProps) => {
   };
 
   const handleSuccess = ({ onSuccess }: any) => {
-    onSuccess(); 
+    onSuccess();
     message.success(`File uploaded successfully`);
   };
 

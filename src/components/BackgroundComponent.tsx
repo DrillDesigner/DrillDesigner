@@ -1,6 +1,6 @@
+import React from "react";
 import { Image } from "react-konva";
 import useImage from "use-image";
-import React from "react";
 
 interface BackgroundComponentProps {
   imageSrc: string;

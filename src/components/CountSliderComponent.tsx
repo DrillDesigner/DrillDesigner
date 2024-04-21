@@ -10,7 +10,7 @@ const CountSliderComponent: React.FC<CountSliderProps> = ({ onSlide }) => {
     onSlide(value);
   };
 
-  return <Slider defaultValue={0} min={0} max={5} onChange={handleSlide} />;
+  return <Slider defaultValue={1} min={1} max={5} onChange={handleSlide} />;
 };
 
 export default CountSliderComponent;

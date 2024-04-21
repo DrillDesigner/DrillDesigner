@@ -4,8 +4,8 @@ const helper = {
   generateShapes: (numPerformers: number) => {
     return [...Array(numPerformers)].map((_, i) => ({
       id: i.toString(),
-      x: i === 0 ? 0 : Math.random() * config.canvasWidth,
-      y: i === 0 ? 0 : Math.random() * config.canvasHeight,
+      x: i === 0 ? 0 : Math.random() * config.canvasWidth-10,
+      y: i === 0 ? 0 : Math.random() * config.canvasHeight-10,
       rotation: Math.random() * 180,
       isDragging: false,
     }));

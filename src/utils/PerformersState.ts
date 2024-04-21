@@ -10,25 +10,6 @@ export const useShowState = (initialShow: Show) => {
   const [show, setShow] = useState<Show>(initialShow);
   const [count, setCount] = useState<number>(1);
 
-  const positionPerformersInLine = (): void => {
-    const distanceBetween = config.canvasWidth / show.performers[count].length;
-    const updatedPerformers = Object.keys(show.performers[count]).map(
-      (key, index) => ({
-        ...show.performers[count][parseInt(key)],
-        x: distanceBetween * index,
-        y: config.canvasHeight / 2,
-      }),
-    );
-
-    setShow((prevShow) => ({
-      ...prevShow,
-      performers: {
-        ...prevShow.performers,
-        [count]: updatedPerformers,
-      },
-    }));
-  };
-
   const saveState = (): void => {
     const serializedData = JSON.stringify(show);
     const blob = new Blob([serializedData], { type: "application/json" });
@@ -53,16 +34,36 @@ export const useShowState = (initialShow: Show) => {
     setCount(count);
   }
 
-  const updatePositions = (id: string, x: number, y: number): void => {
-    const updatedPerformers = show.performers[count].map((performer) => {
-      console.log("Here!");
-      if (performer.id === id) {
-        console.log("here!!")
-        return { ...performer, x, y };
-      }
-      return performer; 
+  const positionPerformersInLine = (): void => {
+    const distanceBetween = config.canvasWidth / show.performers[count].length;
+    const updatedPerformers = Object.keys(show.performers[count]).map(
+      (key, index) => ({
+        ...show.performers[count][parseInt(key)],
+        x: distanceBetween * index,
+        y: config.canvasHeight / 2,
+      }),
+    );
 
-    });
+    setShow((prevShow) => ({
+      ...prevShow,
+      performers: {
+        ...prevShow.performers,
+        [count]: updatedPerformers,
+      },
+    }));
+  };
+
+  const updatePositions = (id: string, x: number, y: number): void => {
+  const updatedPerformers = Object.keys(show.performers[count]).map(
+    (key, index) => {
+      const performer = show.performers[count][parseInt(key)];
+      if (key === id) {
+        return { ...performer, x, y };
+      } else {
+        return performer;
+      }
+    }
+  );
 
     setShow((prevShow) => ({
       ...prevShow,

@@ -6,7 +6,7 @@ import { Performer } from "../types/Performer";
 interface PerformerComponentProps {
   performer: Performer;
   imageSrc: string;
-  onUpdatePosition: (id: string, x: number, y: number) => void; // Callback function to update position
+  onUpdatePosition: (id: string, x: number, y: number) => void; 
 }
 
 const PerformerComponent: React.FC<PerformerComponentProps> = ({
@@ -29,9 +29,16 @@ const PerformerComponent: React.FC<PerformerComponentProps> = ({
     setSelected(true);
   };
 
-  const handleDragEnd = () => {
+  const handleDragEnd = (event: any) => {
+    const stage = event.target.getStage();
+    const position = stage.getPointerPosition();
+
+    if(position)
+    {
+    const { x, y } = position;
+      onUpdatePosition(performer.id, x, y);
+    }
     setSelected(false);
-    onUpdatePosition(performer.id, performer.x, performer.y);
   };
 
   return (

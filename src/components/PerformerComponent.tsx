@@ -17,23 +17,15 @@ const PerformerComponent: React.FC<PerformerComponentProps> = ({
 }) => {
   const [image] = useImage(imageSrc);
   const [isSelected, setSelected] = useState(false);
-  const trRef = useRef<any>(null);
-
-  useEffect(() => {
-    if (isSelected) {
-      trRef.current.nodes([image]);
-      trRef.current.getLayer().batchDraw();
-    }
-  }, [isSelected, image]);
 
   const handleSelect = () => {
     setSelected(true);
+    
   };
 
   const handleDragEnd = (event: Konva.KonvaEventObject<MouseEvent>) => {
     const stage = event.target.getStage();
     const position = stage!.getPointerPosition();
-
     if (position) {
       const { x, y } = position;
       onUpdatePosition(performer.id, x, y);
@@ -54,7 +46,7 @@ const PerformerComponent: React.FC<PerformerComponentProps> = ({
         width={20}
         height={20}
       />
-      {isSelected && (
+      {/* {isSelected && ( // this code does nothing??
         <Transformer
           ref={trRef}
           enabledAnchors={["middle-left", "middle-right"]}
@@ -65,7 +57,7 @@ const PerformerComponent: React.FC<PerformerComponentProps> = ({
             return newBox;
           }}
         />
-      )}
+      )} */}
     </>
   );
 };

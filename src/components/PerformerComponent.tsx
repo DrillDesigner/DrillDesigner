@@ -7,7 +7,7 @@ import { Performer } from "../types/Performer";
 interface PerformerComponentProps {
   performer: Performer;
   imageSrc: string;
-  onUpdatePosition: (id: string, x: number, y: number) => void;
+  onUpdatePosition: (id: string, x: number, y: number) => void; // this updates the position saved in the Show object
 }
 
 const PerformerComponent: React.FC<PerformerComponentProps> = ({
@@ -23,12 +23,23 @@ const PerformerComponent: React.FC<PerformerComponentProps> = ({
     
   };
 
+  const handleDragStart = (event: Konva.KonvaEventObject<MouseEvent>) => {
+
+  }
+
   const handleDragEnd = (event: Konva.KonvaEventObject<MouseEvent>) => {
     const stage = event.target.getStage();
-    const position = stage!.getPointerPosition();
-    if (position) {
-      const { x, y } = position;
-      onUpdatePosition(performer.id, x, y);
+    const pointerPosition = stage!.getPointerPosition();
+    const relativePosition = event.target.getRelativePointerPosition();
+
+    if (pointerPosition && relativePosition) {
+      const offsetX = relativePosition.x;
+      const offsetY = relativePosition.y;
+
+      const newX = pointerPosition.x - offsetX;
+      const newY = pointerPosition.y - offsetY;
+
+      onUpdatePosition(performer.id, newX, newY);
     }
     setSelected(false);
   };
@@ -42,6 +53,7 @@ const PerformerComponent: React.FC<PerformerComponentProps> = ({
         draggable
         onDragEnd={handleDragEnd}
         onClick={handleSelect}
+        onDragStart={handleDragStart}
         onTap={handleSelect}
         width={20}
         height={20}

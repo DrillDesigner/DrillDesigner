@@ -7,11 +7,11 @@ const helper = {
       x:
         i === 0
           ? 10
-          : Math.random() * config.fieldWidth + config.fieldWidthAdjustment,
+          : Math.random() * config.fieldWidth + config.fieldWidthAdjustment, // get random x, scale to field width, add adjustment so always within bounds
       y:
         i === 0
           ? 35
-          : Math.random() * config.fieldHeight + config.fieldHeightAdjustment,
+          : Math.random() * config.fieldHeight + config.fieldHeightAdjustment, // same as x above
       rotation: Math.random() * 180,
       isDragging: false,
     }));

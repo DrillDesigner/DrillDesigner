@@ -52,10 +52,10 @@ const App: React.FC<object> = () => {
       <Sider width={(windowSize.width - config.canvasWidth) / 2}>
         <div className="left-sidebar" />
         <MenuComponent
+          loadStateOnClick={loadState}
           menuItems={[
             items.positionInLineButton(positionPerformersInLine),
             items.saveShowButton(saveState),
-            items.loadStateButton(loadState)
           ]}
         />
       </Sider>

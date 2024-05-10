@@ -20,12 +20,9 @@ const PerformerComponent: React.FC<PerformerComponentProps> = ({
 
   const handleSelect = () => {
     setSelected(true);
-    
   };
 
-  const handleDragStart = (event: Konva.KonvaEventObject<MouseEvent>) => {
-
-  }
+  const handleDragStart = (event: Konva.KonvaEventObject<MouseEvent>) => {};
 
   const handleDragEnd = (event: Konva.KonvaEventObject<MouseEvent>) => {
     const stage = event.target.getStage();
@@ -58,18 +55,6 @@ const PerformerComponent: React.FC<PerformerComponentProps> = ({
         width={20}
         height={20}
       />
-      {/* {isSelected && ( // this code does nothing??
-        <Transformer
-          ref={trRef}
-          enabledAnchors={["middle-left", "middle-right"]}
-          boundBoxFunc={(oldBox, newBox) => {
-            if (newBox.width < 5 || newBox.height < 5) {
-              return oldBox;
-            }
-            return newBox;
-          }}
-        />
-      )} */}
     </>
   );
 };

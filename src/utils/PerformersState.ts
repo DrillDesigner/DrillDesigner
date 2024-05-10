@@ -15,7 +15,7 @@ export const useShowState = (initialShow: Show) => {
     FileSaver.saveAs(blob, "show.json");
   };
 
-  const loadState = (file: UploadFile[]): void => {
+  const loadState = (file: UploadFile<any>[]): boolean => {
     const reader = new FileReader();
     reader.onload = (event) => {
       const jsonData = event.target?.result;
@@ -27,6 +27,7 @@ export const useShowState = (initialShow: Show) => {
       }
     };
     reader.readAsText(file[0].originFileObj as File);
+    return true;
   };
 
   // Callback passed to slider component

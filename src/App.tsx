@@ -5,8 +5,9 @@ import helper from "./utils/helpers";
 import config from "./config/AppConfig";
 import { Show } from "./types/Show";
 import StageComponent from "./components/StageComponent";
-import MenuComponent from "./components/MenuComponent";
+import MenuComponent from "./components/menu/MenuComponent";
 import CountSliderComponent from "./components/CountSliderComponent";
+import items from "./components/menu/MenuItems";
 
 const { Content, Sider, Footer } = Layout;
 
@@ -51,9 +52,11 @@ const App: React.FC<object> = () => {
       <Sider width={(windowSize.width - config.canvasWidth) / 2}>
         <div className="left-sidebar" />
         <MenuComponent
-          lineOnClick={positionPerformersInLine}
-          saveShowOnClick={saveState}
-          loadStateOnClick={loadState}
+          menuItems={[
+            items.positionInLineButton(positionPerformersInLine),
+            items.saveShowButton(saveState),
+            items.loadStateButton(loadState)
+          ]}
         />
       </Sider>
       <Layout>

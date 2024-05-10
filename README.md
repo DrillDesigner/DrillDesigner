@@ -5,7 +5,6 @@
 - $ npm install
 - $ npm dev
 
-
 ### TODO
 
 - Change backgrounds

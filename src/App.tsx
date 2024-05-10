@@ -8,6 +8,7 @@ import StageComponent from "./components/StageComponent";
 import MenuComponent from "./components/menu/MenuComponent";
 import CountSliderComponent from "./components/CountSliderComponent";
 import items from "./components/menu/MenuItems";
+import UploadButtonComponent from "./components/menu/UploadButtonComponent";
 
 const { Content, Sider, Footer } = Layout;
 
@@ -52,12 +53,13 @@ const App: React.FC<object> = () => {
       <Sider width={(windowSize.width - config.canvasWidth) / 2}>
         <div className="left-sidebar" />
         <MenuComponent
-          loadStateOnClick={loadState}
           menuItems={[
             items.positionInLineButton(positionPerformersInLine),
             items.saveShowButton(saveState),
           ]}
-        />
+        >
+          <UploadButtonComponent loadStateOnClick={loadState} />
+        </MenuComponent>
       </Sider>
       <Layout>
         <Content style={{}}>

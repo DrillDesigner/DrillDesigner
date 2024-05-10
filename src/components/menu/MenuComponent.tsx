@@ -10,8 +10,8 @@ interface MenuItemProps {
 }
 
 interface MenuComponentProps {
-  loadStateOnClick: (file: UploadFile[]) => void;
   menuItems?: MenuItemProps[];
+  children?: React.ReactNode;
 }
 
 type MenuItem = GetProp<MenuProps, "items">[number];
@@ -32,50 +32,7 @@ const MenuComponent = (props: MenuComponentProps) => {
     } as MenuItem;
   }
 
-  const handleChange: UploadProps["onChange"] = (info) => {
-    if (info.file.status !== "uploading") {
-      console.log(info.file, info.fileList);
-    }
-    if (info.file.status === "done") {
-      message.success(`${info.file.name} file uploaded successfully`);
-      props.loadStateOnClick(info.fileList);
-    } else if (info.file.status === "error") {
-      message.error(`${info.file.name} file upload failed.`);
-    }
-  };
-
-  const beforeUpload = (file: FileType) => {
-    const isJson = file.type === "application/json";
-    if (!isJson) {
-      message.error("You can only upload json file!");
-    }
-    return isJson;
-  };
-
-  const handleSuccess = ({ onSuccess }: any) => {
-    onSuccess();
-    message.success(`File uploaded successfully`);
-  };
-
-  const items: MenuItem[] = [
-    getItem(
-      <div>
-        <Upload
-          name="uploadShow"
-          showUploadList={false}
-          beforeUpload={beforeUpload}
-          onChange={handleChange}
-          customRequest={({ onSuccess }) => handleSuccess({ onSuccess })}
-          style={{ color: "white" }}
-        >
-          <div style={{ color: "rgba(255, 255, 255, 0.65)" }}>Upload show</div>
-        </Upload>
-      </div>,
-      "loadState",
-    ),
-  ];
-
-
+  const items: MenuItem[] = [];
   props.menuItems?.forEach((menuItemProps) => {
     items.push(
       getItem(
@@ -86,6 +43,8 @@ const MenuComponent = (props: MenuComponentProps) => {
       ),
     );
   });
+
+  items.push(getItem(props.children));
 
   return (
     <Menu

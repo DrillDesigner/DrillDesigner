@@ -9,6 +9,9 @@ import MenuComponent from "./components/menu/MenuComponent";
 import CountSliderComponent from "./components/CountSliderComponent";
 import items from "./components/menu/MenuItems";
 import UploadButtonComponent from "./components/menu/UploadButtonComponent";
+import { Button, Flex, Segmented } from 'antd';
+import type { FlexProps, SegmentedProps } from 'antd';
+import { Col, Row, Divider } from 'antd';
 
 const { Content, Sider, Footer } = Layout;
 
@@ -61,7 +64,6 @@ const App: React.FC<object> = () => {
           <UploadButtonComponent loadStateOnClick={loadState} />
         </MenuComponent>
       </Sider>
-      <Layout>
         <Content style={{}}>
           <StageComponent
             width={config.canvasWidth}
@@ -70,9 +72,18 @@ const App: React.FC<object> = () => {
             count={set}
             updatePosition={updatePositions}
           />
-          <CountSliderComponent onSlide={handleCountChange} />
+          <Row gutter={16}>
+            <Col span={3} >
+              <Button>hi</Button>
+            </Col>
+            <Col span={3} >
+              <Button>hi</Button>
+            </Col>
+            <Col span={18} offset={8}>
+              <CountSliderComponent onSlide={handleCountChange} />
+            </Col>
+          </Row>
         </Content>
-      </Layout>
       <Sider width={(windowSize.width - config.canvasWidth) / 2}>
         <div className="right-sidebar" />
         <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline" />

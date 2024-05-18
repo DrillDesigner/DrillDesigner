@@ -25,7 +25,6 @@ const helper = {
     y = Math.max(y, 0);
     y = Math.min(y, config.canvasHeight);
 
-
     return [...Array(numPerformers)].map((_, index) => ({
       id: index.toString(),
       x: startX + distanceBetween * index - config.fieldWidthAdjustment,

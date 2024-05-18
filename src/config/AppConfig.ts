@@ -8,6 +8,7 @@ const config = {
   performerImageSrc: "src/assets/PerformerEmoji.png",
   backgroundImageSrc: "src/assets/ChartBorderNums.png",
   defaultNumPerformers: 11,
+  defaultNumCounts: 101
 };
 
 export default config;

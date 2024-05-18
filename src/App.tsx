@@ -16,9 +16,9 @@ const initialShow: Show = {
   id: "show-1",
   name: "My Awesome Show",
   performers: Object.fromEntries(
-    Array.from({ length: config.defaultNumPerformers }, (_, i) => [
+    Array.from({ length: config.defaultNumCounts }, (_, i) => [
       i,
-      helper.performersToLine(config.defaultNumPerformers),
+      helper.performersToLine(config.defaultNumPerformers, i),
     ]),
   ),
   count: 1,
@@ -70,10 +70,8 @@ const App: React.FC<object> = () => {
             count={set}
             updatePosition={updatePositions}
           />
-        </Content>
-        <Footer style={{ textAlign: "center" }}>
           <CountSliderComponent onSlide={handleCountChange} />
-        </Footer>
+        </Content>
       </Layout>
       <Sider width={(windowSize.width - config.canvasWidth) / 2}>
         <div className="right-sidebar" />

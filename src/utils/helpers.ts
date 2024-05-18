@@ -17,13 +17,19 @@ const helper = {
     }));
   },
 
-  performersToLine: (numPerformers: number) => {
+  performersToLine: (numPerformers: number, yOffset = 0) => {
     const distanceBetween = config.canvasWidth / numPerformers;
     const startX = (config.canvasWidth - distanceBetween * (numPerformers - 1)) / 2;
+    const centerY = config.canvasHeight / 2;
+    let y = centerY + yOffset;
+    y = Math.max(y, 0);
+    y = Math.min(y, config.canvasHeight);
+
+
     return [...Array(numPerformers)].map((_, index) => ({
       id: index.toString(),
       x: startX + distanceBetween * index - config.fieldWidthAdjustment,
-      y: config.canvasHeight / 2,
+      y: y,
       rotation: Math.random() * 180,
       isDragging: false,
     }));

@@ -15,6 +15,7 @@ export const useShowState = (initialShow: Show) => {
     FileSaver.saveAs(blob, "show.json");
   };
 
+  // Callback passed to upload button
   const loadState = (file: UploadFile<any>[]): boolean => {
     const reader = new FileReader();
     reader.onload = (event) => {
@@ -31,10 +32,11 @@ export const useShowState = (initialShow: Show) => {
   };
 
   // Callback passed to slider component
-  const handleCountChange = (count: number): void => {
-    setCount(count);
+  const handleCountChange = (count: number[]): void => {
+    setCount(count[0]);
   };
 
+  // Callback passed to 'Performers to line' button
   const positionPerformersInLine = (): void => {
     const distanceBetween = config.canvasWidth / show.performers[count].length;
     const updatedPerformers = Object.keys(show.performers[count]).map(

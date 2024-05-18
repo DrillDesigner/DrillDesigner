@@ -18,10 +18,12 @@ const helper = {
   },
 
   performersToLine: (numPerformers: number) => {
-    return [...Array(numPerformers)].map((_, i) => ({
-      id: i.toString(),
-      x: Math.random() * config.canvasWidth,
-      y: Math.random() * config.canvasHeight,
+    const distanceBetween = config.canvasWidth / numPerformers;
+    const startX = (config.canvasWidth - distanceBetween * (numPerformers - 1)) / 2;
+    return [...Array(numPerformers)].map((_, index) => ({
+      id: index.toString(),
+      x: startX + distanceBetween * index - config.fieldWidthAdjustment,
+      y: config.canvasHeight / 2,
       rotation: Math.random() * 180,
       isDragging: false,
     }));

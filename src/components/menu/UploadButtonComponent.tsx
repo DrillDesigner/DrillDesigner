@@ -1,7 +1,6 @@
-import { Slider } from "antd";
 import React from "react";
-import { message, Upload, Menu, UploadFile } from "antd";
-import type { MenuProps, GetProp, UploadProps } from "antd";
+import { message, Upload, UploadFile } from "antd";
+import type { GetProp, UploadProps } from "antd";
 
 interface UploadButtonProps {
   loadStateOnClick: (file: UploadFile[]) => void;

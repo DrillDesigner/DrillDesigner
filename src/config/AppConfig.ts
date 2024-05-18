@@ -7,7 +7,7 @@ const config = {
   fieldHeightAdjustment: 35,
   performerImageSrc: "src/assets/PerformerEmoji.png",
   backgroundImageSrc: "src/assets/ChartBorderNums.png",
-  defaultNumPerformers: 10,
+  defaultNumPerformers: 11,
 };
 
 export default config;

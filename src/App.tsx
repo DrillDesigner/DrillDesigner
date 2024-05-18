@@ -12,6 +12,7 @@ import UploadButtonComponent from "./components/menu/UploadButtonComponent";
 import { Button, Flex, Segmented } from 'antd';
 import type { FlexProps, SegmentedProps } from 'antd';
 import { Col, Row, Divider, Space } from 'antd';
+import PlayShowButtonComponent from "./components/bottomControls/PlayShowButtonComponent";
 
 const { Content, Sider, Footer } = Layout;
 
@@ -31,7 +32,7 @@ const initialShow: Show = {
       ];
     })
   ),
-  count: 1,
+  count: 0,
 };
 
 const App: React.FC<object> = () => {
@@ -47,6 +48,7 @@ const App: React.FC<object> = () => {
     set,
     handleCountChange,
     updatePositions,
+    playShow,
   } = useShowState(initialShow);
 
   // empty array means invoked once, adds listener to update windowSize var on 'resize' event
@@ -63,13 +65,11 @@ const App: React.FC<object> = () => {
   return (
     <Layout style={{ height: "100vh" }}>
       <Sider width={(windowSize.width - config.canvasWidth) / 2}>
-        <div className="left-sidebar" />
         <MenuComponent
           menuItems={[
             items.positionInLineButton(positionPerformersInLine),
             items.saveShowButton(saveState),
-          ]}
-        >
+          ]}>
           <UploadButtonComponent loadStateOnClick={loadState} />
         </MenuComponent>
       </Sider>
@@ -87,7 +87,7 @@ const App: React.FC<object> = () => {
             </Row>
             <Row gutter={35}>
               <Col span={2} >
-                <Button>Play Show</Button>
+                <PlayShowButtonComponent playShow={playShow}></PlayShowButtonComponent>
               </Col>
               <Col span={2} >
                 <Button>Add Count</Button>
@@ -100,7 +100,6 @@ const App: React.FC<object> = () => {
         </Content>
       </Layout>
       <Sider width={(windowSize.width - config.canvasWidth) / 2}>
-        <div className="right-sidebar" />
         <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline" />
       </Sider>
     </Layout>

@@ -4,6 +4,7 @@ import config from "../config/AppConfig";
 import * as FileSaver from "file-saver";
 import { message } from "antd";
 import { Show } from "../types/Show";
+import helper from "./helpers";
 
 export const useShowState = (initialShow: Show) => {
   const [show, setShow] = useState<Show>(initialShow);
@@ -75,6 +76,14 @@ export const useShowState = (initialShow: Show) => {
     }));
   };
 
+  const playShow = async () => {
+    for (let i = 0; i < Object.keys(show.performers).length; i++) {
+      console.log("setting: " + i);
+      setCount(i);
+      await new Promise(resolve => setTimeout(resolve, 100));
+    }
+  }
+
   return {
     show,
     positionPerformersInLine,
@@ -83,5 +92,6 @@ export const useShowState = (initialShow: Show) => {
     set: count,
     handleCountChange,
     updatePositions: updatePerformerPosition,
+    playShow,
   };
 };

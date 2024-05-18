@@ -4,15 +4,15 @@ import { useShowState } from "./utils/PerformersState";
 import helper from "./utils/helpers";
 import config from "./config/AppConfig";
 import { Show } from "./types/Show";
-import StageComponent from "./components/StageComponent";
+import StageComponent from "./components/stage/StageComponent";
 import MenuComponent from "./components/menu/MenuComponent";
-import CountSliderComponent from "./components/bottomControls/CountSliderComponent";
+import CountSliderComponent from "./components/menu/CountSliderComponent";
 import items from "./components/menu/MenuItems";
 import UploadButtonComponent from "./components/menu/UploadButtonComponent";
 import { Button, Flex, Segmented } from 'antd';
 import type { FlexProps, SegmentedProps } from 'antd';
 import { Col, Row, Divider, Space } from 'antd';
-import PlayShowButtonComponent from "./components/bottomControls/PlayShowButtonComponent";
+import PlayShowButtonComponent from "./components/menu/PlayShowButtonComponent";
 
 const { Content, Sider, Footer } = Layout;
 

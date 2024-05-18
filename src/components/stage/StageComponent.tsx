@@ -2,8 +2,8 @@ import React from "react";
 import { Stage, Layer } from "react-konva";
 import PerformerComponent from "./PerformerComponent";
 import BackgroundComponent from "./BackgroundComponent";
-import config from "../config/AppConfig";
-import { Show } from "../types/Show";
+import config from "../../config/AppConfig";
+import { Show } from "../../types/Show";
 
 export interface StageComponentProps {
   width: number;

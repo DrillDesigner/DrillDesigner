@@ -11,7 +11,7 @@ import items from "./components/menu/MenuItems";
 import UploadButtonComponent from "./components/menu/UploadButtonComponent";
 import { Button, Flex, Segmented } from 'antd';
 import type { FlexProps, SegmentedProps } from 'antd';
-import { Col, Row, Divider } from 'antd';
+import { Col, Row, Divider, Space } from 'antd';
 
 const { Content, Sider, Footer } = Layout;
 
@@ -45,6 +45,8 @@ const App: React.FC<object> = () => {
   // empty array means invoked once, adds listener to update windowSize var on 'resize' event
   useEffect(() => {
     const handleResize = () => {
+      console.log(window.innerWidth);
+      console.log((windowSize.width - config.canvasWidth) / 2);
       setWindowSize({ width: window.innerWidth, height: window.innerHeight });
     };
     window.addEventListener("resize", handleResize);
@@ -64,26 +66,32 @@ const App: React.FC<object> = () => {
           <UploadButtonComponent loadStateOnClick={loadState} />
         </MenuComponent>
       </Sider>
+      <Layout>
         <Content style={{}}>
-          <StageComponent
-            width={config.canvasWidth}
-            height={config.canvasHeight}
-            show={show}
-            count={set}
-            updatePosition={updatePositions}
-          />
-          <Row gutter={16}>
-            <Col span={3} >
-              <Button>hi</Button>
-            </Col>
-            <Col span={3} >
-              <Button>hi</Button>
-            </Col>
-            <Col span={18} offset={8}>
-              <CountSliderComponent onSlide={handleCountChange} />
-            </Col>
-          </Row>
+          <Space direction="vertical">
+            <Row>
+              <StageComponent
+                width={config.canvasWidth}
+                height={config.canvasHeight}
+                show={show}
+                count={set}
+                updatePosition={updatePositions}
+              />
+            </Row>
+            <Row gutter={35}>
+              <Col span={2} >
+                <Button>Play Show</Button>
+              </Col>
+              <Col span={2} >
+                <Button>Add Count</Button>
+              </Col>
+              <Col span={17} offset={1} >
+                <CountSliderComponent onSlide={handleCountChange} />
+              </Col>
+            </Row>
+          </Space>
         </Content>
+      </Layout>
       <Sider width={(windowSize.width - config.canvasWidth) / 2}>
         <div className="right-sidebar" />
         <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline" />

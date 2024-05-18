@@ -16,7 +16,7 @@ const CountSliderComponent: React.FC<CountSliderProps> = ({ onSlide }) => {
     onSlide(value);
   };
 
-  return <Slider range marks={marks} defaultValue={[26, 100]} onChange={handleSlide}/>;
+  return <Slider range marks={marks} defaultValue={[0, 100]} onChange={handleSlide}/>;
 };
 
 export default CountSliderComponent;

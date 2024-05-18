@@ -6,7 +6,7 @@ import config from "./config/AppConfig";
 import { Show } from "./types/Show";
 import StageComponent from "./components/StageComponent";
 import MenuComponent from "./components/menu/MenuComponent";
-import CountSliderComponent from "./components/CountSliderComponent";
+import CountSliderComponent from "./components/bottomControls/CountSliderComponent";
 import items from "./components/menu/MenuItems";
 import UploadButtonComponent from "./components/menu/UploadButtonComponent";
 import { Button, Flex, Segmented } from 'antd';
@@ -19,10 +19,17 @@ const initialShow: Show = {
   id: "show-1",
   name: "My Awesome Show",
   performers: Object.fromEntries(
-    Array.from({ length: config.defaultNumCounts }, (_, i) => [
-      i,
-      helper.performersToLine(config.defaultNumPerformers, i),
-    ]),
+    Array.from({ length: config.defaultNumCounts }, (_, i) => {
+      const yOffsetStart = -config.fieldHeight / 2 - config.fieldHeightAdjustment + 20;
+      const yOffsetEnd = config.fieldHeight / 2 - config.fieldHeightAdjustment + 20;
+      const stepSize = (yOffsetEnd - yOffsetStart) / (config.defaultNumCounts - 1);
+      const yOffset = yOffsetStart + stepSize * i;
+      
+      return [
+        i,
+        helper.performersToLine(config.defaultNumPerformers, yOffset),
+      ];
+    })
   ),
   count: 1,
 };

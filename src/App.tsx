@@ -10,9 +10,9 @@ import CountSliderComponent from "./components/menu/CountSliderComponent";
 import items from "./components/menu/MenuItems";
 import UploadButtonComponent from "./components/menu/UploadButtonComponent";
 import { Button, Flex, Segmented } from 'antd';
-import type { FlexProps, SegmentedProps } from 'antd';
 import { Col, Row, Divider, Space } from 'antd';
 import PlayShowButtonComponent from "./components/menu/PlayShowButtonComponent";
+import HeaderComponent from "./components/menu/HeaderComponent";
 
 const { Content, Sider, Footer } = Layout;
 
@@ -21,8 +21,8 @@ const initialShow: Show = {
   name: "My Awesome Show",
   performers: Object.fromEntries(
     Array.from({ length: config.defaultNumCounts }, (_, i) => {
-      const yOffsetStart = -config.fieldHeight / 2 - config.fieldHeightAdjustment + 20;
-      const yOffsetEnd = config.fieldHeight / 2 - config.fieldHeightAdjustment + 20;
+      const yOffsetStart = -config.canvasHeight / 2 + config.fieldHeightAdjustment;
+      const yOffsetEnd = config.canvasHeight / 2 + config.fieldHeightAdjustment;
       const stepSize = (yOffsetEnd - yOffsetStart) / (config.defaultNumCounts - 1);
       const yOffset = yOffsetStart + stepSize * i;
       
@@ -35,11 +35,17 @@ const initialShow: Show = {
   count: 0,
 };
 
+const boxStyle: React.CSSProperties = {
+  width: '100%',
+  height: '100%',
+};
+
 const App: React.FC<object> = () => {
   const [windowSize, setWindowSize] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
   });
+
   const {
     show,
     positionPerformersInLine,
@@ -54,8 +60,6 @@ const App: React.FC<object> = () => {
   // empty array means invoked once, adds listener to update windowSize var on 'resize' event
   useEffect(() => {
     const handleResize = () => {
-      console.log(window.innerWidth);
-      console.log((windowSize.width - config.canvasWidth) / 2);
       setWindowSize({ width: window.innerWidth, height: window.innerHeight });
     };
     window.addEventListener("resize", handleResize);
@@ -64,18 +68,22 @@ const App: React.FC<object> = () => {
 
   return (
     <Layout style={{ height: "100vh" }}>
-      <Sider width={(windowSize.width - config.canvasWidth) / 2}>
-        <MenuComponent
-          menuItems={[
-            items.positionInLineButton(positionPerformersInLine),
-            items.saveShowButton(saveState),
-          ]}>
-          <UploadButtonComponent loadStateOnClick={loadState} />
-        </MenuComponent>
-      </Sider>
+      <HeaderComponent
+        imageSrc={config.performerImageSrc}>
+      </HeaderComponent>
       <Layout>
+        <Sider 
+          width={(windowSize.width - config.canvasWidth) / 2}
+          theme="light">
+          <MenuComponent
+            menuItems={[
+              items.positionInLineButton(positionPerformersInLine),
+              items.saveShowButton(saveState),
+            ]}>
+            <UploadButtonComponent loadStateOnClick={loadState} />
+          </MenuComponent>
+        </Sider>
         <Content style={{}}>
-          <Space direction="vertical">
             <Row>
               <StageComponent
                 width={config.canvasWidth}
@@ -85,23 +93,20 @@ const App: React.FC<object> = () => {
                 updatePosition={updatePositions}
               />
             </Row>
-            <Row gutter={35}>
-              <Col span={2} >
+            <Row>
+              <Flex style={boxStyle} justify={'space-around'} align={'center'}>
                 <PlayShowButtonComponent playShow={playShow}></PlayShowButtonComponent>
-              </Col>
-              <Col span={2} >
                 <Button>Add Count</Button>
-              </Col>
-              <Col span={17} offset={1} >
                 <CountSliderComponent onSlide={handleCountChange} />
-              </Col>
+              </Flex>
             </Row>
-          </Space>
         </Content>
+        <Sider 
+          theme="light"
+          width={(windowSize.width - config.canvasWidth) / 2}>
+          <Menu defaultSelectedKeys={["1"]} mode="inline" />
+        </Sider>
       </Layout>
-      <Sider width={(windowSize.width - config.canvasWidth) / 2}>
-        <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline" />
-      </Sider>
     </Layout>
   );
 };

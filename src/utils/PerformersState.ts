@@ -39,11 +39,11 @@ export const useShowState = (initialShow: Show) => {
 
   // Callback passed to 'Performers to line' button
   const positionPerformersInLine = (): void => {
-    const distanceBetween = config.canvasWidth / show.performers[count].length;
+    const distanceBetween = (config.canvasWidth - config.fieldWidthAdjustment * 2) / show.performers[count].length;
     const updatedPerformers = Object.keys(show.performers[count]).map(
       (key, index) => ({
         ...show.performers[count][parseInt(key)],
-        x: distanceBetween * index,
+        x: distanceBetween * index + config.fieldWidthAdjustment,
         y: config.canvasHeight / 2,
       }),
     );
@@ -78,7 +78,6 @@ export const useShowState = (initialShow: Show) => {
 
   const playShow = async () => {
     for (let i = 0; i < Object.keys(show.performers).length; i++) {
-      console.log("setting: " + i);
       setCount(i);
       await new Promise(resolve => setTimeout(resolve, 100));
     }

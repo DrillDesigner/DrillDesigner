@@ -48,7 +48,7 @@ const MenuComponent = (props: MenuComponentProps) => {
 
   return (
     <Menu
-      theme="dark"
+      theme="light"
       defaultSelectedKeys={["1"]}
       mode="inline"
       items={items}

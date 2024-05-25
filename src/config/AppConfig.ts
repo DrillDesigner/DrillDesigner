@@ -1,13 +1,11 @@
 const config = {
-  canvasWidth: 1141,
-  canvasHeight: 654,
-  fieldWidth: 1100,
-  fieldHeight: 565,
+  canvasWidth: 1035,
+  canvasHeight: 593,
   fieldWidthAdjustment: 10,
-  fieldHeightAdjustment: 35,
+  fieldHeightAdjustment: 30,
   performerImageSrc: "src/assets/PerformerEmoji.png",
   backgroundImageSrc: "src/assets/ChartBorderNums.png",
-  defaultNumPerformers: 11,
+  defaultNumPerformers: 51,
   defaultNumCounts: 101
 };
 

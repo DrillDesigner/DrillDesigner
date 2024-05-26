@@ -21,23 +21,30 @@ const StageComponent: React.FC<StageComponentProps> = ({
   updatePosition,
 }) => {
   return (
-    <Stage width={width} height={height}>
-      <Layer>
-        <BackgroundComponent
-          imageSrc={config.backgroundImageSrc}
-          width={width}
-          height={height}
-        />
-        {Show?.performers[count]!.map((performer) => (
-          <PerformerComponent
-            key={performer.id}
-            performer={performer}
-            imageSrc={config.performerImageSrc}
-            onUpdatePosition={updatePosition}
+    <div 
+      style={{ 
+        borderBottom: "2px solid #ddebe9",
+        display: "inline-block" 
+      }}
+    >
+      <Stage width={width} height={height}>
+        <Layer>
+          <BackgroundComponent
+            imageSrc={config.backgroundImageSrc}
+            width={width}
+            height={height}
           />
-        ))}
-      </Layer>
-    </Stage>
+          {Show?.performers[count]!.map((performer) => (
+            <PerformerComponent
+              key={performer.id}
+              performer={performer}
+              imageSrc={config.performerImageSrc}
+              onUpdatePosition={updatePosition}
+            />
+          ))}
+        </Layer>
+      </Stage>
+    </div>
   );
 };
 

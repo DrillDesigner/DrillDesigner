@@ -41,9 +41,8 @@ const UploadButtonComponent: React.FC<UploadButtonProps> = (
         beforeUpload={beforeUpload}
         onChange={handleChange}
         customRequest={({ onSuccess }) => handleSuccess({ onSuccess })}
-        style={{ color: "white" }}
       >
-        <div style={{ color: "rgba(255, 255, 255, 0.65)" }}>Upload show</div>
+        <div>Upload show</div>
       </Upload>
     </div>
   );

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Layout, Menu } from "antd";
+import { Layout, ConfigProvider, Menu, theme } from "antd";
 import { useShowState } from "./utils/PerformersState";
 import helper from "./utils/helpers";
 import config from "./config/AppConfig";
@@ -67,47 +67,60 @@ const App: React.FC<object> = () => {
   }, []);
 
   return (
-    <Layout style={{ height: "100vh" }}>
-      <HeaderComponent
-        imageSrc={config.performerImageSrc}>
-      </HeaderComponent>
-      <Layout>
-        <Sider 
-          width={(windowSize.width - config.canvasWidth) / 2}
-          theme="light">
-          <MenuComponent
-            menuItems={[
-              items.positionInLineButton(positionPerformersInLine),
-              items.saveShowButton(saveState),
-            ]}>
-            <UploadButtonComponent loadStateOnClick={loadState} />
-          </MenuComponent>
-        </Sider>
-        <Content style={{}}>
-            <Row>
-              <StageComponent
-                width={config.canvasWidth}
-                height={config.canvasHeight}
-                show={show}
-                count={set}
-                updatePosition={updatePositions}
-              />
-            </Row>
-            <Row>
-              <Flex style={boxStyle} justify={'space-around'} align={'center'}>
-                <PlayShowButtonComponent playShow={playShow}></PlayShowButtonComponent>
-                <Button>Add Count</Button>
-                <CountSliderComponent onSlide={handleCountChange} />
-              </Flex>
-            </Row>
-        </Content>
-        <Sider 
-          theme="light"
-          width={(windowSize.width - config.canvasWidth) / 2}>
-          <Menu defaultSelectedKeys={["1"]} mode="inline" />
-        </Sider>
+    <ConfigProvider
+      theme={{
+        token: {
+          // Seed Token
+          // colorPrimary: '#00b96b',
+          borderRadius: 2,
+
+          // Alias Token
+          colorBgContainer: '#ddebe9',
+        },
+      }}
+    >
+      <Layout style={{ height: "100vh" }}>
+        <HeaderComponent
+          imageSrc={config.performerImageSrc}>
+        </HeaderComponent>
+        <Layout>
+          <Sider 
+            width={(windowSize.width - config.canvasWidth) / 2}
+            theme="light">
+            <MenuComponent
+              menuItems={[
+                items.positionInLineButton(positionPerformersInLine),
+                items.saveShowButton(saveState),
+              ]}>
+              <UploadButtonComponent loadStateOnClick={loadState} />
+            </MenuComponent>
+          </Sider>
+          <Content>
+              <Row>
+                <StageComponent
+                  width={config.canvasWidth}
+                  height={config.canvasHeight}
+                  show={show}
+                  count={set}
+                  updatePosition={updatePositions}
+                />
+              </Row>
+              <Row>
+                <Flex style={boxStyle} justify={'space-around'} align={'center'}>
+                  <PlayShowButtonComponent playShow={playShow}></PlayShowButtonComponent>
+                  <Button>Add Count</Button>
+                  <CountSliderComponent onSlide={handleCountChange} />
+                </Flex>
+              </Row>
+          </Content>
+          <Sider 
+            theme="light"
+            width={(windowSize.width - config.canvasWidth) / 2}>
+            <Menu defaultSelectedKeys={["1"]} mode="inline" />
+          </Sider>
+        </Layout>
       </Layout>
-    </Layout>
+    </ConfigProvider>
   );
 };
 

@@ -4,7 +4,6 @@ import config from "../config/AppConfig";
 import * as FileSaver from "file-saver";
 import { message } from "antd";
 import { Show } from "../types/Show";
-import helper from "./helpers";
 
 export const useShowState = (initialShow: Show) => {
   const [show, setShow] = useState<Show>(initialShow);

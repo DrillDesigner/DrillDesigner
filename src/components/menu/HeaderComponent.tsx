@@ -1,6 +1,6 @@
 import React from 'react';
 import type { MenuProps } from 'antd';
-import { Breadcrumb, Layout, Menu, theme, Typography , Image } from 'antd';
+import { Breadcrumb, Layout, Menu, theme, Typography , Image, Button } from 'antd';
 import useImage from "use-image";
 import UploadButtonComponent from './UploadButtonComponent';
 import { message, Upload, UploadFile } from "antd";
@@ -18,6 +18,7 @@ interface HeaderComponentProps {
   setShowOnClick: (showToSet: string) => void;
   showTitles: string[];
   initialSelectedShow: string;
+  saveShowOnClick: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 }
 
 const HeaderComponent = (props: HeaderComponentProps) => {
@@ -43,14 +44,18 @@ const HeaderComponent = (props: HeaderComponentProps) => {
         >Drill Designer</Title>
       </div>
       <div style={{ display: 'flex', alignItems: 'center'}}>
-        <UploadButtonComponent loadStateOnClick={props.loadStateOnClick}/>
-        <div style={{ marginLeft: '20px' }}>
+        <div>
           <SelectShowComponent 
             setShowOnClick={props.setShowOnClick}
             showTitles={props.showTitles}
             initialSelectedShow={props.initialSelectedShow}
           />
         </div>
+        <Button style={{ marginLeft: '20px' }} onClick={props.saveShowOnClick}>Save Show to File</Button>
+        <div style={{ marginLeft: '20px' }}>
+          <UploadButtonComponent loadStateOnClick={props.loadStateOnClick}/>
+        </div>
+
       </div>
     </Header>
   );

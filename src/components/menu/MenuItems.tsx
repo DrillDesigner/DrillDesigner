@@ -7,14 +7,6 @@ const items = {
       onClick: onClickCallback,
     };
   },
-  saveShowButton: (onClickCallback: () => void) => {
-    return {
-      label: "Save Show",
-      key: "save",
-      icon: undefined,
-      onClick: onClickCallback,
-    };
-  },
 };
 
 export default items;

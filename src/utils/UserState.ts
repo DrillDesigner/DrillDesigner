@@ -7,7 +7,6 @@ import { Show } from "../types/Show";
 import { User } from "../types/User";
 
 export const useUserState = (user: User) => {
-  
   const [show, setShow] = useState<Show>(user.shows[user.initialShowName]);
   const [count, setCount] = useState<number>(0);
 

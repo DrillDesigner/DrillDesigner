@@ -1,8 +1,9 @@
 import { useState } from "react";
 import React from "react";
 import { DownOutlined } from '@ant-design/icons';
-import { message, Button, Dropdown, Space, MenuProps } from 'antd';
+import { message, Button, Dropdown, Space, MenuProps, Typography } from 'antd';
 import { Show } from "../../types/Show";
+const { Title } = Typography;
 
 interface SelectShowProps {
   setShowOnClick: (showToSet: string) => void;
@@ -24,14 +25,27 @@ const SelectShowComponent: React.FC<SelectShowProps> = (props: SelectShowProps) 
   };
 
   return (
-    <Dropdown menu={{ items, onClick }}>
-      <Button>
-        <Space>
-          {selectedShow}
-          <DownOutlined />
-        </Space>
-      </Button>
-    </Dropdown>
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+      <Title 
+        level={3}
+        style={{
+          color: 'white',
+          marginBottom: '8%',
+          marginRight: '10px'
+        }}>
+        Select Show:
+      </Title>
+      <Dropdown menu={{ items, onClick }}>
+  
+        <Button>
+          <Space>
+            {selectedShow}
+            <DownOutlined />
+          </Space>
+        </Button>
+      </Dropdown>
+    </div>
+
   );
 };
 

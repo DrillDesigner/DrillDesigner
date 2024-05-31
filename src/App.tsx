@@ -18,8 +18,7 @@ import { User } from "./types/User";
 const { Content, Sider, Footer } = Layout;
 
 const initialShow: Show = {
-  id: "show-1",
-  name: config.initialShowName,
+  id: config.initialShowName,
   countPositions: Object.fromEntries(
     Array.from({ length: config.defaultNumCounts }, (_, i) => {
       const yOffsetStart = -config.canvasHeight / 2 + config.fieldHeightAdjustment;
@@ -37,8 +36,7 @@ const initialShow: Show = {
 };
 
 const secondShow: Show = {
-  id: "show-1",
-  name: "secondShow",
+  id: "Second Show",
   countPositions: Object.fromEntries(
     Array.from({ length: config.defaultNumCounts }, (_, i) => {
       const yOffsetStart = -config.canvasHeight / 2 + config.fieldHeightAdjustment;
@@ -58,7 +56,7 @@ const secondShow: Show = {
 const basicUser: User = {
   id: "123",
   name: "Spencer",
-  shows: {[config.initialShowName] : initialShow, ["secondShow"] : secondShow},
+  shows: {[config.initialShowName] : initialShow, ["Second Show"] : secondShow},
   initialShowName: config.initialShowName
 };
 
@@ -104,7 +102,9 @@ const App: React.FC<object> = () => {
           loadStateOnClick={loadState}
           setShowOnClick={setShowButtonCallback}
           showTitles={Object.keys(basicUser.shows)}
-          initialSelectedShow={basicUser.initialShowName}>
+          initialSelectedShow={basicUser.initialShowName}
+          saveShowOnClick={saveState}
+          >
         </HeaderComponent>
         <Layout>
           <Sider 
@@ -113,7 +113,6 @@ const App: React.FC<object> = () => {
             <MenuComponent
               menuItems={[
                 items.positionInLineButton(positionPerformersInLine),
-                items.saveShowButton(saveState),
               ]}>
             </MenuComponent>
           </Sider>

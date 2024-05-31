@@ -6,14 +6,15 @@ import config from "./config/AppConfig";
 import { Show } from "./types/Show";
 import StageComponent from "./components/stage/StageComponent";
 import MenuComponent from "./components/menu/MenuComponent";
-import CountSliderComponent from "./components/menu/CountSliderComponent";
+import CountSliderComponent from "./components/stageControls/CountSliderComponent";
 import items from "./components/menu/MenuItems";
-import UploadButtonComponent from "./components/menu/UploadButtonComponent";
+import UploadButtonComponent from "./components/header/UploadButtonComponent";
 import { Button, Flex, Segmented } from 'antd';
 import { Col, Row, Divider, Space } from 'antd';
-import PlayShowButtonComponent from "./components/menu/PlayShowButtonComponent";
-import HeaderComponent from "./components/menu/HeaderComponent";
+import PlayShowButtonComponent from "./components/stageControls/PlayShowButtonComponent";
+import HeaderComponent from "./components/header/HeaderComponent";
 import { User } from "./types/User";
+import PlayControlsComponent from "./components/stageControls/PlayControlsComponent";
 
 const { Content, Sider, Footer } = Layout;
 
@@ -127,14 +128,11 @@ const App: React.FC<object> = () => {
               />
             </Row>
             <Row>
-              <Flex style={{
-                width: "100%",
-                height: "100%",
-              }} justify={'space-around'} align={'center'}>
-                <PlayShowButtonComponent playShow={playShow}></PlayShowButtonComponent>
-                <Button>Add Count</Button>
-                <CountSliderComponent onSlide={handleCountChange} />
-              </Flex>
+              <PlayControlsComponent
+                playShow={playShow}
+                onSlide={handleCountChange}
+                maxCount={Object.keys(show.countPositions).length}
+              />
             </Row>
           </Content>
           <Sider 

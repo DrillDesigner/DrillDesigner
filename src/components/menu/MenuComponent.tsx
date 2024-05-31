@@ -43,8 +43,6 @@ const MenuComponent = (props: MenuComponentProps) => {
     );
   });
 
-  items.push(getItem(props.children));
-
   return (
     <Menu
       theme="light"

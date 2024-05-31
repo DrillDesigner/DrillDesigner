@@ -6,7 +6,7 @@ const items = {
       icon: undefined,
       onClick: onClickCallback,
     };
-  },
+  }
 };
 
 export default items;

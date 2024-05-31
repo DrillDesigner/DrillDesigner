@@ -9,8 +9,8 @@ import MenuComponent from "./components/menu/MenuComponent";
 import CountSliderComponent from "./components/stageControls/CountSliderComponent";
 import items from "./components/menu/MenuItems";
 import UploadButtonComponent from "./components/header/UploadButtonComponent";
-import { Button, Flex, Segmented } from 'antd';
-import { Col, Row, Divider, Space } from 'antd';
+import { Button, Flex, Segmented } from "antd";
+import { Col, Row, Divider, Space } from "antd";
 import PlayShowButtonComponent from "./components/stageControls/PlayShowButtonComponent";
 import HeaderComponent from "./components/header/HeaderComponent";
 import { User } from "./types/User";
@@ -22,16 +22,15 @@ const initialShow: Show = {
   id: config.initialShowName,
   countPositions: Object.fromEntries(
     Array.from({ length: config.defaultNumCounts }, (_, i) => {
-      const yOffsetStart = -config.canvasHeight / 2 + config.fieldHeightAdjustment;
+      const yOffsetStart =
+        -config.canvasHeight / 2 + config.fieldHeightAdjustment;
       const yOffsetEnd = config.canvasHeight / 2 + config.fieldHeightAdjustment;
-      const stepSize = (yOffsetEnd - yOffsetStart) / (config.defaultNumCounts - 1);
+      const stepSize =
+        (yOffsetEnd - yOffsetStart) / (config.defaultNumCounts - 1);
       const yOffset = yOffsetStart + stepSize * i;
-      
-      return [
-        i,
-        helper.performersToLine(config.defaultNumPerformers, yOffset),
-      ];
-    })
+
+      return [i, helper.performersToLine(config.defaultNumPerformers, yOffset)];
+    }),
   ),
   count: 0,
 };
@@ -40,16 +39,18 @@ const secondShow: Show = {
   id: "Second Show",
   countPositions: Object.fromEntries(
     Array.from({ length: config.defaultNumCounts }, (_, i) => {
-      const yOffsetStart = -config.canvasHeight / 2 + config.fieldHeightAdjustment;
+      const yOffsetStart =
+        -config.canvasHeight / 2 + config.fieldHeightAdjustment;
       const yOffsetEnd = config.canvasHeight / 2 + config.fieldHeightAdjustment;
-      const stepSize = (yOffsetEnd - yOffsetStart) / (config.defaultNumCounts - 1);
+      const stepSize =
+        (yOffsetEnd - yOffsetStart) / (config.defaultNumCounts - 1);
       const yOffset = yOffsetStart + stepSize * i;
-      
+
       return [
         i,
-        helper.performersToLine(config.defaultNumPerformers, yOffset+100),
+        helper.performersToLine(config.defaultNumPerformers, yOffset + 100),
       ];
-    })
+    }),
   ),
   count: 0,
 };
@@ -57,8 +58,8 @@ const secondShow: Show = {
 const basicUser: User = {
   id: "123",
   name: "Spencer",
-  shows: {[config.initialShowName] : initialShow, ["Second Show"] : secondShow},
-  initialShowName: config.initialShowName
+  shows: { [config.initialShowName]: initialShow, ["Second Show"]: secondShow },
+  initialShowName: config.initialShowName,
 };
 
 const App: React.FC<object> = () => {
@@ -76,7 +77,7 @@ const App: React.FC<object> = () => {
     handleCountChange,
     updatePositions,
     playShow,
-    setShowButtonCallback
+    setShowButtonCallback,
   } = useUserState(basicUser);
 
   // empty array means invoked once, adds listener to update windowSize var on 'resize' event
@@ -93,7 +94,7 @@ const App: React.FC<object> = () => {
       theme={{
         token: {
           borderRadius: 2,
-          colorBgContainer: '#ddebe9',
+          colorBgContainer: "#ddebe9",
         },
       }}
     >
@@ -105,19 +106,17 @@ const App: React.FC<object> = () => {
           showTitles={Object.keys(basicUser.shows)}
           initialSelectedShow={basicUser.initialShowName}
           saveShowOnClick={saveState}
-          >
-        </HeaderComponent>
+        ></HeaderComponent>
         <Layout>
-          <Sider 
+          <Sider
             width={(windowSize.width - config.canvasWidth) / 2}
-            theme="light">
+            theme="light"
+          >
             <MenuComponent
-              menuItems={[
-                items.positionInLineButton(positionPerformersInLine),
-              ]}>
-            </MenuComponent>
+              menuItems={[items.positionInLineButton(positionPerformersInLine)]}
+            ></MenuComponent>
           </Sider>
-          <Content style={{background: "#ddebe9"}}>
+          <Content style={{ background: "#ddebe9" }}>
             <Row>
               <StageComponent
                 width={config.canvasWidth}
@@ -135,9 +134,10 @@ const App: React.FC<object> = () => {
               />
             </Row>
           </Content>
-          <Sider 
+          <Sider
             theme="light"
-            width={(windowSize.width - config.canvasWidth) / 2}>
+            width={(windowSize.width - config.canvasWidth) / 2}
+          >
             <Menu defaultSelectedKeys={["1"]} mode="inline" />
           </Sider>
         </Layout>

@@ -7,7 +7,7 @@ const config = {
   backgroundImageSrc: "src/assets/ChartBorderNums.png",
   defaultNumPerformers: 51,
   defaultNumCounts: 5,
-  initialShowName : "My Awesome Show",
+  initialShowName: "My Awesome Show",
 };
 
 export default config;

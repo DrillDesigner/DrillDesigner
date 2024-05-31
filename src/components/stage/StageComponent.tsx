@@ -21,10 +21,10 @@ const StageComponent: React.FC<StageComponentProps> = ({
   updatePosition,
 }) => {
   return (
-    <div 
-      style={{ 
+    <div
+      style={{
         borderBottom: "2px solid #ddebe9",
-        display: "inline-block" 
+        display: "inline-block",
       }}
     >
       <Stage width={width} height={height}>

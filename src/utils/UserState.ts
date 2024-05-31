@@ -39,7 +39,9 @@ export const useUserState = (user: User) => {
 
   // Callback passed to 'Performers to line' button
   const positionPerformersInLine = (): void => {
-    const distanceBetween = (config.canvasWidth - config.fieldWidthAdjustment * 2) / show.countPositions[count].length;
+    const distanceBetween =
+      (config.canvasWidth - config.fieldWidthAdjustment * 2) /
+      show.countPositions[count].length;
     const updatedPerformers = Object.keys(show.countPositions[count]).map(
       (key, index) => ({
         ...show.countPositions[count][parseInt(key)],
@@ -58,14 +60,16 @@ export const useUserState = (user: User) => {
   };
 
   const updatePerformerPosition = (id: string, x: number, y: number): void => {
-    const updatedPerformers = Object.keys(show.countPositions[count]).map((key) => {
-      const performer = show.countPositions[count][parseInt(key)];
-      if (key === id) {
-        return { ...performer, x, y };
-      } else {
-        return performer;
-      }
-    });
+    const updatedPerformers = Object.keys(show.countPositions[count]).map(
+      (key) => {
+        const performer = show.countPositions[count][parseInt(key)];
+        if (key === id) {
+          return { ...performer, x, y };
+        } else {
+          return performer;
+        }
+      },
+    );
 
     setShow((prevShow) => ({
       ...prevShow,
@@ -79,7 +83,7 @@ export const useUserState = (user: User) => {
   const playShow = async () => {
     for (let i = 0; i < Object.keys(show.countPositions).length; i++) {
       setCount(i);
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
     }
   };
 
@@ -100,6 +104,6 @@ export const useUserState = (user: User) => {
     handleCountChange,
     updatePositions: updatePerformerPosition,
     playShow,
-    setShowButtonCallback
+    setShowButtonCallback,
   };
 };

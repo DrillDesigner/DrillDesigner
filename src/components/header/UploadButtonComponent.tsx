@@ -1,7 +1,7 @@
 import React from "react";
 import { message, Upload, UploadFile, Button } from "antd";
 import type { GetProp, UploadProps } from "antd";
-import { UploadOutlined } from '@ant-design/icons';
+import { UploadOutlined } from "@ant-design/icons";
 
 interface UploadButtonProps {
   loadStateOnClick: (file: UploadFile[]) => void;

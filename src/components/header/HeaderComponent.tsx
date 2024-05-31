@@ -1,15 +1,22 @@
-import React from 'react';
-import type { MenuProps } from 'antd';
-import { Breadcrumb, Layout, Menu, theme, Typography , Image, Button } from 'antd';
+import React from "react";
+import type { MenuProps } from "antd";
+import {
+  Breadcrumb,
+  Layout,
+  Menu,
+  theme,
+  Typography,
+  Image,
+  Button,
+} from "antd";
 import useImage from "use-image";
-import UploadButtonComponent from './UploadButtonComponent';
+import UploadButtonComponent from "./UploadButtonComponent.tsx";
 import { message, Upload, UploadFile } from "antd";
-import SelectShowComponent from './SelectShowComponent';
-import { Show } from '../../types/Show';
+import SelectShowComponent from "./SelectShowComponent.tsx";
+import { Show } from "../../types/Show";
 
 const { Header, Content, Sider } = Layout;
 const { Title } = Typography;
-
 
 interface HeaderComponentProps {
   imageSrc: string;
@@ -25,37 +32,46 @@ const HeaderComponent = (props: HeaderComponentProps) => {
   const [image] = useImage(props.imageSrc);
 
   return (
-    <Header style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
+    <Header
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+      }}
+    >
+      <div style={{ display: "flex", alignItems: "center" }}>
         <Image
           style={{
-            margin: '-6px 0 0 0'
+            margin: "-6px 0 0 0",
           }}
           preview={false}
           width={50}
           src={props.imageSrc}
         />
-        <Title 
+        <Title
           level={1}
           style={{
-            color: 'white',
-            margin: '-2px 0 0 0'
-            }}
-        >Drill Designer</Title>
+            color: "white",
+            margin: "-2px 0 0 0",
+          }}
+        >
+          Drill Designer
+        </Title>
       </div>
-      <div style={{ display: 'flex', alignItems: 'center'}}>
+      <div style={{ display: "flex", alignItems: "center" }}>
         <div>
-          <SelectShowComponent 
+          <SelectShowComponent
             setShowOnClick={props.setShowOnClick}
             showTitles={props.showTitles}
             initialSelectedShow={props.initialSelectedShow}
           />
         </div>
-        <Button style={{ marginLeft: '20px' }} onClick={props.saveShowOnClick}>Save Show to File</Button>
-        <div style={{ marginLeft: '20px' }}>
-          <UploadButtonComponent loadStateOnClick={props.loadStateOnClick}/>
+        <Button style={{ marginLeft: "20px" }} onClick={props.saveShowOnClick}>
+          Save Show to File
+        </Button>
+        <div style={{ marginLeft: "20px" }}>
+          <UploadButtonComponent loadStateOnClick={props.loadStateOnClick} />
         </div>
-
       </div>
     </Header>
   );

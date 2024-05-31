@@ -11,7 +11,8 @@ const helper = {
   },
 
   performersToLine: (numPerformers: number, yOffset = 0) => {
-    const distanceBetween = (config.canvasWidth - config.fieldWidthAdjustment * 2) / numPerformers;
+    const distanceBetween =
+      (config.canvasWidth - config.fieldWidthAdjustment * 2) / numPerformers;
     const centerY = config.canvasHeight / 2;
     let y = centerY + yOffset;
     y = Math.max(y, 0);

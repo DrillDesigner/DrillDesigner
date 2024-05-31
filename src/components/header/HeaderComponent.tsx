@@ -59,6 +59,6 @@ const HeaderComponent = (props: HeaderComponentProps) => {
       </div>
     </Header>
   );
-}
+};
 
 export default HeaderComponent;

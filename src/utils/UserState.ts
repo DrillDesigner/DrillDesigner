@@ -81,11 +81,11 @@ export const useUserState = (user: User) => {
       setCount(i);
       await new Promise(resolve => setTimeout(resolve, 100));
     }
-  }
+  };
 
   const setShowButtonCallback = (showName: string): void => {
     setShow(user.shows[showName]);
-  }
+  };
 
   useEffect(() => {
     user.shows[show.id] = show;

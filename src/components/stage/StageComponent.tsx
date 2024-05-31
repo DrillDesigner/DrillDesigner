@@ -34,7 +34,7 @@ const StageComponent: React.FC<StageComponentProps> = ({
             width={width}
             height={height}
           />
-          {Show?.performers[count]!.map((performer) => (
+          {Show?.countPositions[count]!.map((performer) => (
             <PerformerComponent
               key={performer.id}
               performer={performer}

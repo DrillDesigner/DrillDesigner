@@ -6,7 +6,6 @@ const helper = {
       id: i.toString(),
       x: Math.random() * config.canvasWidth + config.fieldWidthAdjustment,
       y: Math.random() * config.canvasHeight + config.fieldHeightAdjustment,
-      rotation: Math.random() * 180,
       isDragging: false,
     }));
   },
@@ -22,7 +21,6 @@ const helper = {
       id: index.toString(),
       x: distanceBetween * index + config.fieldWidthAdjustment,
       y: y,
-      rotation: Math.random() * 180,
       isDragging: false,
     }));
   },

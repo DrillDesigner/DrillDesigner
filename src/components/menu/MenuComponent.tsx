@@ -15,7 +15,6 @@ interface MenuComponentProps {
 }
 
 type MenuItem = GetProp<MenuProps, "items">[number];
-type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
 
 const MenuComponent = (props: MenuComponentProps) => {
   function getItem(

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Layout, ConfigProvider, Menu, theme } from "antd";
-import { useShowState } from "./utils/PerformersState";
+import { useUserState } from "./utils/UserState";
 import helper from "./utils/helpers";
 import config from "./config/AppConfig";
 import { Show } from "./types/Show";
@@ -13,13 +13,14 @@ import { Button, Flex, Segmented } from 'antd';
 import { Col, Row, Divider, Space } from 'antd';
 import PlayShowButtonComponent from "./components/menu/PlayShowButtonComponent";
 import HeaderComponent from "./components/menu/HeaderComponent";
+import { User } from "./types/User";
 
 const { Content, Sider, Footer } = Layout;
 
 const initialShow: Show = {
   id: "show-1",
-  name: "My Awesome Show",
-  performers: Object.fromEntries(
+  name: config.initialShowName,
+  countPositions: Object.fromEntries(
     Array.from({ length: config.defaultNumCounts }, (_, i) => {
       const yOffsetStart = -config.canvasHeight / 2 + config.fieldHeightAdjustment;
       const yOffsetEnd = config.canvasHeight / 2 + config.fieldHeightAdjustment;
@@ -35,9 +36,30 @@ const initialShow: Show = {
   count: 0,
 };
 
-const boxStyle: React.CSSProperties = {
-  width: '100%',
-  height: '100%',
+const secondShow: Show = {
+  id: "show-1",
+  name: "secondShow",
+  countPositions: Object.fromEntries(
+    Array.from({ length: config.defaultNumCounts }, (_, i) => {
+      const yOffsetStart = -config.canvasHeight / 2 + config.fieldHeightAdjustment;
+      const yOffsetEnd = config.canvasHeight / 2 + config.fieldHeightAdjustment;
+      const stepSize = (yOffsetEnd - yOffsetStart) / (config.defaultNumCounts - 1);
+      const yOffset = yOffsetStart + stepSize * i;
+      
+      return [
+        i,
+        helper.performersToLine(config.defaultNumPerformers, yOffset+100),
+      ];
+    })
+  ),
+  count: 0,
+};
+
+const basicUser: User = {
+  id: "123",
+  name: "Spencer",
+  shows: {[config.initialShowName] : initialShow, ["secondShow"] : secondShow},
+  initialShowName: config.initialShowName
 };
 
 const App: React.FC<object> = () => {
@@ -55,7 +77,8 @@ const App: React.FC<object> = () => {
     handleCountChange,
     updatePositions,
     playShow,
-  } = useShowState(initialShow);
+    setShowButtonCallback
+  } = useUserState(basicUser);
 
   // empty array means invoked once, adds listener to update windowSize var on 'resize' event
   useEffect(() => {
@@ -70,18 +93,18 @@ const App: React.FC<object> = () => {
     <ConfigProvider
       theme={{
         token: {
-          // Seed Token
-          // colorPrimary: '#00b96b',
           borderRadius: 2,
-
-          // Alias Token
           colorBgContainer: '#ddebe9',
         },
       }}
     >
       <Layout style={{ height: "100vh" }}>
         <HeaderComponent
-          imageSrc={config.performerImageSrc}>
+          imageSrc={config.performerImageSrc}
+          loadStateOnClick={loadState}
+          setShowOnClick={setShowButtonCallback}
+          showTitles={Object.keys(basicUser.shows)}
+          initialSelectedShow={basicUser.initialShowName}>
         </HeaderComponent>
         <Layout>
           <Sider 
@@ -92,26 +115,28 @@ const App: React.FC<object> = () => {
                 items.positionInLineButton(positionPerformersInLine),
                 items.saveShowButton(saveState),
               ]}>
-              <UploadButtonComponent loadStateOnClick={loadState} />
             </MenuComponent>
           </Sider>
-          <Content>
-              <Row>
-                <StageComponent
-                  width={config.canvasWidth}
-                  height={config.canvasHeight}
-                  show={show}
-                  count={set}
-                  updatePosition={updatePositions}
-                />
-              </Row>
-              <Row>
-                <Flex style={boxStyle} justify={'space-around'} align={'center'}>
-                  <PlayShowButtonComponent playShow={playShow}></PlayShowButtonComponent>
-                  <Button>Add Count</Button>
-                  <CountSliderComponent onSlide={handleCountChange} />
-                </Flex>
-              </Row>
+          <Content style={{background: "#ddebe9"}}>
+            <Row>
+              <StageComponent
+                width={config.canvasWidth}
+                height={config.canvasHeight}
+                show={show}
+                count={set}
+                updatePosition={updatePositions}
+              />
+            </Row>
+            <Row>
+              <Flex style={{
+                width: "100%",
+                height: "100%",
+              }} justify={'space-around'} align={'center'}>
+                <PlayShowButtonComponent playShow={playShow}></PlayShowButtonComponent>
+                <Button>Add Count</Button>
+                <CountSliderComponent onSlide={handleCountChange} />
+              </Flex>
+            </Row>
           </Content>
           <Sider 
             theme="light"

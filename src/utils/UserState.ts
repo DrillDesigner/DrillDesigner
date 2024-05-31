@@ -1,13 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { UploadFile } from "antd";
 import config from "../config/AppConfig";
 import * as FileSaver from "file-saver";
 import { message } from "antd";
 import { Show } from "../types/Show";
+import { User } from "../types/User";
 
-export const useShowState = (initialShow: Show) => {
-  const [show, setShow] = useState<Show>(initialShow);
-  const [count, setCount] = useState<number>(1);
+export const useUserState = (user: User) => {
+  
+  const [show, setShow] = useState<Show>(user.shows[user.initialShowName]);
+  const [count, setCount] = useState<number>(0);
 
   const saveState = (): void => {
     const serializedData = JSON.stringify(show);
@@ -38,10 +40,10 @@ export const useShowState = (initialShow: Show) => {
 
   // Callback passed to 'Performers to line' button
   const positionPerformersInLine = (): void => {
-    const distanceBetween = (config.canvasWidth - config.fieldWidthAdjustment * 2) / show.performers[count].length;
-    const updatedPerformers = Object.keys(show.performers[count]).map(
+    const distanceBetween = (config.canvasWidth - config.fieldWidthAdjustment * 2) / show.countPositions[count].length;
+    const updatedPerformers = Object.keys(show.countPositions[count]).map(
       (key, index) => ({
-        ...show.performers[count][parseInt(key)],
+        ...show.countPositions[count][parseInt(key)],
         x: distanceBetween * index + config.fieldWidthAdjustment,
         y: config.canvasHeight / 2,
       }),
@@ -49,16 +51,16 @@ export const useShowState = (initialShow: Show) => {
 
     setShow((prevShow) => ({
       ...prevShow,
-      performers: {
-        ...prevShow.performers,
+      countPositions: {
+        ...prevShow.countPositions,
         [count]: updatedPerformers,
       },
     }));
   };
 
   const updatePerformerPosition = (id: string, x: number, y: number): void => {
-    const updatedPerformers = Object.keys(show.performers[count]).map((key) => {
-      const performer = show.performers[count][parseInt(key)];
+    const updatedPerformers = Object.keys(show.countPositions[count]).map((key) => {
+      const performer = show.countPositions[count][parseInt(key)];
       if (key === id) {
         return { ...performer, x, y };
       } else {
@@ -68,19 +70,27 @@ export const useShowState = (initialShow: Show) => {
 
     setShow((prevShow) => ({
       ...prevShow,
-      performers: {
-        ...prevShow.performers,
+      countPositions: {
+        ...prevShow.countPositions,
         [count]: updatedPerformers,
       },
     }));
   };
 
   const playShow = async () => {
-    for (let i = 0; i < Object.keys(show.performers).length; i++) {
+    for (let i = 0; i < Object.keys(show.countPositions).length; i++) {
       setCount(i);
       await new Promise(resolve => setTimeout(resolve, 100));
     }
   }
+
+  const setShowButtonCallback = (showName: string): void => {
+    setShow(user.shows[showName]);
+  }
+
+  useEffect(() => {
+    user.shows[show.id] = show;
+  }, [show, user.shows]);
 
   return {
     show,
@@ -91,5 +101,6 @@ export const useShowState = (initialShow: Show) => {
     handleCountChange,
     updatePositions: updatePerformerPosition,
     playShow,
+    setShowButtonCallback
   };
 };

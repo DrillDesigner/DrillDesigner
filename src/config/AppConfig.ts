@@ -6,7 +6,8 @@ const config = {
   performerImageSrc: "src/assets/PerformerEmoji.png",
   backgroundImageSrc: "src/assets/ChartBorderNums.png",
   defaultNumPerformers: 51,
-  defaultNumCounts: 101
+  defaultNumCounts: 101,
+  initialShowName : "My Awesome Show",
 };
 
 export default config;

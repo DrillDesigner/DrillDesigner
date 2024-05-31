@@ -18,10 +18,11 @@ const CountSliderComponent: React.FC<CountSliderProps> = (
     props.onSlide(value);
   };
 
-  const marks: SliderSingleProps["marks"] = {
-    0: "0",
-    maxCount: props.maxCount.toString(),
-  };
+  let maxMark = props.maxCount-1;
+  const marks: Record<number, string> = {};
+  for (let i = 0; i <= maxMark; i++) {
+    marks[i] = i.toString();
+  }
 
   return (
     <Slider
@@ -30,7 +31,7 @@ const CountSliderComponent: React.FC<CountSliderProps> = (
       marks={marks}
       defaultValue={[0, props.maxCount - 1]}
       min={0}
-      max={props.maxCount - 1}
+      max={maxMark}
       onChange={handleSlide}
     />
   );

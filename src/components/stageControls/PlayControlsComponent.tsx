@@ -3,7 +3,6 @@ import React from "react";
 import type { SliderSingleProps } from "antd";
 import { Button, Flex, Segmented } from "antd";
 import CountSliderComponent from "./CountSliderComponent";
-import PlayShowButtonComponent from "./PlayShowButtonComponent";
 
 interface PlayControlsComponentProps {
   playShow: () => void;
@@ -23,9 +22,7 @@ const PlayControlsComponent: React.FC<PlayControlsComponentProps> = (
       justify={"space-around"}
       align={"center"}
     >
-      <PlayShowButtonComponent
-        playShow={props.playShow}
-      ></PlayShowButtonComponent>
+      <Button onClick={props.playShow}>Play Show</Button>
       <Button>Add Count</Button>
       <CountSliderComponent onSlide={props.onSlide} maxCount={props.maxCount} />
     </Flex>

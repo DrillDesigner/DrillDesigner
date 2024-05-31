@@ -31,11 +31,11 @@ const SelectShowComponent: React.FC<SelectShowProps> = (
   return (
     <div style={{ display: "flex", alignItems: "center" }}>
       <Title
-        level={3}
+        level={4}
         style={{
           color: "white",
-          marginBottom: "8%",
-          marginRight: "10px",
+          marginBottom: "10%",
+          marginRight: "5px",
         }}
       >
         Select Show:

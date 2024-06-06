@@ -13,15 +13,6 @@ interface PlayControlsComponentProps {
   sliderPosition: number[];
 }
 
-export const usePlayControlsState = (initialSliderPosition: number[]) => {
-  const [sliderPosition, setSliderPosition] = useState<number[]>(initialSliderPosition);
-  
-  return {
-    sliderPosition,
-    setSliderPosition
-  }
-}
-
 const PlayControlsComponent: React.FC<PlayControlsComponentProps> = (
   props: PlayControlsComponentProps,
 ) => {

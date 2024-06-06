@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Layout, ConfigProvider, Menu, theme } from "antd";
 import { useUserState } from "./utils/UserState";
-import { usePlayControlsState } from "./components/stageControls/PlayControlsComponent";
 import helper from "./utils/helpers";
 import config from "./config/AppConfig";
 import { Show } from "./types/Show";
@@ -12,7 +11,6 @@ import items from "./components/menu/MenuItems";
 import UploadButtonComponent from "./components/header/UploadButtonComponent";
 import { Button, Flex, Segmented } from "antd";
 import { Col, Row, Divider, Space } from "antd";
-import PlayShowButtonComponent from "./components/stageControls/PlayShowButtonComponent";
 import HeaderComponent from "./components/header/HeaderComponent";
 import { User } from "./types/User";
 import PlayControlsComponent from "./components/stageControls/PlayControlsComponent";
@@ -80,12 +78,9 @@ const App: React.FC<object> = () => {
     playShow,
     setShowButtonCallback,
     addCountCallback,
-  } = useUserState(basicUser, setSliderPosition);
+    sliderPosition
+  } = useUserState(basicUser);
 
-  const {
-    sliderPosition,
-    setSliderPosition
-  } = usePlayControlsState([0, Object.keys(show.countPositions).length]);
 
   // empty array means invoked once, adds listener to update windowSize var on 'resize' event
   useEffect(() => {

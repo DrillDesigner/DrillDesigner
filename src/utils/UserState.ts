@@ -6,9 +6,10 @@ import { message } from "antd";
 import { Show } from "../types/Show";
 import { User } from "../types/User";
 
-export const useUserState = (user: User, setSliderPosition: () => void) => {
+export const useUserState = (user: User) => {
   const [show, setShow] = useState<Show>(user.shows[user.initialShowName]);
   const [count, setCount] = useState<number>(0);
+  const [sliderPosition, setSliderPosition] = useState<number[]>([0, Object.keys(show.countPositions).length]);
 
   const saveState = (): void => {
     const serializedData = JSON.stringify(show);
@@ -33,8 +34,8 @@ export const useUserState = (user: User, setSliderPosition: () => void) => {
   };
 
   // Callback passed to slider component
-  const handleCountChange = (count: number[]): void => {
-    setCount(count[0]);
+  const handleCountChange = (sliderBounds: number[]): void => { 
+    setCount(sliderBounds[0]);
   };
 
   // Callback passed to 'Performers to line' button
@@ -102,7 +103,7 @@ export const useUserState = (user: User, setSliderPosition: () => void) => {
       },
     }));
     setCount(newCount);
-    setSliderPosition() // replace this with a function where you pass in the new max, the function will adjust the new 'end' of the play segment to the end passed in
+    setSliderPosition([sliderPosition[0], newCount])
   };
 
   useEffect(() => {
@@ -120,5 +121,6 @@ export const useUserState = (user: User, setSliderPosition: () => void) => {
     playShow,
     setShowButtonCallback,
     addCountCallback,
+    sliderPosition
   };
 };

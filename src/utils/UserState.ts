@@ -6,7 +6,7 @@ import { message } from "antd";
 import { Show } from "../types/Show";
 import { User } from "../types/User";
 
-export const useUserState = (user: User) => {
+export const useUserState = (user: User, setSliderPosition: () => void) => {
   const [show, setShow] = useState<Show>(user.shows[user.initialShowName]);
   const [count, setCount] = useState<number>(0);
 
@@ -83,12 +83,26 @@ export const useUserState = (user: User) => {
   const playShow = async () => {
     for (let i = 0; i < Object.keys(show.countPositions).length; i++) {
       setCount(i);
-      await new Promise((resolve) => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100)); // pause 100 ms
     }
   };
 
   const setShowButtonCallback = (showName: string): void => {
     setShow(user.shows[showName]);
+  };
+
+  const addCountCallback = (): void => {
+    const newCount = Object.keys(show.countPositions).length;
+    const performersAtEnd = show.countPositions[newCount - 1];
+    setShow((prevShow) => ({
+      ...prevShow,
+      countPositions: {
+        ...prevShow.countPositions,
+        [newCount]: performersAtEnd.map((performer) => ({ ...performer })),
+      },
+    }));
+    setCount(newCount);
+    setSliderPosition() // replace this with a function where you pass in the new max, the function will adjust the new 'end' of the play segment to the end passed in
   };
 
   useEffect(() => {
@@ -105,5 +119,6 @@ export const useUserState = (user: User) => {
     updatePositions: updatePerformerPosition,
     playShow,
     setShowButtonCallback,
+    addCountCallback,
   };
 };

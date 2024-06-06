@@ -2,12 +2,24 @@ import { Slider } from "antd";
 import React from "react";
 import type { SliderSingleProps } from "antd";
 import { Button, Flex, Segmented } from "antd";
+import { useState, useEffect } from "react";
 import CountSliderComponent from "./CountSliderComponent";
 
 interface PlayControlsComponentProps {
   playShow: () => void;
   onSlide: (value: number[]) => void;
   maxCount: number;
+  addCount: () => void;
+  sliderPosition: number[];
+}
+
+export const usePlayControlsState = (initialSliderPosition: number[]) => {
+  const [sliderPosition, setSliderPosition] = useState<number[]>(initialSliderPosition);
+  
+  return {
+    sliderPosition,
+    setSliderPosition
+  }
 }
 
 const PlayControlsComponent: React.FC<PlayControlsComponentProps> = (
@@ -23,8 +35,12 @@ const PlayControlsComponent: React.FC<PlayControlsComponentProps> = (
       align={"center"}
     >
       <Button onClick={props.playShow}>Play Show</Button>
-      <Button>Add Count</Button>
-      <CountSliderComponent onSlide={props.onSlide} maxCount={props.maxCount} />
+      <Button onClick={props.addCount}>Add Count</Button>
+      <CountSliderComponent 
+        onSlide={props.onSlide} 
+        maxCount={props.maxCount} 
+        sliderPosition={props.sliderPosition} 
+      />
     </Flex>
   );
 };

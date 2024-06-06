@@ -1,10 +1,12 @@
 import { Slider } from "antd";
 import React from "react";
 import type { SliderSingleProps } from "antd";
+import { useState, useEffect } from "react";
 
 interface CountSliderProps {
   onSlide: (value: number[]) => void;
   maxCount: number;
+  sliderPosition: number[];
 }
 
 const sliderStyle: React.CSSProperties = {
@@ -14,6 +16,7 @@ const sliderStyle: React.CSSProperties = {
 const CountSliderComponent: React.FC<CountSliderProps> = (
   props: CountSliderProps,
 ) => {
+
   const handleSlide = (value: number[]) => {
     props.onSlide(value);
   };
@@ -29,10 +32,10 @@ const CountSliderComponent: React.FC<CountSliderProps> = (
       range
       style={sliderStyle}
       marks={marks}
-      defaultValue={[0, props.maxCount - 1]}
       min={0}
       max={maxMark}
       onChange={handleSlide}
+      value={props.sliderPosition}
     />
   );
 };

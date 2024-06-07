@@ -9,7 +9,8 @@ import { User } from "../types/User";
 export const useUserState = (user: User) => {
   const [show, setShow] = useState<Show>(user.shows[user.initialShowName]);
   const [count, setCount] = useState<number>(0);
-  const [sliderPosition, setSliderPosition] = useState<number[]>([0, Object.keys(show.countPositions).length]);
+  const [sliderPosition, setSliderPosition] = useState<number[]>([0, 1, Object.keys(show.countPositions).length - 1]);
+  const [showPlaying, setshowPlaying] = useState<boolean>(false);
 
   const saveState = (): void => {
     const serializedData = JSON.stringify(show);
@@ -31,11 +32,6 @@ export const useUserState = (user: User) => {
     };
     reader.readAsText(file[0].originFileObj as File);
     return true;
-  };
-
-  // Callback passed to slider component
-  const handleCountChange = (sliderBounds: number[]): void => { 
-    setCount(sliderBounds[0]);
   };
 
   // Callback passed to 'Performers to line' button
@@ -81,10 +77,23 @@ export const useUserState = (user: User) => {
     }));
   };
 
-  const playShow = async () => {
-    for (let i = 0; i < Object.keys(show.countPositions).length; i++) {
-      setCount(i);
-      await new Promise((resolve) => setTimeout(resolve, 100)); // pause 100 ms
+
+  // Callback passed to slider component
+  const handleCountSliderChange = (sliderBounds: number[]): void => { 
+    setCount(sliderBounds[1]); // set the count to the middle circle, which represents the count the show is currently at
+  };
+
+  const handleCountChange = (newCount: number): void => {
+    setCount(newCount);
+  };
+
+  const toggleShowPlaying = () => {
+    if(showPlaying) {
+      setshowPlaying(false);
+    }
+    else
+    {
+      setshowPlaying(true);
     }
   };
 
@@ -103,12 +112,50 @@ export const useUserState = (user: User) => {
       },
     }));
     setCount(newCount);
-    setSliderPosition([sliderPosition[0], newCount])
+    setSliderPosition([sliderPosition[0], newCount, newCount])
   };
 
   useEffect(() => {
     user.shows[show.id] = show;
   }, [show, user.shows]);
+
+  useEffect(() => {
+    setSliderPosition([sliderPosition[0], count, sliderPosition[2]])
+  }, [count]);
+
+  useEffect(() => {
+    let isCancelled = false; 
+    const playLoop = async () => {
+      for (let i = sliderPosition[0]; i <= sliderPosition[2]; i++) {
+        if (isCancelled) {
+          return; 
+        }
+        if (!showPlaying) {
+          isCancelled = true; 
+          return;
+        }
+        handleCountChange(i);
+        await pause(300);
+      }
+      setshowPlaying(false);
+    };
+
+    if (showPlaying) {
+      playLoop();
+    }
+    
+    return () => {
+      isCancelled = true;
+    };
+  }, [showPlaying]);
+
+
+  const pause = async (milliseconds: number): Promise<void> => {
+    if (milliseconds <= 0) {
+      throw new Error('milliseconds must be a positive number');
+    }
+    await new Promise((resolve) => setTimeout(resolve, milliseconds));
+  };
 
   return {
     show,
@@ -116,11 +163,12 @@ export const useUserState = (user: User) => {
     saveState,
     loadState,
     set: count,
-    handleCountChange,
+    handleCountChange: handleCountSliderChange,
     updatePositions: updatePerformerPosition,
-    playShow,
+    toggleShowPlaying,
     setShowButtonCallback,
     addCountCallback,
-    sliderPosition
+    sliderPosition,
+    showPlaying
   };
 };

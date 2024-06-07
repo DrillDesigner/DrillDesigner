@@ -4,18 +4,18 @@ import type { SliderSingleProps } from "antd";
 import { Button, Flex, Segmented } from "antd";
 import { useState, useEffect } from "react";
 import CountSliderComponent from "./CountSliderComponent";
+import PlayButtonComponent from "./PlayButtonComponent";
 
 interface PlayControlsComponentProps {
-  playShow: () => void;
+  toggleShowPlaying: () => void;
   onSlide: (value: number[]) => void;
   maxCount: number;
   addCount: () => void;
   sliderPosition: number[];
+  showPlaying: boolean;
 }
 
-const PlayControlsComponent: React.FC<PlayControlsComponentProps> = (
-  props: PlayControlsComponentProps,
-) => {
+const PlayControlsComponent: React.FC<PlayControlsComponentProps> = ( props: PlayControlsComponentProps) => {
   return (
     <Flex
       style={{
@@ -25,7 +25,10 @@ const PlayControlsComponent: React.FC<PlayControlsComponentProps> = (
       justify={"space-around"}
       align={"center"}
     >
-      <Button onClick={props.playShow}>Play Show</Button>
+      <PlayButtonComponent 
+        toggleShowPlayingOnClick={props.toggleShowPlaying}
+        showPlaying={props.showPlaying}>
+      </PlayButtonComponent>
       <Button onClick={props.addCount}>Add Count</Button>
       <CountSliderComponent 
         onSlide={props.onSlide} 

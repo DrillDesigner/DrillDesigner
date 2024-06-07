@@ -6,9 +6,7 @@ import config from "./config/AppConfig";
 import { Show } from "./types/Show";
 import StageComponent from "./components/stage/StageComponent";
 import MenuComponent from "./components/menu/MenuComponent";
-import CountSliderComponent from "./components/stageControls/CountSliderComponent";
 import items from "./components/menu/MenuItems";
-import UploadButtonComponent from "./components/header/UploadButtonComponent";
 import { Button, Flex, Segmented } from "antd";
 import { Col, Row, Divider, Space } from "antd";
 import HeaderComponent from "./components/header/HeaderComponent";
@@ -21,18 +19,18 @@ const initialShow: Show = {
   id: config.initialShowName,
   countPositions: Object.fromEntries(
     Array.from({ length: config.defaultNumCounts }, (_, i) => {
-      const yOffsetStart =
-        -config.canvasHeight / 2 + config.fieldHeightAdjustment;
-      const yOffsetEnd = config.canvasHeight / 2 + config.fieldHeightAdjustment;
-      const stepSize =
-        (yOffsetEnd - yOffsetStart) / (config.defaultNumCounts - 1);
-      const yOffset = yOffsetStart + stepSize * i;
+      const stepSize = (245 + 265) / (config.defaultNumCounts - 1); 
+      const yOffsets = Array.from({ length: config.defaultNumCounts }, (_, performerIndex) => {
+        const performerOffset = performerIndex * stepSize;
+        return performerOffset - 265;
+      });
 
-      return [i, helper.performersToLine(config.defaultNumPerformers, yOffset)];
+      return [i, helper.performersToLine(config.defaultNumPerformers, yOffsets[i])];
     }),
   ),
   count: 0,
 };
+
 
 const secondShow: Show = {
   id: "Second Show",
@@ -75,10 +73,11 @@ const App: React.FC<object> = () => {
     set,
     handleCountChange,
     updatePositions,
-    playShow,
+    toggleShowPlaying,
     setShowButtonCallback,
     addCountCallback,
-    sliderPosition
+    sliderPosition,
+    showPlaying
   } = useUserState(basicUser);
 
 
@@ -130,11 +129,12 @@ const App: React.FC<object> = () => {
             </Row>
             <Row>
               <PlayControlsComponent
-                playShow={playShow}
+                toggleShowPlaying={toggleShowPlaying}
                 onSlide={handleCountChange}
                 maxCount={Object.keys(show.countPositions).length}
                 addCount={addCountCallback}
                 sliderPosition={sliderPosition}
+                showPlaying={showPlaying}
               />
             </Row>
           </Content>

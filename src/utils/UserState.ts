@@ -10,7 +10,7 @@ export const useUserState = (user: User) => {
   const [show, setShow] = useState<Show>(user.shows[user.initialShowName]);
   const [count, setCount] = useState<number>(0);
   const [sliderPosition, setSliderPosition] = useState<number[]>([0, 1, Object.keys(show.countPositions).length - 1]);
-  const [showPlaying, setshowPlaying] = useState<boolean>(false);
+  const [showPlaying, setShowPlaying] = useState<boolean>(false);
 
   const saveState = (): void => {
     const serializedData = JSON.stringify(show);
@@ -79,8 +79,23 @@ export const useUserState = (user: User) => {
 
 
   // Callback passed to slider component
-  const handleCountSliderChange = (sliderBounds: number[]): void => { 
-    setCount(sliderBounds[1]); // set the count to the middle circle, which represents the count the show is currently at
+  // if first or last slider positions are greater or less than the current count position, move the current count position to remain within the bounds
+  const handleCountSliderChange = (sliderBounds: number[]): void => {
+    let newBounds = [sliderBounds[0], sliderBounds[1], sliderBounds[2]];
+
+    // set middle mark to newBounds, as sliderBounds from above may be invalid (start surpassing end)
+    if(sliderBounds[0] > sliderBounds[1]) {
+      newBounds[1] = newBounds[0];
+    }
+    if(sliderBounds[2] < sliderBounds[1]) {
+      newBounds[1] = newBounds[2];
+    }
+    setSliderPosition(newBounds);
+
+    // if the current count has changed, update it
+    if(newBounds[1] != count){
+      setCount(sliderBounds[1]); // set the count to the middle circle, which represents the count the show is currently at
+    }
   };
 
   const handleCountChange = (newCount: number): void => {
@@ -88,12 +103,13 @@ export const useUserState = (user: User) => {
   };
 
   const toggleShowPlaying = () => {
+    console.log("in toggleShowPlaying, showPlaying is " + showPlaying);
     if(showPlaying) {
-      setshowPlaying(false);
+      setShowPlaying(false);
     }
     else
     {
-      setshowPlaying(true);
+      setShowPlaying(true);
     }
   };
 
@@ -126,26 +142,34 @@ export const useUserState = (user: User) => {
   useEffect(() => {
     let isCancelled = false; 
     const playLoop = async () => {
-      for (let i = sliderPosition[0]; i <= sliderPosition[2]; i++) {
+      // if middle mark is at the end, start at the beginning. Else, continue where already at
+      for (let i = sliderPosition[1] == sliderPosition[2] ? sliderPosition[0] : sliderPosition[1]; i <= sliderPosition[2]; i++) {
+        console.log("In the for loop, isCancelled is: " + isCancelled);
+        console.log("in the for loop, showPlaying is: " + showPlaying);
         if (isCancelled) {
+          console.log("in for loop, isCancelled is true");
           return; 
         }
         if (!showPlaying) {
           isCancelled = true; 
+          console.log("In the for loop, just caught showPlaying as false, isCancelled is: " + isCancelled);
           return;
         }
         handleCountChange(i);
         await pause(300);
       }
-      setshowPlaying(false);
+      // setShowPlaying(false);
     };
 
     if (showPlaying) {
+      console.log("starting playLoop");
       playLoop();
+      console.log("just left playLoop()");
     }
     
     return () => {
       isCancelled = true;
+      console.log("in the cleanup function");
     };
   }, [showPlaying]);
 

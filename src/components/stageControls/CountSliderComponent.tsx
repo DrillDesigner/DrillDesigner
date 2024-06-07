@@ -1,7 +1,5 @@
 import { Slider } from "antd";
 import React from "react";
-import type { SliderSingleProps } from "antd";
-import { useState, useEffect } from "react";
 
 interface CountSliderProps {
   onSlide: (value: number[]) => void;

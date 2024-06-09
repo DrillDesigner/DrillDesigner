@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
-import { UploadFile } from "antd";
+import { Popover, UploadFile } from "antd";
 import config from "../config/AppConfig";
 import * as FileSaver from "file-saver";
 import { message } from "antd";
 import { Show } from "../types/Show";
 import { User } from "../types/User";
+import { setDefaultHighWaterMark } from "stream";
+import { setFlagsFromString } from "v8";
 
 export const useUserState = (user: User) => {
   const [show, setShow] = useState<Show>(user.shows[user.initialShowName]);
@@ -103,8 +105,9 @@ export const useUserState = (user: User) => {
   };
 
   const toggleShowPlaying = () => {
-    console.log("in toggleShowPlaying, showPlaying is " + showPlaying);
+    console.log("in toggleShowPlaying, showPlaying is " + showPlaying + " going to change it to " + !showPlaying);
     if(showPlaying) {
+      console.log("about to setShowPlaying to false(), changing the value of showPlaying which triggers the cleanup");
       setShowPlaying(false);
     }
     else
@@ -139,7 +142,7 @@ export const useUserState = (user: User) => {
     setSliderPosition([sliderPosition[0], count, sliderPosition[2]])
   }, [count]);
 
-  useEffect(() => {
+  useEffect(function runPlayLoop() {
     let isCancelled = false; 
     const playLoop = async () => {
       // if middle mark is at the end, start at the beginning. Else, continue where already at
@@ -147,29 +150,23 @@ export const useUserState = (user: User) => {
         console.log("In the for loop, isCancelled is: " + isCancelled);
         console.log("in the for loop, showPlaying is: " + showPlaying);
         if (isCancelled) {
-          console.log("in for loop, isCancelled is true");
+          console.log("isCancelled condition is true");
           return; 
-        }
-        if (!showPlaying) {
-          isCancelled = true; 
-          console.log("In the for loop, just caught showPlaying as false, isCancelled is: " + isCancelled);
-          return;
         }
         handleCountChange(i);
         await pause(300);
       }
-      // setShowPlaying(false);
     };
 
     if (showPlaying) {
       console.log("starting playLoop");
       playLoop();
-      console.log("just left playLoop()");
+      console.log("playLoop is now executing async");
     }
     
-    return () => {
+    return function playLoopCleanup() {
+      console.log("isCancelled changed in cleanup");
       isCancelled = true;
-      console.log("in the cleanup function");
     };
   }, [showPlaying]);
 

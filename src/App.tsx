@@ -31,21 +31,14 @@ const initialShow: Show = {
   count: 0,
 };
 
-
 const secondShow: Show = {
   id: "Second Show",
   countPositions: Object.fromEntries(
     Array.from({ length: config.defaultNumCounts }, (_, i) => {
-      const yOffsetStart =
-        -config.canvasHeight / 2 + config.fieldHeightAdjustment;
-      const yOffsetEnd = config.canvasHeight / 2 + config.fieldHeightAdjustment;
-      const stepSize =
-        (yOffsetEnd - yOffsetStart) / (config.defaultNumCounts - 1);
-      const yOffset = yOffsetStart + stepSize * i;
 
       return [
         i,
-        helper.performersToLine(config.defaultNumPerformers, yOffset + 100),
+        initialShow.countPositions[config.defaultNumCounts - i]
       ];
     }),
   ),

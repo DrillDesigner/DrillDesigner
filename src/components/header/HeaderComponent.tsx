@@ -24,7 +24,7 @@ interface HeaderComponentProps {
   loadStateOnClick: (file: UploadFile[]) => void;
   setShowOnClick: (showToSet: string) => void;
   showTitles: string[];
-  initialSelectedShow: string;
+  selectedShow: string;
   saveShowOnClick: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 }
 
@@ -63,7 +63,7 @@ const HeaderComponent = (props: HeaderComponentProps) => {
           <SelectShowComponent
             setShowOnClick={props.setShowOnClick}
             showTitles={props.showTitles}
-            initialSelectedShow={props.initialSelectedShow}
+            selectedShow={props.selectedShow}
           />
         </div>
         <Button style={{ marginLeft: "20px" }} onClick={props.saveShowOnClick}>

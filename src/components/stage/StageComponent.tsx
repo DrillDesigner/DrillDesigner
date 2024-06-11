@@ -4,6 +4,9 @@ import PerformerComponent from "./PerformerComponent";
 import BackgroundComponent from "./BackgroundComponent";
 import config from "../../config/AppConfig";
 import { Show } from "../../types/Show";
+import SelectorComponent from "./SelectorComponent";
+import { KonvaEventObject } from "konva/lib/Node";
+import { SelectorPosition } from "../../types/SelectorPosition";
 
 export interface StageComponentProps {
   width: number;
@@ -11,15 +14,13 @@ export interface StageComponentProps {
   show?: Show;
   count: number;
   updatePosition: (id: string, x: number, y: number) => void;
+  onSelectorMouseUp: (mouseEvent: KonvaEventObject<MouseEvent>) => void;
+  onSelectorMouseDown: (mouseEvent: KonvaEventObject<MouseEvent>) => void;
+  onSelectorMove: (mouseEvent: KonvaEventObject<MouseEvent>) => void;
+  selectorPosition?: SelectorPosition;
 }
 
-const StageComponent: React.FC<StageComponentProps> = ({
-  width,
-  height,
-  show: Show,
-  count,
-  updatePosition,
-}) => {
+const StageComponent: React.FC<StageComponentProps> = (props: StageComponentProps) => {
   return (
     <div
       style={{
@@ -27,21 +28,27 @@ const StageComponent: React.FC<StageComponentProps> = ({
         display: "inline-block",
       }}
     >
-      <Stage width={width} height={height}>
+      <Stage width={props.width} height={props.height}>
         <Layer>
           <BackgroundComponent
             imageSrc={config.backgroundImageSrc}
-            width={width}
-            height={height}
+            width={props.width}
+            height={props.height}
+            onSelectorMouseDown={props.onSelectorMouseDown}
+            onSelectorMove={props.onSelectorMove}
+            onSelectorMouseUp={props.onSelectorMouseUp}
           />
-          {Show?.countPositions[count]!.map((performer) => (
+          {props.show?.countPositions[props.count]!.map((performer) => (
             <PerformerComponent
               key={performer.id}
               performer={performer}
               imageSrc={config.performerImageSrc}
-              onUpdatePosition={updatePosition}
+              onUpdatePosition={props.updatePosition}
             />
           ))}
+          <SelectorComponent 
+            selectorPosition={props.selectorPosition}
+            />
         </Layer>
       </Stage>
     </div>

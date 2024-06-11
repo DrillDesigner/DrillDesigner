@@ -2,38 +2,42 @@ import { Slider } from "antd";
 import React from "react";
 
 interface CountSliderProps {
-  onSlide: (value: number[]) => void;
+  onCountSliderValueChange: (value: number[]) => void;
   maxCount: number;
   sliderPosition: number[];
 }
 
-const sliderStyle: React.CSSProperties = {
-  width: "75%",
-};
-
 const CountSliderComponent: React.FC<CountSliderProps> = (
   props: CountSliderProps,
 ) => {
-
-  const handleSlide = (value: number[]) => {
-    props.onSlide(value);
-  };
-
-  let maxMark = props.maxCount-1;
   const marks: Record<number, string> = {};
-  for (let i = 0; i <= maxMark; i++) {
+  for (let i = 0; i <= props.maxCount; i++) {
     marks[i] = i.toString();
   }
 
   return (
     <Slider
       range
-      style={sliderStyle}
+      style={{ width: "75%" }}
       marks={marks}
       min={0}
-      max={maxMark}
-      onChange={handleSlide}
+      max={props.maxCount}
+      onChange={props.onCountSliderValueChange}
       value={props.sliderPosition}
+      tooltip={{
+        formatter: (value: number | undefined) => {
+          if (value === props.sliderPosition[0]) {
+            return "Beginning of segment";
+          }
+          if (value === props.sliderPosition[1]) {
+            return "Current count position: " + value;
+          }
+          if (value === props.sliderPosition[2]) {
+            return "End of segment";
+          }
+          return null;
+        },
+      }}
     />
   );
 };

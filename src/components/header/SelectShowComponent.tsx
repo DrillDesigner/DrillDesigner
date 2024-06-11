@@ -8,16 +8,12 @@ const { Title } = Typography;
 interface SelectShowProps {
   setShowOnClick: (showToSet: string) => void;
   showTitles: string[];
-  initialSelectedShow: string;
+  selectedShow: string;
 }
 
 const SelectShowComponent: React.FC<SelectShowProps> = (
   props: SelectShowProps,
 ) => {
-  const [selectedShow, setSelectedShow] = useState<string>(
-    props.initialSelectedShow,
-  );
-
   const items: MenuProps["items"] = props.showTitles.map((title) => ({
     label: title,
     key: title,
@@ -25,7 +21,6 @@ const SelectShowComponent: React.FC<SelectShowProps> = (
 
   const onClick: MenuProps["onClick"] = ({ key }) => {
     props.setShowOnClick(key);
-    setSelectedShow(key);
   };
 
   return (
@@ -43,7 +38,7 @@ const SelectShowComponent: React.FC<SelectShowProps> = (
       <Dropdown menu={{ items, onClick }}>
         <Button>
           <Space>
-            {selectedShow}
+            {props.selectedShow}
             <DownOutlined />
           </Space>
         </Button>

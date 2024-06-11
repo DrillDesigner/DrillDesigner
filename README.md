@@ -8,10 +8,11 @@
 ### TODO
 
 - Change backgrounds
-- Host on ThinkPad - get domain and SSL cert
-- Display show name
-- Click and drag select
+- Click and drag select 
 - Arrange in circle
 - Click "arrange in circle", then click position to center circle at
 - Add performer button
-- Move helper functions?
+- Move util functions?
+- Dragging left count segment bound moves current position if they're equal
+- Display show name - X
+- Host on ThinkPad - get domain and SSL cert - X

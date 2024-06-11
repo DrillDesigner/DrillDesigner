@@ -1,6 +1,6 @@
 import config from "../config/AppConfig";
 
-const helper = {
+const utils = {
   randomPerformerLocations: (numPerformers: number) => {
     return [...Array(numPerformers)].map((_, i) => ({
       id: i.toString(),
@@ -25,6 +25,13 @@ const helper = {
       isDragging: false,
     }));
   },
+
+  pause: async (milliseconds: number): Promise<void> => {
+    if (milliseconds <= 0) {
+      console.log("milliseconds must be a positive number");
+    }
+    await new Promise((resolve) => setTimeout(resolve, milliseconds));
+  },
 };
 
-export default helper;
+export default utils;

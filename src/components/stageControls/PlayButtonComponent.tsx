@@ -11,7 +11,7 @@ const PlayButtonComponent: React.FC<PlayButtonComponentProps> = ({
   toggleShowPlayingOnClick: playOrPauseShow,
   showPlaying: playing,
 }) => {
-  const buttonText = playing ? "Pause" : "Play"; 
+  const buttonText = playing ? "Pause" : "Play";
 
   return (
     <div>

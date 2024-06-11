@@ -5,14 +5,20 @@ import * as FileSaver from "file-saver";
 import { message } from "antd";
 import { Show } from "../types/Show";
 import { User } from "../types/User";
-import { setDefaultHighWaterMark } from "stream";
-import { setFlagsFromString } from "v8";
+import utils from "./Utils";
+import { KonvaEventObject } from "konva/lib/Node";
+import { SelectorPosition } from "../types/SelectorPosition";
 
 export const useUserState = (user: User) => {
   const [show, setShow] = useState<Show>(user.shows[user.initialShowName]);
   const [count, setCount] = useState<number>(0);
-  const [sliderPosition, setSliderPosition] = useState<number[]>([0, 1, Object.keys(show.countPositions).length - 1]);
+  const [sliderPosition, setSliderPosition] = useState<number[]>([
+    0,
+    1,
+    Object.keys(show.countPositions).length - 1,
+  ]);
   const [showPlaying, setShowPlaying] = useState<boolean>(false);
+  const [selectorPosition, setSelectorPosition] = useState<SelectorPosition>({positionNow: {x: -1, y: -1}, positionStart: {x: -1, y: -1}});
 
   const saveState = (): void => {
     const serializedData = JSON.stringify(show);
@@ -79,6 +85,10 @@ export const useUserState = (user: User) => {
     }));
   };
 
+  const setShowButtonCallback = (showName: string): void => {
+    setCount(0);
+    setShow(user.shows[showName]);
+  };
 
   // Callback passed to slider component
   // if first or last slider positions are greater or less than the current count position, move the current count position to remain within the bounds
@@ -86,38 +96,32 @@ export const useUserState = (user: User) => {
     let newBounds = [sliderBounds[0], sliderBounds[1], sliderBounds[2]];
 
     // set middle mark to newBounds, as sliderBounds from above may be invalid (start surpassing end)
-    if(sliderBounds[0] > sliderBounds[1]) {
+    if (sliderBounds[0] > sliderBounds[1]) {
       newBounds[1] = newBounds[0];
     }
-    if(sliderBounds[2] < sliderBounds[1]) {
+    if (sliderBounds[2] < sliderBounds[1]) {
       newBounds[1] = newBounds[2];
     }
     setSliderPosition(newBounds);
 
     // if the current count has changed, update it
-    if(newBounds[1] != count){
+    if (newBounds[1] != count) {
       setCount(sliderBounds[1]); // set the count to the middle circle, which represents the count the show is currently at
     }
   };
 
+  // callback passed to slider onChange to set the count
   const handleCountChange = (newCount: number): void => {
     setCount(newCount);
   };
 
+  // callback passed to the 'play' button to play or pause the show execution
   const toggleShowPlaying = () => {
-    console.log("in toggleShowPlaying, showPlaying is " + showPlaying + " going to change it to " + !showPlaying);
-    if(showPlaying) {
-      console.log("about to setShowPlaying to false(), changing the value of showPlaying which triggers the cleanup");
+    if (showPlaying) {
       setShowPlaying(false);
-    }
-    else
-    {
+    } else {
       setShowPlaying(true);
     }
-  };
-
-  const setShowButtonCallback = (showName: string): void => {
-    setShow(user.shows[showName]);
   };
 
   const addCountCallback = (): void => {
@@ -131,51 +135,82 @@ export const useUserState = (user: User) => {
       },
     }));
     setCount(newCount);
-    setSliderPosition([sliderPosition[0], newCount, newCount])
+    setSliderPosition([sliderPosition[0], newCount, newCount]);
   };
 
   useEffect(() => {
     user.shows[show.id] = show;
   }, [show, user.shows]);
 
-  useEffect(() => {
-    setSliderPosition([sliderPosition[0], count, sliderPosition[2]])
-  }, [count]);
+  useEffect(
+    function setSliderPositionIfCountChanges() {
+      setSliderPosition([sliderPosition[0], count, sliderPosition[2]]);
+    },
+    [count],
+  );
 
-  useEffect(function runPlayLoop() {
-    let isCancelled = false; 
-    const playLoop = async () => {
-      // if middle mark is at the end, start at the beginning. Else, continue where already at
-      for (let i = sliderPosition[1] == sliderPosition[2] ? sliderPosition[0] : sliderPosition[1]; i <= sliderPosition[2]; i++) {
-        console.log("In the for loop, isCancelled is: " + isCancelled);
-        console.log("in the for loop, showPlaying is: " + showPlaying);
-        if (isCancelled) {
-          console.log("isCancelled condition is true");
-          return; 
+  useEffect(
+    function runPlayLoop() {
+      // stopPlayLoopAsync is set in the cleanup function and because it's enclosed in the useEffect scope, the async loop will be able to detect the change and exit the loop
+      let stopPlayLoopAsync = false;
+      const playLoop = async () => {
+        // if middle mark is at the end, start at the beginning. Else, continue where already at
+        let nextCountToDisplay =
+          sliderPosition[1] == sliderPosition[2]
+            ? sliderPosition[0] + 1
+            : sliderPosition[1] + 1;
+        for (
+          nextCountToDisplay;
+          nextCountToDisplay <= sliderPosition[2];
+          nextCountToDisplay++
+        ) {
+          // check if cleanup function set
+          if (stopPlayLoopAsync) {
+            return;
+          }
+          handleCountChange(nextCountToDisplay);
+          await utils.pause(300);
         }
-        handleCountChange(i);
-        await pause(300);
+
+        // reached the end, set the play button back to 'play' from 'pause'
+        setShowPlaying(false);
+
+        // set back to the start of the segment
+        handleCountChange(sliderPosition[0]);
+      };
+
+      if (showPlaying) {
+        playLoop();
       }
-    };
 
-    if (showPlaying) {
-      console.log("starting playLoop");
-      playLoop();
-      console.log("playLoop is now executing async");
-    }
+      // if showPlaying has changed again (i.e. pause button clicked), set stopPlayLoopAsync to true so the asynch play loop function detects it
+      return function playLoopCleanup() {
+        stopPlayLoopAsync = true;
+      };
+    },
+    [showPlaying],
+  );
+
+
+
+  const onSelectorMouseDown = (mouseEvent: KonvaEventObject<MouseEvent>): void => {
+    const x = mouseEvent.evt.offsetX;
+    const y = mouseEvent.evt.offsetY;
+
+  // Create a new SelectorPosition object based on the mouse coordinates
+    const positionToSet: SelectorPosition = {
+      positionNow: { x, y },
+      positionStart: { x, y },
+    };
+    setSelectorPosition(positionToSet);
+  };
+
+  const onSelectorMove = (mouseEvent: KonvaEventObject<MouseEvent>): void => {
     
-    return function playLoopCleanup() {
-      console.log("isCancelled changed in cleanup");
-      isCancelled = true;
-    };
-  }, [showPlaying]);
+  };
 
-
-  const pause = async (milliseconds: number): Promise<void> => {
-    if (milliseconds <= 0) {
-      throw new Error('milliseconds must be a positive number');
-    }
-    await new Promise((resolve) => setTimeout(resolve, milliseconds));
+  const onSelectorMouseUp = (mouseEvent: KonvaEventObject<MouseEvent>): void =>  {
+    
   };
 
   return {
@@ -190,6 +225,10 @@ export const useUserState = (user: User) => {
     setShowButtonCallback,
     addCountCallback,
     sliderPosition,
-    showPlaying
+    showPlaying,
+    onSelectorMouseDown,
+    onSelectorMouseUp,
+    onSelectorMove,
+    selectorPosition
   };
 };

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Layout, ConfigProvider, Menu, theme } from "antd";
 import { useUserState } from "./utils/UserState";
-import helper from "./utils/helpers";
+import utils from "./utils/Utils";
 import config from "./config/AppConfig";
 import { Show } from "./types/Show";
 import StageComponent from "./components/stage/StageComponent";
@@ -19,13 +19,19 @@ const initialShow: Show = {
   id: config.initialShowName,
   countPositions: Object.fromEntries(
     Array.from({ length: config.defaultNumCounts }, (_, i) => {
-      const stepSize = (245 + 265) / (config.defaultNumCounts - 1); 
-      const yOffsets = Array.from({ length: config.defaultNumCounts }, (_, performerIndex) => {
-        const performerOffset = performerIndex * stepSize;
-        return performerOffset - 265;
-      });
+      const stepSize = (245 + 265) / (config.defaultNumCounts - 1);
+      const yOffsets = Array.from(
+        { length: config.defaultNumCounts },
+        (_, performerIndex) => {
+          const performerOffset = performerIndex * stepSize;
+          return performerOffset - 265;
+        },
+      );
 
-      return [i, helper.performersToLine(config.defaultNumPerformers, yOffsets[i])];
+      return [
+        i,
+        utils.performersToLine(config.defaultNumPerformers, yOffsets[i]),
+      ];
     }),
   ),
   count: 0,
@@ -35,11 +41,7 @@ const secondShow: Show = {
   id: "Second Show",
   countPositions: Object.fromEntries(
     Array.from({ length: config.defaultNumCounts }, (_, i) => {
-
-      return [
-        i,
-        initialShow.countPositions[config.defaultNumCounts - i]
-      ];
+      return [i, initialShow.countPositions[config.defaultNumCounts - i - 1]];
     }),
   ),
   count: 0,
@@ -70,9 +72,12 @@ const App: React.FC<object> = () => {
     setShowButtonCallback,
     addCountCallback,
     sliderPosition,
-    showPlaying
+    showPlaying,
+    onSelectorMouseDown,
+    onSelectorMouseUp,
+    onSelectorMove,
+    selectorPosition
   } = useUserState(basicUser);
-
 
   // empty array means invoked once, adds listener to update windowSize var on 'resize' event
   useEffect(() => {
@@ -98,7 +103,7 @@ const App: React.FC<object> = () => {
           loadStateOnClick={loadState}
           setShowOnClick={setShowButtonCallback}
           showTitles={Object.keys(basicUser.shows)}
-          initialSelectedShow={basicUser.initialShowName}
+          selectedShow={show.id}
           saveShowOnClick={saveState}
         ></HeaderComponent>
         <Layout>
@@ -118,13 +123,17 @@ const App: React.FC<object> = () => {
                 show={show}
                 count={set}
                 updatePosition={updatePositions}
+                onSelectorMouseUp={onSelectorMouseUp}
+                onSelectorMouseDown={onSelectorMouseDown}
+                onSelectorMove={onSelectorMove}
+                selectorPosition={selectorPosition}
               />
             </Row>
             <Row>
               <PlayControlsComponent
                 toggleShowPlaying={toggleShowPlaying}
                 onSlide={handleCountChange}
-                maxCount={Object.keys(show.countPositions).length}
+                maxCount={Object.keys(show.countPositions).length - 1} // '-1' because count is 0 indexed
                 addCount={addCountCallback}
                 sliderPosition={sliderPosition}
                 showPlaying={showPlaying}

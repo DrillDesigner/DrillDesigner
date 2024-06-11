@@ -2,3 +2,13 @@ body {
   margin: 0px;
   overflow: hidden;
 }
+
+/* Color the '::after' psuedo-element, which is where the handle color is specified */
+.ant-slider .ant-slider-handle-2::after {
+  background-color: green;
+}
+
+/* Element for the current count position should be in front of other elements */
+.ant-slider .ant-slider-handle-2 {
+  z-index: 1;
+}

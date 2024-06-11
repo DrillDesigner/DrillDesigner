@@ -15,7 +15,9 @@ interface PlayControlsComponentProps {
   showPlaying: boolean;
 }
 
-const PlayControlsComponent: React.FC<PlayControlsComponentProps> = ( props: PlayControlsComponentProps) => {
+const PlayControlsComponent: React.FC<PlayControlsComponentProps> = (
+  props: PlayControlsComponentProps,
+) => {
   return (
     <Flex
       style={{
@@ -25,15 +27,15 @@ const PlayControlsComponent: React.FC<PlayControlsComponentProps> = ( props: Pla
       justify={"space-around"}
       align={"center"}
     >
-      <PlayButtonComponent 
+      <PlayButtonComponent
         toggleShowPlayingOnClick={props.toggleShowPlaying}
-        showPlaying={props.showPlaying}>
-      </PlayButtonComponent>
+        showPlaying={props.showPlaying}
+      ></PlayButtonComponent>
       <Button onClick={props.addCount}>Add Count</Button>
-      <CountSliderComponent 
-        onSlide={props.onSlide} 
-        maxCount={props.maxCount} 
-        sliderPosition={props.sliderPosition} 
+      <CountSliderComponent
+        onCountSliderValueChange={props.onSlide}
+        maxCount={props.maxCount}
+        sliderPosition={props.sliderPosition}
       />
     </Flex>
   );

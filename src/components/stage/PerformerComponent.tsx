@@ -53,8 +53,8 @@ const PerformerComponent: React.FC<PerformerComponentProps> = ({
         onClick={handleSelect}
         onDragStart={handleDragStart}
         onTap={handleSelect}
-        width={20}
-        height={20}
+        width={config.performerSize}
+        height={config.performerSize}
       />
     </>
   );

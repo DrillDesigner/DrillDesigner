@@ -7,9 +7,6 @@ interface BackgroundComponentProps {
   imageSrc: string;
   width: number;
   height: number;
-  onSelectorMouseDown: (evt: KonvaEventObject<MouseEvent>) => void;
-  onSelectorMove: (evt: KonvaEventObject<MouseEvent>) => void;
-  onSelectorMouseUp: (evt: KonvaEventObject<MouseEvent>) => void;
 }
 
 const BackgroundComponent = (props: BackgroundComponentProps) => {
@@ -19,9 +16,7 @@ const BackgroundComponent = (props: BackgroundComponentProps) => {
     image={image} 
     width={props.width} 
     height={props.height}
-    onMouseDown={props.onSelectorMouseDown}
-    onMouseMove={props.onSelectorMove}
-    onMouseUp={props.onSelectorMouseUp} />;
+    />;
 };
 
 export default BackgroundComponent;

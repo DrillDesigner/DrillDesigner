@@ -18,7 +18,7 @@ export const useUserState = (user: User) => {
     Object.keys(show.countPositions).length - 1,
   ]);
   const [showPlaying, setShowPlaying] = useState<boolean>(false);
-  const [selectorPosition, setSelectorPosition] = useState<SelectorPosition>({positionNow: {x: -1, y: -1}, positionStart: {x: -1, y: -1}});
+
 
   const saveState = (): void => {
     const serializedData = JSON.stringify(show);
@@ -93,7 +93,7 @@ export const useUserState = (user: User) => {
   // Callback passed to slider component
   // if first or last slider positions are greater or less than the current count position, move the current count position to remain within the bounds
   const handleCountSliderChange = (sliderBounds: number[]): void => {
-    let newBounds = [sliderBounds[0], sliderBounds[1], sliderBounds[2]];
+    const newBounds = [sliderBounds[0], sliderBounds[1], sliderBounds[2]];
 
     // set middle mark to newBounds, as sliderBounds from above may be invalid (start surpassing end)
     if (sliderBounds[0] > sliderBounds[1]) {
@@ -191,34 +191,12 @@ export const useUserState = (user: User) => {
     [showPlaying],
   );
 
-
-
-  const onSelectorMouseDown = (mouseEvent: KonvaEventObject<MouseEvent>): void => {
-    const x = mouseEvent.evt.offsetX;
-    const y = mouseEvent.evt.offsetY;
-
-  // Create a new SelectorPosition object based on the mouse coordinates
-    const positionToSet: SelectorPosition = {
-      positionNow: { x, y },
-      positionStart: { x, y },
-    };
-    setSelectorPosition(positionToSet);
-  };
-
-  const onSelectorMove = (mouseEvent: KonvaEventObject<MouseEvent>): void => {
-    
-  };
-
-  const onSelectorMouseUp = (mouseEvent: KonvaEventObject<MouseEvent>): void =>  {
-    
-  };
-
   return {
     show,
     positionPerformersInLine,
     saveState,
     loadState,
-    set: count,
+    count,
     handleCountChange: handleCountSliderChange,
     updatePositions: updatePerformerPosition,
     toggleShowPlaying,
@@ -226,9 +204,5 @@ export const useUserState = (user: User) => {
     addCountCallback,
     sliderPosition,
     showPlaying,
-    onSelectorMouseDown,
-    onSelectorMouseUp,
-    onSelectorMove,
-    selectorPosition
   };
 };

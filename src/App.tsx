@@ -65,7 +65,7 @@ const App: React.FC<object> = () => {
     positionPerformersInLine,
     saveState,
     loadState,
-    set,
+    count,
     handleCountChange,
     updatePositions,
     toggleShowPlaying,
@@ -73,10 +73,6 @@ const App: React.FC<object> = () => {
     addCountCallback,
     sliderPosition,
     showPlaying,
-    onSelectorMouseDown,
-    onSelectorMouseUp,
-    onSelectorMove,
-    selectorPosition
   } = useUserState(basicUser);
 
   // empty array means invoked once, adds listener to update windowSize var on 'resize' event
@@ -121,12 +117,8 @@ const App: React.FC<object> = () => {
                 width={config.canvasWidth}
                 height={config.canvasHeight}
                 show={show}
-                count={set}
+                count={count}
                 updatePosition={updatePositions}
-                onSelectorMouseUp={onSelectorMouseUp}
-                onSelectorMouseDown={onSelectorMouseDown}
-                onSelectorMove={onSelectorMove}
-                selectorPosition={selectorPosition}
               />
             </Row>
             <Row>

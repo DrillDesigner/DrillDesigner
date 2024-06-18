@@ -27,9 +27,6 @@ const utils = {
   },
 
   pause: async (milliseconds: number): Promise<void> => {
-    if (milliseconds <= 0) {
-      console.log("milliseconds must be a positive number");
-    }
     await new Promise((resolve) => setTimeout(resolve, milliseconds));
   },
 };

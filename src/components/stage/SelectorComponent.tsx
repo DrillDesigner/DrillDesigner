@@ -8,20 +8,23 @@ interface SelectorComponentProps {
 }
 
 const SelectorComponent: React.FC<SelectorComponentProps> = (props: SelectorComponentProps) => {
-  if(props.selectorPosition === undefined || (props.selectorPosition.positionNow.x === -1 && props.selectorPosition.positionNow.y === -1 && props.selectorPosition.positionStart.x === -1 && props.selectorPosition.positionStart.y === -1))
+  if(props.selectorPosition === undefined || props.selectorPosition.positionNow.x === -1 || props.selectorPosition.positionNow.y === -1 || props.selectorPosition.positionStart.x === -1 || props.selectorPosition.positionStart.y === -1)
   {
     return <></>;
   }
   else
   {
+
     return (
-      <Rect  // TODO: handle draw logic if user drags left and up
+      <Rect 
         x={props.selectorPosition.positionStart.x} 
         y={props.selectorPosition.positionStart.y} 
-        width={props.selectorPosition.positionStart.x-props.selectorPosition.positionNow.x} 
-        height={props.selectorPosition.positionStart.y-props.selectorPosition.positionNow.y} 
-        dash={[2,2]} />
-  );
+        width={props.selectorPosition.positionNow.x-props.selectorPosition.positionStart.x} 
+        height={props.selectorPosition.positionNow.y-props.selectorPosition.positionStart.y} 
+        dash={[2,2]} 
+        stroke='red'
+        />
+    );
   }
 };
 

@@ -1,4 +1,5 @@
 import config from "../config/AppConfig";
+import { ShapeBounds } from "../types/ShapeBounds";
 
 const utils = {
   randomPerformerLocations: (numPerformers: number) => {
@@ -29,6 +30,17 @@ const utils = {
   pause: async (milliseconds: number): Promise<void> => {
     await new Promise((resolve) => setTimeout(resolve, milliseconds));
   },
+
+    // checks whether two rectangles intersect
+  hasIntersection: (r1: ShapeBounds, r2: ShapeBounds): boolean => {
+    const hasIntersection = (
+      r2.x > r1.x + r1.width ||
+      r2.x + r2.width < r1.x ||
+      r2.y > r1.y + r1.height ||
+      r2.y + r2.height < r1.y
+    );
+    return hasIntersection;
+  }
 };
 
 export default utils;

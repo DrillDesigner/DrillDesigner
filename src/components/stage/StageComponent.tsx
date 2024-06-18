@@ -7,6 +7,7 @@ import { Show } from "../../types/Show";
 import SelectorComponent from "./SelectorComponent";
 import { KonvaEventObject } from "konva/lib/Node";
 import { SelectorPosition } from "../../types/SelectorPosition";
+import utils from "../../utils/Utils";
 import { useState } from "react";
 
 export interface StageComponentProps {
@@ -18,17 +19,10 @@ export interface StageComponentProps {
   selectorPosition?: SelectorPosition;
 }
 
-export interface ShapeBounds {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-}
-
-
 const StageComponent: React.FC<StageComponentProps> = (props: StageComponentProps) => {
   const [selectorPosition, setSelectorPosition] = useState<SelectorPosition>({positionNow: {x: -1, y: -1}, positionStart: {x: -1, y: -1}});
 
+  // selector will not render
   const noSelectionSelector: SelectorPosition = {positionStart: {x: -1, y: -1}, positionNow: {x: -1, y: -1}};
 
   const onSelectorMove = (mouseEvent: KonvaEventObject<MouseEvent>): void => {
@@ -43,18 +37,23 @@ const StageComponent: React.FC<StageComponentProps> = (props: StageComponentProp
   };
 
   const onMouseUp = (): void =>  {
-    setSelectorPosition({positionNow: {x: -1, y: -1}, positionStart: {x: -1, y: -1}});
+    setSelectorPosition(noSelectionSelector);
   };
 
   const onMouseDown = (mouseEvent: KonvaEventObject<MouseEvent>): void => {
-    const intersectedNode = mouseEvent.target.getLayer()?.getIntersection(mouseEvent.target.getClientRect());
-    // if node clicked isn't the same height as the canvas, a performer has been clicked    
-    if(intersectedNode?.attrs.height === config.canvasHeight) {
-      setSelectorPosition({
-        positionNow: { x: -1, y: -1 },
-        positionStart: { x: mouseEvent.evt.offsetX, y: mouseEvent.evt.offsetY },
-      });      
-    }
+    // if a performer is selected i.e. a layer's child and this mouse intersect, don't draw the selector square
+    const target = mouseEvent.target;
+    target.getLayer()?.children.forEach(function (child) {
+      if(utils.hasIntersection(child.getClientRect(), target.getClientRect())) {
+        setSelectorPosition(noSelectionSelector);
+      }
+      else {
+        setSelectorPosition({
+          positionNow: { x: -1, y: -1 },
+          positionStart: { x: mouseEvent.evt.offsetX, y: mouseEvent.evt.offsetY },
+        });
+      }
+    });
   };
 
   const onMouseLeave = (): void => {

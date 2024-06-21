@@ -4,6 +4,7 @@ const config = {
   fieldWidthAdjustment: 10,
   fieldHeightAdjustment: 30,
   performerImageSrc: "src/assets/PerformerEmoji.png",
+  performerImageHighlightedSrc: "src/assets/PerformerEmojiHighlighted.png",
   backgroundImageSrc: "src/assets/ChartBorderNums.png",
   defaultNumPerformers: 51,
   defaultNumCounts: 8,

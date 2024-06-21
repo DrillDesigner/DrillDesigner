@@ -9,7 +9,7 @@ import utils from "./Utils";
 import { KonvaEventObject } from "konva/lib/Node";
 import { SelectorPosition } from "../types/SelectorPosition";
 
-export const useUserState = (user: User) => {
+export const useShowState = (user: User) => {
   const [show, setShow] = useState<Show>(user.shows[user.initialShowName]);
   const [count, setCount] = useState<number>(0);
   const [sliderPosition, setSliderPosition] = useState<number[]>([
@@ -64,7 +64,10 @@ export const useUserState = (user: User) => {
     }));
   };
 
+  // when a performer is dragged, update its position in the show to the new position for this count
   const updatePerformerPosition = (id: string, x: number, y: number): void => {
+    console.log("updating to: " + id + ", " + x + ", " + y);
+    console.log("previous: " + show.countPositions[count][parseInt(id)].id + ", " + show.countPositions[count][parseInt(id)].x + ", " + show.countPositions[count][parseInt(id)].y);
     const updatedPerformers = Object.keys(show.countPositions[count]).map(
       (key) => {
         const performer = show.countPositions[count][parseInt(key)];
@@ -85,6 +88,7 @@ export const useUserState = (user: User) => {
     }));
   };
 
+  // callback passed to the select show dropdown
   const setShowButtonCallback = (showName: string): void => {
     setCount(0);
     setShow(user.shows[showName]);
@@ -124,6 +128,7 @@ export const useUserState = (user: User) => {
     }
   };
 
+  // callback passed to the add count button
   const addCountCallback = (): void => {
     const newCount = Object.keys(show.countPositions).length;
     const performersAtEnd = show.countPositions[newCount - 1];
@@ -138,10 +143,53 @@ export const useUserState = (user: User) => {
     setSliderPosition([sliderPosition[0], newCount, newCount]);
   };
 
+  // given a selectorPosition, select (or deselect) performers that are within the selectorPosition box and update the show so those performers are 'selected'
+  const selectPerformers = (selectorPosition: SelectorPosition): boolean => {
+    const completedSelector = utils.selectionCompleted(selectorPosition);
+    
+    // get topLeft and bottomRight x and y cords, could be positionStart or positionNow depending on which way the use dragged
+    const topLeft = {
+      x: Math.min(selectorPosition.positionStart.x, selectorPosition.positionNow.x),
+      y: Math.min(selectorPosition.positionStart.y, selectorPosition.positionNow.y),
+    };
+    const bottomRight = {
+      x: Math.max(selectorPosition.positionStart.x, selectorPosition.positionNow.x),
+      y: Math.max(selectorPosition.positionStart.y, selectorPosition.positionNow.y),
+    };
+    let performerInBox = false;
+    const updatedPerformers = Object.keys(show.countPositions[count]).map(
+      (key) => {
+        const performer = show.countPositions[count][parseInt(key)];
+        const isWithinBox =
+          performer.x + config.performerSize >= topLeft.x &&
+          performer.x <= bottomRight.x &&
+          performer.y + config.performerSize >= topLeft.y &&
+          performer.y <= bottomRight.y;
+        if(isWithinBox) { 
+          performerInBox = true; 
+        }
+        return { ...performer, selected: (!completedSelector ? completedSelector : isWithinBox)}; // if th selection isn't completed, set all performers to not being selected
+      }
+    );
+
+    setShow((prevShow) => ({
+      ...prevShow,
+      countPositions: {
+        ...prevShow.countPositions,
+        [count]: updatedPerformers,
+      },
+    }));
+    return performerInBox;
+  };
+
+
+
+  // if the show being displayed is changed with setShow, update the show in user.shows
   useEffect(() => {
     user.shows[show.id] = show;
   }, [show, user.shows]);
 
+  // if count changes (during show playing) update the slider to match the count
   useEffect(
     function setSliderPositionIfCountChanges() {
       setSliderPosition([sliderPosition[0], count, sliderPosition[2]]);
@@ -149,6 +197,7 @@ export const useUserState = (user: User) => {
     [count],
   );
 
+  // runs the play loop is showPlaying changes (play button is clicked)
   useEffect(
     function runPlayLoop() {
       // stopPlayLoopAsync is set in the cleanup function and because it's enclosed in the useEffect scope, the async loop will be able to detect the change and exit the loop
@@ -197,12 +246,13 @@ export const useUserState = (user: User) => {
     saveState,
     loadState,
     count,
-    handleCountChange: handleCountSliderChange,
-    updatePositions: updatePerformerPosition,
+    handleCountSliderChange,
+    updatePerformerPosition,
     toggleShowPlaying,
     setShowButtonCallback,
     addCountCallback,
     sliderPosition,
     showPlaying,
+    selectPerformers,
   };
 };

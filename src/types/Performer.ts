@@ -3,4 +3,5 @@ export interface Performer {
   x: number;
   y: number;
   isDragging: boolean;
+  selected: boolean;
 }

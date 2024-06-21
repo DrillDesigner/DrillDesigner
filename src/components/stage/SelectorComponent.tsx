@@ -2,13 +2,14 @@ import React, { useRef, useEffect, useState } from "react";
 import Konva from "konva";
 import { Image, Transformer, Rect } from "react-konva";
 import { SelectorPosition } from "../../types/SelectorPosition";
+import utils from "../../utils/Utils";
 
 interface SelectorComponentProps {
   selectorPosition?: SelectorPosition;
 }
 
 const SelectorComponent: React.FC<SelectorComponentProps> = (props: SelectorComponentProps) => {
-  if(props.selectorPosition === undefined || props.selectorPosition.positionNow.x === -1 || props.selectorPosition.positionNow.y === -1 || props.selectorPosition.positionStart.x === -1 || props.selectorPosition.positionStart.y === -1)
+  if(!utils.selectionCompleted(props.selectorPosition) || props.selectorPosition === undefined)
   {
     return <></>;
   }

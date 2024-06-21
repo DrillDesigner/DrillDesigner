@@ -9,14 +9,11 @@ interface PerformerComponentProps {
   performer: Performer;
   imageSrc: string;
   onUpdatePosition: (id: string, x: number, y: number) => void; // this updates the position saved in the Show object
+  selected: boolean;
 }
 
-const PerformerComponent: React.FC<PerformerComponentProps> = ({
-  performer,
-  imageSrc,
-  onUpdatePosition,
-}) => {
-  const [image] = useImage(imageSrc);
+const PerformerComponent: React.FC<PerformerComponentProps> = (props: PerformerComponentProps) => {
+  const [image] = useImage(props.imageSrc);
   const [isSelected, setSelected] = useState(false);
 
   const handleSelect = () => {
@@ -31,24 +28,25 @@ const PerformerComponent: React.FC<PerformerComponentProps> = ({
     const relativePosition = event.target.getRelativePointerPosition();
 
     if (pointerPosition && relativePosition) {
-      const offsetX = relativePosition.x;
-      const offsetY = relativePosition.y;
+      const newX = pointerPosition.x - relativePosition.x;
+      const newY = pointerPosition.y - relativePosition.y;
 
-      const newX = pointerPosition.x - offsetX;
-      const newY = pointerPosition.y - offsetY;
-
-      onUpdatePosition(performer.id, newX, newY);
+      props.onUpdatePosition(props.performer.id, newX, newY);
+      console.log(newX, newY);
     }
+    
     setSelected(false);
   };
 
   return (
     <>
+    {props.performer.id === '0' && console.log(props.performer.x, props.performer.y)}
       <Image
-        x={performer.x}
-        y={performer.y}
+        x={props.performer.x}
+        y={props.performer.y}
         image={image}
-        draggable
+        selected={props.selected}
+        draggable={!props.selected} // if selected, the individual performer shouldn't be draggable, only the group
         onDragEnd={handleDragEnd}
         onClick={handleSelect}
         onDragStart={handleDragStart}

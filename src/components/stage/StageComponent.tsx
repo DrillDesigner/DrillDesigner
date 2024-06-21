@@ -1,5 +1,5 @@
 import React from "react";
-import { Stage, Layer, Rect } from "react-konva";
+import { Stage, Layer, Rect, Group } from "react-konva";
 import PerformerComponent from "./PerformerComponent";
 import BackgroundComponent from "./BackgroundComponent";
 import config from "../../config/AppConfig";
@@ -9,6 +9,7 @@ import { KonvaEventObject } from "konva/lib/Node";
 import { SelectorPosition } from "../../types/SelectorPosition";
 import utils from "../../utils/Utils";
 import { useState } from "react";
+import PerformerGroupComponent from "./PerformerGroupComponent";
 
 export interface StageComponentProps {
   width: number;
@@ -17,10 +18,12 @@ export interface StageComponentProps {
   count: number;
   updatePosition: (id: string, x: number, y: number) => void;
   selectorPosition?: SelectorPosition;
+  selectPerformers: (selectorPosition: SelectorPosition) => boolean;
 }
 
 const StageComponent: React.FC<StageComponentProps> = (props: StageComponentProps) => {
   const [selectorPosition, setSelectorPosition] = useState<SelectorPosition>({positionNow: {x: -1, y: -1}, positionStart: {x: -1, y: -1}});
+  const [selectionMade, setSelectionMade] = useState<boolean>(false);
 
   // selector will not render
   const noSelectionSelector: SelectorPosition = {positionStart: {x: -1, y: -1}, positionNow: {x: -1, y: -1}};
@@ -37,7 +40,19 @@ const StageComponent: React.FC<StageComponentProps> = (props: StageComponentProp
   };
 
   const onMouseUp = (): void =>  {
-    setSelectorPosition(noSelectionSelector);
+    // so... i need to determine which performers from 'show' 
+    if(!selectionMade)
+    {
+      if(props.selectPerformers(selectorPosition))
+      {
+        setSelectionMade(true);
+      }
+      setSelectorPosition(noSelectionSelector);
+    }
+    else
+    {
+      setSelectionMade(false);
+    }
   };
 
   const onMouseDown = (mouseEvent: KonvaEventObject<MouseEvent>): void => {
@@ -60,8 +75,6 @@ const StageComponent: React.FC<StageComponentProps> = (props: StageComponentProp
     setSelectorPosition(noSelectionSelector);
   };
   
-
-  
   return (
     <div
       style={{
@@ -82,12 +95,17 @@ const StageComponent: React.FC<StageComponentProps> = (props: StageComponentProp
             width={props.width}
             height={props.height}
           />
-          {props.show?.countPositions[props.count]!.map((performer) => (
+          <PerformerGroupComponent 
+            performers={props.show?.countPositions[props.count]?.filter((performer) => performer.selected)}
+            updatePosition={props.updatePosition} 
+          />
+          {props.show?.countPositions[props.count]?.filter((performer) => !performer.selected).map((performer) => (
             <PerformerComponent
               key={performer.id}
               performer={performer}
-              imageSrc={config.performerImageSrc}
+              imageSrc={performer.selected ? config.performerImageHighlightedSrc : config.performerImageSrc}
               onUpdatePosition={props.updatePosition}
+              selected={performer.selected}
             />
           ))}
           <SelectorComponent 

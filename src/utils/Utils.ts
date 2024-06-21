@@ -1,4 +1,5 @@
 import config from "../config/AppConfig";
+import { SelectorPosition } from "../types/SelectorPosition";
 import { ShapeBounds } from "../types/ShapeBounds";
 
 const utils = {
@@ -40,7 +41,13 @@ const utils = {
       r2.y + r2.height < r1.y
     );
     return hasIntersection;
-  }
+  },
+
+  // returns true if SelectorPosition has none -1 values and isn't undefined
+  selectionCompleted: (selectorPosition?: SelectorPosition): boolean => {
+    if(selectorPosition?.positionNow.x != -1)
+    return (selectorPosition !== undefined && selectorPosition.positionNow.x !== -1 && selectorPosition.positionNow.y !== -1 && selectorPosition.positionStart.x !== -1 && selectorPosition.positionStart.y !== -1);
+  },
 };
 
 export default utils;

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Layout, ConfigProvider, Menu, theme } from "antd";
-import { useUserState } from "./utils/UserState";
+import { useShowState } from "./utils/ShowState";
 import utils from "./utils/Utils";
 import config from "./config/AppConfig";
 import { Show } from "./types/Show";
@@ -66,14 +66,15 @@ const App: React.FC<object> = () => {
     saveState,
     loadState,
     count,
-    handleCountChange,
-    updatePositions,
+    handleCountSliderChange,
+    updatePerformerPosition,
     toggleShowPlaying,
     setShowButtonCallback,
     addCountCallback,
     sliderPosition,
     showPlaying,
-  } = useUserState(basicUser);
+    selectPerformers,
+  } = useShowState(basicUser);
 
   // empty array means invoked once, adds listener to update windowSize var on 'resize' event
   useEffect(() => {
@@ -118,13 +119,14 @@ const App: React.FC<object> = () => {
                 height={config.canvasHeight}
                 show={show}
                 count={count}
-                updatePosition={updatePositions}
+                updatePosition={updatePerformerPosition}
+                selectPerformers={selectPerformers}
               />
             </Row>
             <Row>
               <PlayControlsComponent
                 toggleShowPlaying={toggleShowPlaying}
-                onSlide={handleCountChange}
+                onSlide={handleCountSliderChange}
                 maxCount={Object.keys(show.countPositions).length - 1} // '-1' because count is 0 indexed
                 addCount={addCountCallback}
                 sliderPosition={sliderPosition}

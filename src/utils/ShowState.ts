@@ -19,11 +19,6 @@ export const useShowState = (user: User) => {
     Object.keys(show.countPositions).length - 1,
   ]);
   const [showPlaying, setShowPlaying] = useState<boolean>(false);
-  
-  // to set breakpoints on
-  const setShowWrapper = (show: any) => {
-    setShow(show);
-  };
 
   const saveState = (): void => {
     const serializedData = JSON.stringify(show);
@@ -60,7 +55,7 @@ export const useShowState = (user: User) => {
       }),
     );
 
-    setShowWrapper((prevShow) => ({
+    setShow((prevShow) => ({
       ...prevShow,
       countPositions: {
         ...prevShow.countPositions,
@@ -90,7 +85,7 @@ export const useShowState = (user: User) => {
     });
 
     const newShow = updatedShow(show, count, updatedPerformers);
-    setShowWrapper(newShow);
+    setShow(newShow);
   };
 
   const updatePerformerGroupPosition = (performers: Performer[]): void => {
@@ -110,13 +105,13 @@ export const useShowState = (user: User) => {
     });
 
     const newShow = updatedShow(show, count, currentPerformers);
-    setShowWrapper(newShow);
+    setShow(newShow);
   };
 
   // callback passed to the select show dropdown
   const setShowButtonCallback = (showName: string): void => {
     setCount(0);
-    setShowWrapper(user.shows[showName]);
+    setShow(user.shows[showName]);
   };
 
   // Callback passed to slider component
@@ -157,7 +152,7 @@ export const useShowState = (user: User) => {
   const addCountCallback = (): void => {
     const newCount = Object.keys(show.countPositions).length;
     const performersAtEnd = show.countPositions[newCount - 1];
-    setShowWrapper((prevShow) => ({
+    setShow((prevShow) => ({
       ...prevShow,
       countPositions: {
         ...prevShow.countPositions,
@@ -206,7 +201,7 @@ export const useShowState = (user: User) => {
       },
     });
     const newShow = updatedShow(show, count, updatedPerformers);
-    setShowWrapper(newShow);
+    setShow(newShow);
     return atLeastOnePerformerInBox;
   };
 

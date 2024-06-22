@@ -29,6 +29,7 @@ const UploadButtonComponent: React.FC<UploadButtonProps> = (
     return isJson;
   };
 
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   const handleSuccess = ({ onSuccess }: any) => {
     onSuccess();
     message.success(`File uploaded successfully`);

@@ -27,6 +27,7 @@ export const useShowState = (user: User) => {
   };
 
   // Callback passed to upload button
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   const loadState = (file: UploadFile<any>[]): boolean => {
     const reader = new FileReader();
     reader.onload = (event) => {
@@ -76,7 +77,7 @@ export const useShowState = (user: User) => {
         }
       },
     );
-    const updatedShow = (show: any, count: any, updatedPerformers: any) => ({
+    const updatedShow = (show: Show, count: number, updatedPerformers: Performer[]) => ({
       ...show,
       countPositions: {
         ...show.countPositions,
@@ -96,7 +97,7 @@ export const useShowState = (user: User) => {
       currentPerformers[parseInt(performer.id)].y = performer.y;
     });
 
-    const updatedShow = (show: any, count: any, updatedPerformers: any) => ({
+    const updatedShow = (show: Show, count: number, updatedPerformers: Performer[]) => ({
       ...show,
       countPositions: {
         ...show.countPositions,
@@ -193,7 +194,7 @@ export const useShowState = (user: User) => {
     );
 
     // debugging variables to breakpoint on
-    const updatedShow = (show, count, updatedPerformers) => ({
+    const updatedShow = (show: Show, count: number, updatedPerformers: Performer[]) => ({
       ...show,
       countPositions: {
         ...show.countPositions,

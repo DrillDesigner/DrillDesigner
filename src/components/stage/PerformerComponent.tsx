@@ -12,7 +12,9 @@ interface PerformerComponentProps {
   selected: boolean;
 }
 
-const PerformerComponent: React.FC<PerformerComponentProps> = (props: PerformerComponentProps) => {
+const PerformerComponent: React.FC<PerformerComponentProps> = (
+  props: PerformerComponentProps,
+) => {
   const [image] = useImage(props.imageSrc);
   const handleDragEnd = (event: Konva.KonvaEventObject<MouseEvent>) => {
     const stage = event.target.getStage();
@@ -29,7 +31,7 @@ const PerformerComponent: React.FC<PerformerComponentProps> = (props: PerformerC
 
   return (
     <>
-    {/* {props.performer.id === '0' && props.performer.selected && console.log(props.performer.x, props.performer.y)} */} 
+      {/* {props.performer.id === '0' && props.performer.selected && console.log(props.performer.x, props.performer.y)} */}
       <Image
         x={props.performer.x}
         y={props.performer.y}

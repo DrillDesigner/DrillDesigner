@@ -9,7 +9,6 @@ import utils from "./Utils";
 import { SelectorPosition } from "../types/SelectorPosition";
 import { Performer } from "../types/Performer";
 
-
 export const useShowState = (user: User) => {
   const [show, setShow] = useState<Show>(user.shows[user.initialShowName]);
   const [count, setCount] = useState<number>(0);
@@ -77,7 +76,11 @@ export const useShowState = (user: User) => {
         }
       },
     );
-    const updatedShow = (show: Show, count: number, updatedPerformers: Performer[]) => ({
+    const updatedShow = (
+      show: Show,
+      count: number,
+      updatedPerformers: Performer[],
+    ) => ({
       ...show,
       countPositions: {
         ...show.countPositions,
@@ -97,7 +100,11 @@ export const useShowState = (user: User) => {
       currentPerformers[parseInt(performer.id)].y = performer.y;
     });
 
-    const updatedShow = (show: Show, count: number, updatedPerformers: Performer[]) => ({
+    const updatedShow = (
+      show: Show,
+      count: number,
+      updatedPerformers: Performer[],
+    ) => ({
       ...show,
       countPositions: {
         ...show.countPositions,
@@ -167,15 +174,27 @@ export const useShowState = (user: User) => {
   // given a selectorPosition, select (or deselect) performers that are within the selectorPosition box and update the show so those performers are 'selected'
   const selectPerformers = (selectorPosition: SelectorPosition): boolean => {
     const completedSelector = utils.selectionCompleted(selectorPosition);
-    
+
     // get topLeft and bottomRight x and y cords, could be positionStart or positionNow depending on which way the use dragged
     const topLeft = {
-      x: Math.min(selectorPosition.positionStart.x, selectorPosition.positionNow.x),
-      y: Math.min(selectorPosition.positionStart.y, selectorPosition.positionNow.y),
+      x: Math.min(
+        selectorPosition.positionStart.x,
+        selectorPosition.positionNow.x,
+      ),
+      y: Math.min(
+        selectorPosition.positionStart.y,
+        selectorPosition.positionNow.y,
+      ),
     };
     const bottomRight = {
-      x: Math.max(selectorPosition.positionStart.x, selectorPosition.positionNow.x),
-      y: Math.max(selectorPosition.positionStart.y, selectorPosition.positionNow.y),
+      x: Math.max(
+        selectorPosition.positionStart.x,
+        selectorPosition.positionNow.x,
+      ),
+      y: Math.max(
+        selectorPosition.positionStart.y,
+        selectorPosition.positionNow.y,
+      ),
     };
     let atLeastOnePerformerInBox = false;
     const updatedPerformers = Object.keys(show.countPositions[count]).map(
@@ -186,15 +205,22 @@ export const useShowState = (user: User) => {
           performer.x <= bottomRight.x &&
           performer.y + config.performerSize >= topLeft.y &&
           performer.y <= bottomRight.y;
-        if(isWithinBox) { 
-          atLeastOnePerformerInBox = true; 
+        if (isWithinBox) {
+          atLeastOnePerformerInBox = true;
         }
-        return { ...performer, selected: (!completedSelector ? completedSelector : isWithinBox)}; // if th selection isn't completed, set all performers to not being selected
-      }
+        return {
+          ...performer,
+          selected: !completedSelector ? completedSelector : isWithinBox,
+        }; // if th selection isn't completed, set all performers to not being selected
+      },
     );
 
     // debugging variables to breakpoint on
-    const updatedShow = (show: Show, count: number, updatedPerformers: Performer[]) => ({
+    const updatedShow = (
+      show: Show,
+      count: number,
+      updatedPerformers: Performer[],
+    ) => ({
       ...show,
       countPositions: {
         ...show.countPositions,
@@ -205,8 +231,6 @@ export const useShowState = (user: User) => {
     setShow(newShow);
     return atLeastOnePerformerInBox;
   };
-
-
 
   // if the show being displayed is changed with setShow, update the show in user.shows
   useEffect(() => {

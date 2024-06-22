@@ -23,72 +23,70 @@ export interface StageComponentProps {
   updatePerformerGroupPosition: (performers: Performer[]) => void;
 }
 
-const StageComponent: React.FC<StageComponentProps> = (props: StageComponentProps) => {
-  const [selectorPosition, setSelectorPosition] = useState<SelectorPosition>({positionNow: {x: -1, y: -1}, positionStart: {x: -1, y: -1}});
+const StageComponent: React.FC<StageComponentProps> = (
+  props: StageComponentProps,
+) => {
+  const [selectorPosition, setSelectorPosition] = useState<SelectorPosition>({
+    positionNow: { x: -1, y: -1 },
+    positionStart: { x: -1, y: -1 },
+  });
   const [selectionMade, setSelectionMade] = useState<boolean>(false);
   const [draggingGroup, setDraggingGroup] = useState<boolean>(false);
 
   // selector will not render
-  const noSelectionSelector: SelectorPosition = {positionStart: {x: -1, y: -1}, positionNow: {x: -1, y: -1}};
+  const noSelectionSelector: SelectorPosition = {
+    positionStart: { x: -1, y: -1 },
+    positionNow: { x: -1, y: -1 },
+  };
 
   const onSelectorMove = (mouseEvent: KonvaEventObject<MouseEvent>): void => {
-    if(selectorPosition.positionStart.x !== -1 && selectorPosition.positionStart.y !== -1)
-    {
+    if (
+      selectorPosition.positionStart.x !== -1 &&
+      selectorPosition.positionStart.y !== -1
+    ) {
       const positionToSet: SelectorPosition = {
-        positionNow: {x: mouseEvent.evt.offsetX, y: mouseEvent.evt.offsetY},
+        positionNow: { x: mouseEvent.evt.offsetX, y: mouseEvent.evt.offsetY },
         positionStart: selectorPosition.positionStart,
       };
       setSelectorPosition(positionToSet);
     }
   };
 
-  const onMouseUp = (): void =>  {
-    if(draggingGroup)
-    {
+  const onMouseUp = (): void => {
+    if (draggingGroup) {
       setDraggingGroup(false);
-    }
-    else
-    {
-      if(props.selectPerformers(selectorPosition))
-      {
+    } else {
+      if (props.selectPerformers(selectorPosition)) {
         setSelectionMade(true);
-      }
-      else
-      {
+      } else {
         setSelectionMade(false);
       }
     }
-    
+
     setSelectorPosition(noSelectionSelector);
   };
-
 
   const onMouseDown = (mouseEvent: KonvaEventObject<MouseEvent>): void => {
     let intersected = false;
     const target = mouseEvent.target;
     target.getLayer()?.children.forEach(function (child) {
-      if(utils.hasIntersection(child.getClientRect(), target.getClientRect())) {
+      if (
+        utils.hasIntersection(child.getClientRect(), target.getClientRect())
+      ) {
         intersected = true;
       }
     });
 
-    if(intersected)
-    {
-      if(selectionMade)
-      {
-        if(target.attrs.image.src.includes("PerformerEmojiHighlighted"))
-        {
+    if (intersected) {
+      if (selectionMade) {
+        if (target.attrs.image.src.includes("PerformerEmojiHighlighted")) {
           setDraggingGroup(true);
-        }
-        else
-        {
+        } else {
           props.selectPerformers(noSelectionSelector);
           setSelectionMade(false);
         }
       }
-    }
-    else
-    {
+    } else {
       props.selectPerformers(noSelectionSelector);
       setSelectorPosition({
         positionNow: { x: -1, y: -1 },
@@ -100,7 +98,7 @@ const StageComponent: React.FC<StageComponentProps> = (props: StageComponentProp
   const onMouseLeave = (): void => {
     setSelectorPosition(noSelectionSelector);
   };
-  
+
   return (
     <div
       style={{
@@ -108,36 +106,43 @@ const StageComponent: React.FC<StageComponentProps> = (props: StageComponentProp
         display: "inline-block",
       }}
     >
-      <Stage 
-        width={props.width} 
-        height={props.height} 
+      <Stage
+        width={props.width}
+        height={props.height}
         onMouseLeave={onMouseLeave}
         onMouseDown={onMouseDown}
         onMouseMove={onSelectorMove}
-        onMouseUp={onMouseUp}>
+        onMouseUp={onMouseUp}
+      >
         <Layer>
           <BackgroundComponent
             imageSrc={config.backgroundImageSrc}
             width={props.width}
             height={props.height}
           />
-          <PerformerGroupComponent 
-            performers={props.show?.countPositions[props.count]?.filter((performer) => performer.selected)}
-            updatePosition={props.updatePosition} 
+          <PerformerGroupComponent
+            performers={props.show?.countPositions[props.count]?.filter(
+              (performer) => performer.selected,
+            )}
+            updatePosition={props.updatePosition}
             updatePerformerGroupPosition={props.updatePerformerGroupPosition}
           />
-          {props.show?.countPositions[props.count]?.filter((performer) => !performer.selected).map((performer) => (
-            <PerformerComponent
-              key={performer.id}
-              performer={performer}
-              imageSrc={performer.selected ? config.performerImageHighlightedSrc : config.performerImageSrc}
-              onUpdatePosition={props.updatePosition}
-              selected={performer.selected}
-            />
-          ))}
-          <SelectorComponent 
-            selectorPosition={selectorPosition}
-            />
+          {props.show?.countPositions[props.count]
+            ?.filter((performer) => !performer.selected)
+            .map((performer) => (
+              <PerformerComponent
+                key={performer.id}
+                performer={performer}
+                imageSrc={
+                  performer.selected
+                    ? config.performerImageHighlightedSrc
+                    : config.performerImageSrc
+                }
+                onUpdatePosition={props.updatePosition}
+                selected={performer.selected}
+              />
+            ))}
+          <SelectorComponent selectorPosition={selectorPosition} />
         </Layer>
       </Stage>
     </div>

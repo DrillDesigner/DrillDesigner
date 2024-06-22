@@ -9,7 +9,7 @@ const config = {
   defaultNumPerformers: 51,
   defaultNumCounts: 8,
   initialShowName: "My Awesome Show",
-  performerSize: 20
+  performerSize: 20,
 };
 
 export default config;

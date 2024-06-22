@@ -7,7 +7,7 @@ import { Show } from "./types/Show";
 import StageComponent from "./components/stage/StageComponent";
 import MenuComponent from "./components/menu/MenuComponent";
 import items from "./components/menu/MenuItems";
-import { Row} from "antd";
+import { Row } from "antd";
 import HeaderComponent from "./components/header/HeaderComponent";
 import { User } from "./types/User";
 import PlayControlsComponent from "./components/stageControls/PlayControlsComponent";

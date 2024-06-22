@@ -1,15 +1,10 @@
 import React from "react";
-import {
-  Layout,
-  Typography,
-  Image,
-  Button,
-} from "antd";
+import { Layout, Typography, Image, Button } from "antd";
 import UploadButtonComponent from "./UploadButtonComponent.tsx";
 import { UploadFile } from "antd";
 import SelectShowComponent from "./SelectShowComponent.tsx";
 
-const { Header, } = Layout;
+const { Header } = Layout;
 const { Title } = Typography;
 
 interface HeaderComponentProps {

@@ -1,6 +1,6 @@
 import React from "react";
 import { DownOutlined } from "@ant-design/icons";
-import {  Button, Dropdown, Space, MenuProps, Typography } from "antd";
+import { Button, Dropdown, Space, MenuProps, Typography } from "antd";
 const { Title } = Typography;
 
 interface SelectShowProps {

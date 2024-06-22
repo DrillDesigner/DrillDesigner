@@ -11,20 +11,27 @@ interface PerformerGroupComponentProps {
   updatePerformerGroupPosition: (performers: Performer[]) => void;
 }
 
-const PerformerGroupComponent: React.FC<PerformerGroupComponentProps> = (props: PerformerGroupComponentProps) => {
-  const offsetFromPointer: { [key: string]: { xOffset: number; yOffset: number } } = {};
+const PerformerGroupComponent: React.FC<PerformerGroupComponentProps> = (
+  props: PerformerGroupComponentProps,
+) => {
+  const offsetFromPointer: {
+    [key: string]: { xOffset: number; yOffset: number };
+  } = {};
   const handleDragStart = (event: Konva.KonvaEventObject<MouseEvent>) => {
     const stage = event.target.getStage();
     const pointerPosition = stage!.getPointerPosition();
     props.performers?.forEach((performer) => {
-        offsetFromPointer[performer.id] = {xOffset: performer.x - pointerPosition!.x, yOffset: performer.y - pointerPosition!.y};
+      offsetFromPointer[performer.id] = {
+        xOffset: performer.x - pointerPosition!.x,
+        yOffset: performer.y - pointerPosition!.y,
+      };
     });
   };
 
   const handleDragEnd = (event: Konva.KonvaEventObject<MouseEvent>) => {
     const stage = event.target.getStage();
     const target = event.target;
-    // what is this callback really doing? 
+    // what is this callback really doing?
     // update the positions to where they've been dragged
 
     const pointerPosition = stage!.getPointerPosition();
@@ -35,22 +42,18 @@ const PerformerGroupComponent: React.FC<PerformerGroupComponentProps> = (props: 
       const newY = pointerPosition.y - relativePosition.y;
 
       const updatedPerformers = props.performers?.map((performer) => ({
-        ...performer, 
+        ...performer,
         x: newX + performer.x,
         y: newY + performer.y,
       }));
 
       props.updatePerformerGroupPosition(updatedPerformers!);
     }
-    target.absolutePosition({x: 0, y: 0});
+    target.absolutePosition({ x: 0, y: 0 });
   };
 
   return (
-    <Group 
-      draggable
-      onDragEnd={handleDragEnd}
-      onDragStart={handleDragStart}
-      >
+    <Group draggable onDragEnd={handleDragEnd} onDragStart={handleDragStart}>
       {props.performers?.map((performer) => (
         <PerformerComponent
           key={performer.id}
@@ -59,7 +62,7 @@ const PerformerGroupComponent: React.FC<PerformerGroupComponentProps> = (props: 
           onUpdatePosition={props.updatePosition}
           selected={performer.selected}
         />
-    ))}   
+      ))}
     </Group>
   );
 };

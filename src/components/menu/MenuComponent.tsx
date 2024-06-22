@@ -1,6 +1,6 @@
 import React from "react";
-import { message, Upload, Menu, UploadFile } from "antd";
-import type { MenuProps, GetProp, UploadProps } from "antd";
+import { Menu, UploadFile } from "antd";
+import type { MenuProps, GetProp } from "antd";
 
 interface MenuItemProps {
   label: React.ReactNode;

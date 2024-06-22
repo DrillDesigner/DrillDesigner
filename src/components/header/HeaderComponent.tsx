@@ -1,21 +1,15 @@
 import React from "react";
-import type { MenuProps } from "antd";
 import {
-  Breadcrumb,
   Layout,
-  Menu,
-  theme,
   Typography,
   Image,
   Button,
 } from "antd";
-import useImage from "use-image";
 import UploadButtonComponent from "./UploadButtonComponent.tsx";
-import { message, Upload, UploadFile } from "antd";
+import { UploadFile } from "antd";
 import SelectShowComponent from "./SelectShowComponent.tsx";
-import { Show } from "../../types/Show";
 
-const { Header, Content, Sider } = Layout;
+const { Header, } = Layout;
 const { Title } = Typography;
 
 interface HeaderComponentProps {
@@ -29,8 +23,6 @@ interface HeaderComponentProps {
 }
 
 const HeaderComponent = (props: HeaderComponentProps) => {
-  const [image] = useImage(props.imageSrc);
-
   return (
     <Header
       style={{

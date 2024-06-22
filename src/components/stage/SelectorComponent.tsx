@@ -1,6 +1,5 @@
-import React, { useRef, useEffect, useState } from "react";
-import Konva from "konva";
-import { Image, Transformer, Rect } from "react-konva";
+import React from "react";
+import { Rect } from "react-konva";
 import { SelectorPosition } from "../../types/SelectorPosition";
 import utils from "../../utils/Utils";
 

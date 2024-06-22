@@ -1,8 +1,6 @@
-import { useState } from "react";
 import React from "react";
 import { DownOutlined } from "@ant-design/icons";
-import { message, Button, Dropdown, Space, MenuProps, Typography } from "antd";
-import { Show } from "../../types/Show";
+import {  Button, Dropdown, Space, MenuProps, Typography } from "antd";
 const { Title } = Typography;
 
 interface SelectShowProps {

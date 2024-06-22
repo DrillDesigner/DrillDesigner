@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Layout, ConfigProvider, Menu, theme } from "antd";
+import { Layout, ConfigProvider, Menu } from "antd";
 import { useShowState } from "./utils/ShowState";
 import utils from "./utils/Utils";
 import config from "./config/AppConfig";
@@ -7,13 +7,12 @@ import { Show } from "./types/Show";
 import StageComponent from "./components/stage/StageComponent";
 import MenuComponent from "./components/menu/MenuComponent";
 import items from "./components/menu/MenuItems";
-import { Button, Flex, Segmented } from "antd";
-import { Col, Row, Divider, Space } from "antd";
+import { Row} from "antd";
 import HeaderComponent from "./components/header/HeaderComponent";
 import { User } from "./types/User";
 import PlayControlsComponent from "./components/stageControls/PlayControlsComponent";
 
-const { Content, Sider, Footer } = Layout;
+const { Content, Sider } = Layout;
 
 const initialShow: Show = {
   id: config.initialShowName,
@@ -27,7 +26,6 @@ const initialShow: Show = {
           return performerOffset - 265;
         },
       );
-
       return [
         i,
         utils.performersToLine(config.defaultNumPerformers, yOffsets[i]),

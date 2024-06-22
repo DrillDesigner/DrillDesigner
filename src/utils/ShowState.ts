@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
-import { Popover, UploadFile } from "antd";
+import { UploadFile } from "antd";
 import config from "../config/AppConfig";
 import * as FileSaver from "file-saver";
 import { message } from "antd";
 import { Show } from "../types/Show";
 import { User } from "../types/User";
 import utils from "./Utils";
-import { KonvaEventObject } from "konva/lib/Node";
 import { SelectorPosition } from "../types/SelectorPosition";
 import { Performer } from "../types/Performer";
+
 
 export const useShowState = (user: User) => {
   const [show, setShow] = useState<Show>(user.shows[user.initialShowName]);
@@ -71,8 +71,6 @@ export const useShowState = (user: User) => {
 
   // when a performer is dragged, update its position in the show to the new position for this count
   const updatePerformerPosition = (id: string, x: number, y: number): void => {
-    console.log("updating to: " + id + ", " + x + ", " + y);
-    console.log("previous: " + show.countPositions[count][parseInt(id)].id + ", " + show.countPositions[count][parseInt(id)].x + ", " + show.countPositions[count][parseInt(id)].y);
     const updatedPerformers = Object.keys(show.countPositions[count]).map(
       (key) => {
         const performer = show.countPositions[count][parseInt(key)];
@@ -83,7 +81,7 @@ export const useShowState = (user: User) => {
         }
       },
     );
-    const updatedShow = (show, count, updatedPerformers) => ({
+    const updatedShow = (show: any, count: any, updatedPerformers: any) => ({
       ...show,
       countPositions: {
         ...show.countPositions,
@@ -99,11 +97,11 @@ export const useShowState = (user: User) => {
     const currentPerformers = show.countPositions[count];
 
     performers.forEach((performer) => {
-      currentPerformers[performer.id].x = performer.x;
-      currentPerformers[performer.id].y = performer.y;
+      currentPerformers[parseInt(performer.id)].x = performer.x;
+      currentPerformers[parseInt(performer.id)].y = performer.y;
     });
 
-    const updatedShow = (show, count, updatedPerformers) => ({
+    const updatedShow = (show: any, count: any, updatedPerformers: any) => ({
       ...show,
       countPositions: {
         ...show.countPositions,
@@ -198,11 +196,6 @@ export const useShowState = (user: User) => {
         return { ...performer, selected: (!completedSelector ? completedSelector : isWithinBox)}; // if th selection isn't completed, set all performers to not being selected
       }
     );
-
-    if(atLeastOnePerformerInBox)
-    {
-      console.log("a performer is in the box)");
-    }
 
     // debugging variables to breakpoint on
     const updatedShow = (show, count, updatedPerformers) => ({

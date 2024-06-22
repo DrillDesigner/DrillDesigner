@@ -1,7 +1,6 @@
 import React from "react";
 import { Image } from "react-konva";
 import useImage from "use-image";
-import { KonvaEventObject } from "konva/lib/Node";
 
 interface BackgroundComponentProps {
   imageSrc: string;

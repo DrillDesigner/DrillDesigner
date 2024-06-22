@@ -1,7 +1,6 @@
-import React, { useRef, useEffect, useState } from "react";
+import React from "react";
 import Konva from "konva";
-import { Image, Transformer, Group, Rect } from "react-konva";
-import useImage from "use-image";
+import { Group } from "react-konva";
 import { Performer } from "../../types/Performer";
 import config from "../../config/AppConfig";
 import PerformerComponent from "./PerformerComponent";
@@ -17,7 +16,6 @@ const PerformerGroupComponent: React.FC<PerformerGroupComponentProps> = (props: 
   const handleDragStart = (event: Konva.KonvaEventObject<MouseEvent>) => {
     const stage = event.target.getStage();
     const pointerPosition = stage!.getPointerPosition();
-    const relativePosition = event.target.getRelativePointerPosition();
     props.performers?.forEach((performer) => {
         offsetFromPointer[performer.id] = {xOffset: performer.x - pointerPosition!.x, yOffset: performer.y - pointerPosition!.y};
     });
@@ -62,13 +60,6 @@ const PerformerGroupComponent: React.FC<PerformerGroupComponentProps> = (props: 
           selected={performer.selected}
         />
     ))}   
-    <Rect 
-      width={100}
-      height={100}
-      fill={'blue'}
-      opacity={0.5}>
-
-    </Rect>
     </Group>
   );
 };

@@ -1,5 +1,5 @@
 import React from "react";
-import { Stage, Layer, Rect, Group } from "react-konva";
+import { Stage, Layer } from "react-konva";
 import PerformerComponent from "./PerformerComponent";
 import BackgroundComponent from "./BackgroundComponent";
 import config from "../../config/AppConfig";
@@ -38,7 +38,6 @@ const StageComponent: React.FC<StageComponentProps> = (props: StageComponentProp
         positionNow: {x: mouseEvent.evt.offsetX, y: mouseEvent.evt.offsetY},
         positionStart: selectorPosition.positionStart,
       };
-      console.log(positionToSet);
       setSelectorPosition(positionToSet);
     }
   };
@@ -91,7 +90,6 @@ const StageComponent: React.FC<StageComponentProps> = (props: StageComponentProp
     else
     {
       props.selectPerformers(noSelectionSelector);
-      console.log("in mousedown");
       setSelectorPosition({
         positionNow: { x: -1, y: -1 },
         positionStart: { x: mouseEvent.evt.offsetX, y: mouseEvent.evt.offsetY },

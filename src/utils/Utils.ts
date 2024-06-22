@@ -25,6 +25,7 @@ const utils = {
       x: distanceBetween * index + config.fieldWidthAdjustment,
       y: y,
       isDragging: false,
+      selected: false,
     }));
   },
 
@@ -45,7 +46,6 @@ const utils = {
 
   // returns true if SelectorPosition has none -1 values and isn't undefined
   selectionCompleted: (selectorPosition?: SelectorPosition): boolean => {
-    if(selectorPosition?.positionNow.x != -1)
     return (selectorPosition !== undefined && selectorPosition.positionNow.x !== -1 && selectorPosition.positionNow.y !== -1 && selectorPosition.positionStart.x !== -1 && selectorPosition.positionStart.y !== -1);
   },
 };

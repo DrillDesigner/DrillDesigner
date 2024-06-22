@@ -1,8 +1,5 @@
-import { Slider } from "antd";
 import React from "react";
-import type { SliderSingleProps } from "antd";
-import { Button, Flex, Segmented } from "antd";
-import { useState, useEffect } from "react";
+import { Button, Flex } from "antd";
 import CountSliderComponent from "./CountSliderComponent";
 import PlayButtonComponent from "./PlayButtonComponent";
 

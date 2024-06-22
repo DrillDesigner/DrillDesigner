@@ -43,6 +43,15 @@ const utils = {
     return hasIntersection;
   },
 
+  wrapPositionInsideCanvas: (coord: number, isX: boolean): number => {
+    if(isX) {
+      return(Math.max(0, Math.min(config.canvasWidth - config.performerSize, coord)));
+    }
+    else {
+      return(Math.max(0, Math.min(config.canvasHeight - config.performerSize, coord)));
+    }
+  },
+
   // returns true if SelectorPosition has none -1 values and isn't undefined
   selectionCompleted: (selectorPosition?: SelectorPosition): boolean => {
     return (

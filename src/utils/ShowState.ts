@@ -70,7 +70,7 @@ export const useShowState = (user: User) => {
       (key) => {
         const performer = show.countPositions[count][parseInt(key)];
         if (key === id) {
-          return { ...performer, x, y };
+          return { ...performer, x: utils.wrapPositionInsideCanvas(x, true), y: utils.wrapPositionInsideCanvas(y, false) };
         } else {
           return performer;
         }
@@ -97,12 +97,8 @@ export const useShowState = (user: User) => {
     const currentPerformers = show.countPositions[count];
 
     performers.forEach((performer) => { 
-      // don't draw outside of the canvas
-      const performerX = Math.max(0, Math.min(config.canvasWidth - config.performerSize, performer.x));
-      const performerY = Math.max(0, Math.min(config.canvasHeight - config.performerSize, performer.y));
-
-      currentPerformers[parseInt(performer.id)].x = performerX;
-      currentPerformers[parseInt(performer.id)].y = performerY;
+      currentPerformers[parseInt(performer.id)].x = utils.wrapPositionInsideCanvas(performer.x, true);
+      currentPerformers[parseInt(performer.id)].y = utils.wrapPositionInsideCanvas(performer.y, false);
     });
 
     const updatedShow = (

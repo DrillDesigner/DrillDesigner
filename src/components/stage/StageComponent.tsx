@@ -10,6 +10,7 @@ import { SelectorPosition } from "../../types/SelectorPosition";
 import utils from "../../utils/Utils";
 import { useState } from "react";
 import PerformerGroupComponent from "./PerformerGroupComponent";
+import { Performer } from "../../types/Performer";
 
 export interface StageComponentProps {
   width: number;
@@ -19,11 +20,13 @@ export interface StageComponentProps {
   updatePosition: (id: string, x: number, y: number) => void;
   selectorPosition?: SelectorPosition;
   selectPerformers: (selectorPosition: SelectorPosition) => boolean;
+  updatePerformerGroupPosition: (performers: Performer[]) => void;
 }
 
 const StageComponent: React.FC<StageComponentProps> = (props: StageComponentProps) => {
   const [selectorPosition, setSelectorPosition] = useState<SelectorPosition>({positionNow: {x: -1, y: -1}, positionStart: {x: -1, y: -1}});
   const [selectionMade, setSelectionMade] = useState<boolean>(false);
+  const [draggingGroup, setDraggingGroup] = useState<boolean>(false);
 
   // selector will not render
   const noSelectionSelector: SelectorPosition = {positionStart: {x: -1, y: -1}, positionNow: {x: -1, y: -1}};
@@ -40,35 +43,63 @@ const StageComponent: React.FC<StageComponentProps> = (props: StageComponentProp
   };
 
   const onMouseUp = (): void =>  {
-    // so... i need to determine which performers from 'show' 
-    if(!selectionMade)
+    if(draggingGroup)
+    {
+      setDraggingGroup(false);
+    }
+    else
     {
       if(props.selectPerformers(selectorPosition))
       {
         setSelectionMade(true);
       }
-      setSelectorPosition(noSelectionSelector);
+      else
+      {
+        setSelectionMade(false);
+      }
+    }
+    
+    setSelectorPosition(noSelectionSelector);
+  };
+
+
+  // if a selection is already made: 
+  //  if the mouseDown is on the draggable group, do nothing
+  //  if the mouseDown is not on the draggable performer, unselect
+  //  if the mouseDown is not intersected, draw new selection and unselect
+  // no selection made:
+  //  if intersected, do nothing
+  //  if not intersected, draw new selection
+  const onMouseDown = (mouseEvent: KonvaEventObject<MouseEvent>): void => {
+    let intersected = false;
+    const target = mouseEvent.target;
+    const children = target.getLayer()?.children;
+    target.getLayer()?.children.forEach(function (child) {
+      if(utils.hasIntersection(child.getClientRect(), target.getClientRect())) {
+        intersected = true;
+      }
+    });
+
+    if(intersected && selectionMade)
+    {
+      if(target.attrs.image.src.includes("PerformerEmojiHighlighted"))
+      {
+        setDraggingGroup(true);
+      }
+      else
+      {
+        props.selectPerformers(noSelectionSelector);
+        setSelectionMade(false);
+      }
     }
     else
     {
-      setSelectionMade(false);
+      props.selectPerformers(noSelectionSelector);
+      setSelectorPosition({
+        positionNow: { x: -1, y: -1 },
+        positionStart: { x: mouseEvent.evt.offsetX, y: mouseEvent.evt.offsetY },
+      });
     }
-  };
-
-  const onMouseDown = (mouseEvent: KonvaEventObject<MouseEvent>): void => {
-    // if a performer is selected i.e. a layer's child and this mouse intersect, don't draw the selector square
-    const target = mouseEvent.target;
-    target.getLayer()?.children.forEach(function (child) {
-      if(utils.hasIntersection(child.getClientRect(), target.getClientRect())) {
-        setSelectorPosition(noSelectionSelector);
-      }
-      else {
-        setSelectorPosition({
-          positionNow: { x: -1, y: -1 },
-          positionStart: { x: mouseEvent.evt.offsetX, y: mouseEvent.evt.offsetY },
-        });
-      }
-    });
   };
 
   const onMouseLeave = (): void => {
@@ -98,6 +129,7 @@ const StageComponent: React.FC<StageComponentProps> = (props: StageComponentProp
           <PerformerGroupComponent 
             performers={props.show?.countPositions[props.count]?.filter((performer) => performer.selected)}
             updatePosition={props.updatePosition} 
+            updatePerformerGroupPosition={props.updatePerformerGroupPosition}
           />
           {props.show?.countPositions[props.count]?.filter((performer) => !performer.selected).map((performer) => (
             <PerformerComponent

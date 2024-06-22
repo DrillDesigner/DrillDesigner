@@ -8,6 +8,7 @@ import { User } from "../types/User";
 import utils from "./Utils";
 import { KonvaEventObject } from "konva/lib/Node";
 import { SelectorPosition } from "../types/SelectorPosition";
+import { Performer } from "../types/Performer";
 
 export const useShowState = (user: User) => {
   const [show, setShow] = useState<Show>(user.shows[user.initialShowName]);
@@ -18,7 +19,11 @@ export const useShowState = (user: User) => {
     Object.keys(show.countPositions).length - 1,
   ]);
   const [showPlaying, setShowPlaying] = useState<boolean>(false);
-
+  
+  // to set breakpoints on
+  const setShowWrapper = (show: any) => {
+    setShow(show);
+  };
 
   const saveState = (): void => {
     const serializedData = JSON.stringify(show);
@@ -55,7 +60,7 @@ export const useShowState = (user: User) => {
       }),
     );
 
-    setShow((prevShow) => ({
+    setShowWrapper((prevShow) => ({
       ...prevShow,
       countPositions: {
         ...prevShow.countPositions,
@@ -78,20 +83,45 @@ export const useShowState = (user: User) => {
         }
       },
     );
-
-    setShow((prevShow) => ({
-      ...prevShow,
+    const updatedShow = (show, count, updatedPerformers) => ({
+      ...show,
       countPositions: {
-        ...prevShow.countPositions,
+        ...show.countPositions,
         [count]: updatedPerformers,
       },
-    }));
+    });
+
+    const newShow = updatedShow(show, count, updatedPerformers);
+    setShowWrapper(newShow);
+  };
+
+  const updatePerformerGroupPosition = (performers: Performer[]): void => {
+    const currentPerformers = show.countPositions[count];
+
+    performers.forEach((performer) => {
+      const existingPerformer = currentPerformers[performer.id];
+      if (existingPerformer) {
+        existingPerformer.x = performer.x;
+        existingPerformer.y = performer.y;
+      }
+    });
+
+      const updatedShow = (show, count, updatedPerformers) => ({
+      ...show,
+      countPositions: {
+        ...show.countPositions,
+        [count]: updatedPerformers,
+      },
+    });
+
+    const newShow = updatedShow(show, count, currentPerformers);
+    setShowWrapper(newShow);
   };
 
   // callback passed to the select show dropdown
   const setShowButtonCallback = (showName: string): void => {
     setCount(0);
-    setShow(user.shows[showName]);
+    setShowWrapper(user.shows[showName]);
   };
 
   // Callback passed to slider component
@@ -132,7 +162,7 @@ export const useShowState = (user: User) => {
   const addCountCallback = (): void => {
     const newCount = Object.keys(show.countPositions).length;
     const performersAtEnd = show.countPositions[newCount - 1];
-    setShow((prevShow) => ({
+    setShowWrapper((prevShow) => ({
       ...prevShow,
       countPositions: {
         ...prevShow.countPositions,
@@ -172,13 +202,19 @@ export const useShowState = (user: User) => {
       }
     );
 
-    setShow((prevShow) => ({
-      ...prevShow,
+    const updatedShow = (show, count, updatedPerformers) => ({
+      ...show,
       countPositions: {
-        ...prevShow.countPositions,
+        ...show.countPositions,
         [count]: updatedPerformers,
       },
-    }));
+    });
+
+    // How to use the updated function
+    const newShow = updatedShow(show, count, updatedPerformers);
+
+
+    setShowWrapper(newShow);
     return performerInBox;
   };
 
@@ -254,5 +290,6 @@ export const useShowState = (user: User) => {
     sliderPosition,
     showPlaying,
     selectPerformers,
+    updatePerformerGroupPosition,
   };
 };

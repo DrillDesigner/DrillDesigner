@@ -9,6 +9,7 @@ import PerformerComponent from "./PerformerComponent";
 interface PerformerGroupComponentProps {
   performers?: Performer[];
   updatePosition: (id: string, x: number, y: number) => void;
+  updatePerformerGroupPosition: (performers: Performer[]) => void;
 }
 
 const PerformerGroupComponent: React.FC<PerformerGroupComponentProps> = (props: PerformerGroupComponentProps) => {
@@ -35,11 +36,16 @@ const PerformerGroupComponent: React.FC<PerformerGroupComponentProps> = (props: 
     if (pointerPosition && relativePosition) {
       const newX = pointerPosition.x - relativePosition.x;
       const newY = pointerPosition.y - relativePosition.y;
-      
-      props.performers?.forEach((performer) => {
-        props.updatePosition(performer.id, newX, newY);      
-      });
+
+      const updatedPerformers = props.performers?.map((performer) => ({
+        ...performer, 
+        x: newX + performer.x,
+        y: newY + performer.y,
+      }));
+
+      props.updatePerformerGroupPosition(updatedPerformers!);
     }
+
     setSelected(false);
   };
 
@@ -47,9 +53,7 @@ const PerformerGroupComponent: React.FC<PerformerGroupComponentProps> = (props: 
     <Group 
       draggable
       onDragEnd={handleDragEnd}
-      onDragStart={handleDragStart}
-      x={0}
-      y={0}>
+      onDragStart={handleDragStart}>
     {props.performers?.map((performer) => (
         <PerformerComponent
           key={performer.id}

@@ -147,15 +147,6 @@ export const useShowState = (user: User) => {
     setCount(newCount);
   };
 
-  // callback passed to the 'play' button to play or pause the show execution
-  const toggleShowPlaying = () => {
-    if (showPlaying) {
-      setShowPlaying(false);
-    } else {
-      setShowPlaying(true);
-    }
-  };
-
   // callback passed to the add count button
   const addCountCallback = (): void => {
     const newCount = Object.keys(show.countPositions).length;
@@ -211,11 +202,10 @@ export const useShowState = (user: User) => {
         return {
           ...performer,
           selected: !completedSelector ? completedSelector : isWithinBox,
-        }; // if th selection isn't completed, set all performers to not being selected
+        };
       },
     );
 
-    // debugging variables to breakpoint on
     const updatedShow = (
       show: Show,
       count: number,
@@ -244,6 +234,31 @@ export const useShowState = (user: User) => {
     },
     [count],
   );
+
+  // callback passed to the 'play' button to play or pause the show execution
+  const toggleShowPlaying = () => {
+    if (showPlaying) {
+      setShowPlaying(false);
+    } else {
+      const updatedPerformers = Object.keys(show.countPositions[count]).map(
+        (key) => {
+          const performer = show.countPositions[count][parseInt(key)];
+          return {
+            ...performer,
+            selected: false,
+          };
+        },
+      );
+      setShow({
+        ...show,
+        countPositions: {
+          ...show.countPositions,
+          [count]: updatedPerformers,
+        },
+      });
+      setShowPlaying(true);
+    }
+  };
 
   // runs the play loop is showPlaying changes (play button is clicked)
   useEffect(

@@ -99,14 +99,11 @@ export const useShowState = (user: User) => {
     const currentPerformers = show.countPositions[count];
 
     performers.forEach((performer) => {
-      const existingPerformer = currentPerformers[performer.id];
-      if (existingPerformer) {
-        existingPerformer.x = performer.x;
-        existingPerformer.y = performer.y;
-      }
+      currentPerformers[performer.id].x = performer.x;
+      currentPerformers[performer.id].y = performer.y;
     });
 
-      const updatedShow = (show, count, updatedPerformers) => ({
+    const updatedShow = (show, count, updatedPerformers) => ({
       ...show,
       countPositions: {
         ...show.countPositions,
@@ -186,7 +183,7 @@ export const useShowState = (user: User) => {
       x: Math.max(selectorPosition.positionStart.x, selectorPosition.positionNow.x),
       y: Math.max(selectorPosition.positionStart.y, selectorPosition.positionNow.y),
     };
-    let performerInBox = false;
+    let atLeastOnePerformerInBox = false;
     const updatedPerformers = Object.keys(show.countPositions[count]).map(
       (key) => {
         const performer = show.countPositions[count][parseInt(key)];
@@ -196,12 +193,18 @@ export const useShowState = (user: User) => {
           performer.y + config.performerSize >= topLeft.y &&
           performer.y <= bottomRight.y;
         if(isWithinBox) { 
-          performerInBox = true; 
+          atLeastOnePerformerInBox = true; 
         }
         return { ...performer, selected: (!completedSelector ? completedSelector : isWithinBox)}; // if th selection isn't completed, set all performers to not being selected
       }
     );
 
+    if(atLeastOnePerformerInBox)
+    {
+      console.log("a performer is in the box)");
+    }
+
+    // debugging variables to breakpoint on
     const updatedShow = (show, count, updatedPerformers) => ({
       ...show,
       countPositions: {
@@ -209,13 +212,9 @@ export const useShowState = (user: User) => {
         [count]: updatedPerformers,
       },
     });
-
-    // How to use the updated function
     const newShow = updatedShow(show, count, updatedPerformers);
-
-
     setShowWrapper(newShow);
-    return performerInBox;
+    return atLeastOnePerformerInBox;
   };
 
 

@@ -38,6 +38,7 @@ const StageComponent: React.FC<StageComponentProps> = (props: StageComponentProp
         positionNow: {x: mouseEvent.evt.offsetX, y: mouseEvent.evt.offsetY},
         positionStart: selectorPosition.positionStart,
       };
+      console.log(positionToSet);
       setSelectorPosition(positionToSet);
     }
   };
@@ -63,38 +64,34 @@ const StageComponent: React.FC<StageComponentProps> = (props: StageComponentProp
   };
 
 
-  // if a selection is already made: 
-  //  if the mouseDown is on the draggable group, do nothing
-  //  if the mouseDown is not on the draggable performer, unselect
-  //  if the mouseDown is not intersected, draw new selection and unselect
-  // no selection made:
-  //  if intersected, do nothing
-  //  if not intersected, draw new selection
   const onMouseDown = (mouseEvent: KonvaEventObject<MouseEvent>): void => {
     let intersected = false;
     const target = mouseEvent.target;
-    const children = target.getLayer()?.children;
     target.getLayer()?.children.forEach(function (child) {
       if(utils.hasIntersection(child.getClientRect(), target.getClientRect())) {
         intersected = true;
       }
     });
 
-    if(intersected && selectionMade)
+    if(intersected)
     {
-      if(target.attrs.image.src.includes("PerformerEmojiHighlighted"))
+      if(selectionMade)
       {
-        setDraggingGroup(true);
-      }
-      else
-      {
-        props.selectPerformers(noSelectionSelector);
-        setSelectionMade(false);
+        if(target.attrs.image.src.includes("PerformerEmojiHighlighted"))
+        {
+          setDraggingGroup(true);
+        }
+        else
+        {
+          props.selectPerformers(noSelectionSelector);
+          setSelectionMade(false);
+        }
       }
     }
     else
     {
       props.selectPerformers(noSelectionSelector);
+      console.log("in mousedown");
       setSelectorPosition({
         positionNow: { x: -1, y: -1 },
         positionStart: { x: mouseEvent.evt.offsetX, y: mouseEvent.evt.offsetY },

@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import Konva from "konva";
-import { Image, Transformer, Group } from "react-konva";
+import { Image, Transformer, Group, Rect } from "react-konva";
 import useImage from "use-image";
 import { Performer } from "../../types/Performer";
 import config from "../../config/AppConfig";
@@ -13,11 +13,6 @@ interface PerformerGroupComponentProps {
 }
 
 const PerformerGroupComponent: React.FC<PerformerGroupComponentProps> = (props: PerformerGroupComponentProps) => {
-  const [isSelected, setSelected] = useState(false);
-  const handleSelect = () => {
-    setSelected(true);
-  };
-
   const offsetFromPointer: { [key: string]: { xOffset: number; yOffset: number } } = {};
   const handleDragStart = (event: Konva.KonvaEventObject<MouseEvent>) => {
     const stage = event.target.getStage();
@@ -30,6 +25,10 @@ const PerformerGroupComponent: React.FC<PerformerGroupComponentProps> = (props: 
 
   const handleDragEnd = (event: Konva.KonvaEventObject<MouseEvent>) => {
     const stage = event.target.getStage();
+    const target = event.target;
+    // what is this callback really doing? 
+    // update the positions to where they've been dragged
+
     const pointerPosition = stage!.getPointerPosition();
     const relativePosition = event.target.getRelativePointerPosition();
 
@@ -45,25 +44,31 @@ const PerformerGroupComponent: React.FC<PerformerGroupComponentProps> = (props: 
 
       props.updatePerformerGroupPosition(updatedPerformers!);
     }
-
-    setSelected(false);
+    target.absolutePosition({x: 0, y: 0});
   };
 
   return (
     <Group 
       draggable
       onDragEnd={handleDragEnd}
-      onDragStart={handleDragStart}>
-    {props.performers?.map((performer) => (
+      onDragStart={handleDragStart}
+      >
+      {props.performers?.map((performer) => (
         <PerformerComponent
           key={performer.id}
           performer={performer}
-          imageSrc={performer.selected ? config.performerImageHighlightedSrc : config.performerImageSrc}
+          imageSrc={config.performerImageHighlightedSrc}
           onUpdatePosition={props.updatePosition}
           selected={performer.selected}
         />
-    ))}     
-         
+    ))}   
+    <Rect 
+      width={100}
+      height={100}
+      fill={'blue'}
+      opacity={0.5}>
+
+    </Rect>
     </Group>
   );
 };

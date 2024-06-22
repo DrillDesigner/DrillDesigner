@@ -40,7 +40,7 @@ const PerformerComponent: React.FC<PerformerComponentProps> = (props: PerformerC
 
   return (
     <>
-    {props.performer.id === '0' && console.log(props.performer.x, props.performer.y)}
+    {props.performer.id === '0' && props.performer.selected && console.log(props.performer.x, props.performer.y)}
       <Image
         x={props.performer.x}
         y={props.performer.y}

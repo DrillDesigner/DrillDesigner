@@ -8,7 +8,7 @@ import PerformerComponent from "./PerformerComponent";
 interface PerformerGroupComponentProps {
   performers?: Performer[];
   updatePosition: (id: string, x: number, y: number) => void;
-  updatePerformerGroupPosition: (performers: Performer[]) => void;
+  updatePerformersPositions: (performers: Performer[]) => void;
 }
 
 const PerformerGroupComponent: React.FC<PerformerGroupComponentProps> = (
@@ -47,7 +47,7 @@ const PerformerGroupComponent: React.FC<PerformerGroupComponentProps> = (
         y: newY + performer.y,
       }));
 
-      props.updatePerformerGroupPosition(updatedPerformers!);
+      props.updatePerformersPositions(updatedPerformers!);
     }
     target.absolutePosition({ x: 0, y: 0 });
   };

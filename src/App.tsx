@@ -65,14 +65,14 @@ const App: React.FC<object> = () => {
     loadState,
     count,
     handleCountSliderChange,
-    updatePerformerPosition,
     toggleShowPlaying,
     setShowButtonCallback,
     addCountCallback,
     sliderPosition,
     showPlaying,
     selectPerformers,
-    updatePerformerGroupPosition,
+    updatePerformerPosition,
+    updatePerformersPositions,
   } = useShowState(basicUser);
 
   // empty array means invoked once, adds listener to update windowSize var on 'resize' event
@@ -120,7 +120,7 @@ const App: React.FC<object> = () => {
                 count={count}
                 updatePosition={updatePerformerPosition}
                 selectPerformers={selectPerformers}
-                updatePerformerGroupPosition={updatePerformerGroupPosition}
+                updatePerformersPositions={updatePerformersPositions}
               />
             </Row>
             <Row>

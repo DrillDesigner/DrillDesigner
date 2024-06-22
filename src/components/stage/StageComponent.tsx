@@ -20,7 +20,7 @@ export interface StageComponentProps {
   updatePosition: (id: string, x: number, y: number) => void;
   selectorPosition?: SelectorPosition;
   selectPerformers: (selectorPosition: SelectorPosition) => boolean;
-  updatePerformerGroupPosition: (performers: Performer[]) => void;
+  updatePerformersPositions: (performers: Performer[]) => void;
 }
 
 const StageComponent: React.FC<StageComponentProps> = (
@@ -125,7 +125,7 @@ const StageComponent: React.FC<StageComponentProps> = (
               (performer) => performer.selected,
             )}
             updatePosition={props.updatePosition}
-            updatePerformerGroupPosition={props.updatePerformerGroupPosition}
+            updatePerformersPositions={props.updatePerformersPositions}
           />
           {props.show?.countPositions[props.count]
             ?.filter((performer) => !performer.selected)

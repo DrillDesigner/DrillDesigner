@@ -64,7 +64,7 @@ export const useShowState = (user: User) => {
     }));
   };
 
-  // when a performer is dragged, update its position in the show to the new position for this count
+  // Update the position of a performer given its id, x, and y
   const updatePerformerPosition = (id: string, x: number, y: number): void => {
     const updatedPerformers = Object.keys(show.countPositions[count]).map(
       (key) => {
@@ -92,12 +92,17 @@ export const useShowState = (user: User) => {
     setShow(newShow);
   };
 
-  const updatePerformerGroupPosition = (performers: Performer[]): void => {
+  // update positions of performers when given Performer array
+  const updatePerformersPositions = (performers: Performer[]): void => {
     const currentPerformers = show.countPositions[count];
 
-    performers.forEach((performer) => {
-      currentPerformers[parseInt(performer.id)].x = performer.x;
-      currentPerformers[parseInt(performer.id)].y = performer.y;
+    performers.forEach((performer) => { 
+      // don't draw outside of the canvas
+      const performerX = Math.max(0, Math.min(config.canvasWidth - config.performerSize, performer.x));
+      const performerY = Math.max(0, Math.min(config.canvasHeight - config.performerSize, performer.y));
+
+      currentPerformers[parseInt(performer.id)].x = performerX;
+      currentPerformers[parseInt(performer.id)].y = performerY;
     });
 
     const updatedShow = (
@@ -310,13 +315,13 @@ export const useShowState = (user: User) => {
     loadState,
     count,
     handleCountSliderChange,
-    updatePerformerPosition,
     toggleShowPlaying,
     setShowButtonCallback,
     addCountCallback,
     sliderPosition,
     showPlaying,
     selectPerformers,
-    updatePerformerGroupPosition,
+    updatePerformerPosition,
+    updatePerformersPositions,
   };
 };

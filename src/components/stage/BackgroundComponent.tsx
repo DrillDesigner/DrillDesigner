@@ -10,7 +10,7 @@ interface BackgroundComponentProps {
 
 const BackgroundComponent = (props: BackgroundComponentProps) => {
   const [image] = useImage(props.imageSrc);
-
+  React;
   return <Image image={image} width={props.width} height={props.height} />;
 };
 

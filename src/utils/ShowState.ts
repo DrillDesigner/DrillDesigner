@@ -226,6 +226,7 @@ export const useShowState = (user: User) => {
   // if the show being displayed is changed with setShow, update the show in user.shows
   useEffect(() => {
     user.shows[show.id] = show;
+    document.title = show.id + " - Drill Designer";
   }, [show, user.shows]);
 
   // if count changes (during show playing) update the slider to match the count

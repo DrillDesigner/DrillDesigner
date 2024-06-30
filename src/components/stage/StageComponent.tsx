@@ -67,17 +67,18 @@ const StageComponent: React.FC<StageComponentProps> = (
   };
 
   const onMouseDown = (mouseEvent: KonvaEventObject<MouseEvent>): void => {
-    let intersected = false;
-    const target = mouseEvent.target;
-    target.getLayer()?.children.forEach(function (child) {
-      if (
-        utils.hasIntersection(child.getClientRect(), target.getClientRect())
-      ) {
-        intersected = true;
-      }
-    });
+    const shapeMouseClicked = layer?.getIntersection({x: mouseEvent.evt.offsetX, y: mouseEvent.evt.offsetY});
 
-    if (intersected) {
+    // if the background has been clicked, start a selection and cancel any selection already made
+    // else, if a selection has been made and a highlighted performer has been clicked, start dragging. 
+    // Else, make new selection
+    if (shapeMouseClicked?.attrs.height == config.canvasHeight) {
+      props.selectPerformers(noSelectionSelector);
+      setSelectorPosition({
+        positionNow: { x: -1, y: -1 },
+        positionStart: { x: mouseEvent.evt.offsetX, y: mouseEvent.evt.offsetY },
+      });
+    } else {
       if (selectionMade) {
         if (target.attrs.image.src.includes("PerformerEmojiHighlighted")) {
           setDraggingGroup(true);
@@ -86,12 +87,6 @@ const StageComponent: React.FC<StageComponentProps> = (
           setSelectionMade(false);
         }
       }
-    } else {
-      props.selectPerformers(noSelectionSelector);
-      setSelectorPosition({
-        positionNow: { x: -1, y: -1 },
-        positionStart: { x: mouseEvent.evt.offsetX, y: mouseEvent.evt.offsetY },
-      });
     }
   };
 

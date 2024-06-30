@@ -12,3 +12,9 @@ body {
 .ant-slider .ant-slider-handle-2 {
   z-index: 1;
 }
+
+.ant-space-item {
+  color: white;
+  height: 44px;
+  margin-top: -17px;
+}

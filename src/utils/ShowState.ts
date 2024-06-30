@@ -223,20 +223,6 @@ export const useShowState = (user: User) => {
     return atLeastOnePerformerInBox;
   };
 
-  // if the show being displayed is changed with setShow, update the show in user.shows
-  useEffect(() => {
-    user.shows[show.id] = show;
-    document.title = show.id + " - Drill Designer";
-  }, [show, user.shows]);
-
-  // if count changes (during show playing) update the slider to match the count
-  useEffect(
-    function setSliderPositionIfCountChanges() {
-      setSliderPosition([sliderPosition[0], count, sliderPosition[2]]);
-    },
-    [count],
-  );
-
   // callback passed to the 'play' button to play or pause the show execution
   const toggleShowPlaying = () => {
     if (showPlaying) {
@@ -261,6 +247,21 @@ export const useShowState = (user: User) => {
       setShowPlaying(true);
     }
   };
+
+  // if the show being displayed is changed with setShow, update the show in user.shows
+  useEffect(() => {
+    user.shows[show.id] = show;
+    document.title = show.id + " - Drill Designer";
+  }, [show, user.shows]);
+
+  // if count changes (during show playing) update the slider to match the count
+  useEffect(
+    function setSliderPositionIfCountChanges() {
+      setSliderPosition([sliderPosition[0], count, sliderPosition[2]]);
+    },
+    [count],
+  );
+
 
   // runs the play loop is showPlaying changes (play button is clicked)
   useEffect(

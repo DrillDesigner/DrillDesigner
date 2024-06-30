@@ -7,7 +7,6 @@ import { Show } from "../../types/Show";
 import SelectorComponent from "./SelectorComponent";
 import { KonvaEventObject } from "konva/lib/Node";
 import { SelectorPosition } from "../../types/SelectorPosition";
-import utils from "../../utils/Utils";
 import { useState } from "react";
 import PerformerGroupComponent from "./PerformerGroupComponent";
 import { Performer } from "../../types/Performer";

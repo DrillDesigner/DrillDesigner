@@ -66,9 +66,11 @@ export const useShowState = (user: User) => {
   };
 
   // update positions of performers when given Performer array
-  const updatePerformersPositions = (newPerformersPositions: Performer[]): void => {
+  const updatePerformersPositions = (
+    newPerformersPositions: Performer[],
+  ): void => {
     const currentPerformers = show.countPositions[count];
-    
+
     // update currentPerformers with performers passed in to be at the new position when wrapped within the canvas
     newPerformersPositions.forEach((performer) => {
       currentPerformers[parseInt(performer.id)].x =
@@ -101,7 +103,7 @@ export const useShowState = (user: User) => {
   // (show.id, count)
   // for a given show name and modification number
   // move performer -> 1
-  // advance count -> 
+  // advance count ->
   // move performer -> 2
 
   // Callback passed to slider component

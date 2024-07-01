@@ -68,12 +68,10 @@ const StageComponent: React.FC<StageComponentProps> = (
   };
 
   const onMouseDown = (mouseEvent: KonvaEventObject<MouseEvent>): void => {
-    const shapeMouseClicked = mouseEvent.target
-      .getLayer()
-      ?.getIntersection({
-        x: mouseEvent.evt.offsetX,
-        y: mouseEvent.evt.offsetY,
-      });
+    const shapeMouseClicked = mouseEvent.target.getLayer()?.getIntersection({
+      x: mouseEvent.evt.offsetX,
+      y: mouseEvent.evt.offsetY,
+    });
 
     // if the background has been clicked, start a selection and cancel any selection already made
     // else, if a selection has been made and a highlighted performer has been clicked, start dragging. El

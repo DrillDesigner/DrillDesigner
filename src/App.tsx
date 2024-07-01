@@ -58,7 +58,9 @@ const App: React.FC<object> = () => {
     height: window.innerHeight,
   });
 
-  const [backgroundImageSrc, setBackgroundImage] = useState(config.backgroundImageSrc);
+  const [backgroundImageSrc, setBackgroundImage] = useState(
+    config.backgroundImageSrc,
+  );
 
   const {
     show,

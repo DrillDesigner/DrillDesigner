@@ -70,7 +70,11 @@ export const useShowState = (user: User) => {
       (key) => {
         const performer = show.countPositions[count][parseInt(key)];
         if (key === id) {
-          return { ...performer, x: utils.wrapPositionInsideCanvas(x, true), y: utils.wrapPositionInsideCanvas(y, false) };
+          return {
+            ...performer,
+            x: utils.wrapPositionInsideCanvas(x, true),
+            y: utils.wrapPositionInsideCanvas(y, false),
+          };
         } else {
           return performer;
         }
@@ -96,9 +100,11 @@ export const useShowState = (user: User) => {
   const updatePerformersPositions = (performers: Performer[]): void => {
     const currentPerformers = show.countPositions[count];
 
-    performers.forEach((performer) => { 
-      currentPerformers[parseInt(performer.id)].x = utils.wrapPositionInsideCanvas(performer.x, true);
-      currentPerformers[parseInt(performer.id)].y = utils.wrapPositionInsideCanvas(performer.y, false);
+    performers.forEach((performer) => {
+      currentPerformers[parseInt(performer.id)].x =
+        utils.wrapPositionInsideCanvas(performer.x, true);
+      currentPerformers[parseInt(performer.id)].y =
+        utils.wrapPositionInsideCanvas(performer.y, false);
     });
 
     const updatedShow = (
@@ -261,7 +267,6 @@ export const useShowState = (user: User) => {
     },
     [count],
   );
-
 
   // runs the play loop is showPlaying changes (play button is clicked)
   useEffect(

@@ -28,7 +28,6 @@ const StageComponent: React.FC<StageComponentProps> = (
 ) => {
   console.log(props.backgroundImageSrc);
 
-
   const [selectorPosition, setSelectorPosition] = useState<SelectorPosition>({
     positionNow: { x: -1, y: -1 },
     positionStart: { x: -1, y: -1 },
@@ -70,7 +69,12 @@ const StageComponent: React.FC<StageComponentProps> = (
   };
 
   const onMouseDown = (mouseEvent: KonvaEventObject<MouseEvent>): void => {
-    const shapeMouseClicked = mouseEvent.target.getLayer()?.getIntersection({x: mouseEvent.evt.offsetX, y: mouseEvent.evt.offsetY});
+    const shapeMouseClicked = mouseEvent.target
+      .getLayer()
+      ?.getIntersection({
+        x: mouseEvent.evt.offsetX,
+        y: mouseEvent.evt.offsetY,
+      });
 
     // if the background has been clicked, start a selection and cancel any selection already made
     // else, if a selection has been made and a highlighted performer has been clicked, start dragging. El
@@ -82,7 +86,11 @@ const StageComponent: React.FC<StageComponentProps> = (
       });
     } else {
       if (selectionMade) {
-        if (mouseEvent.target.attrs.image.src.includes("PerformerEmojiHighlighted")) {
+        if (
+          mouseEvent.target.attrs.image.src.includes(
+            "PerformerEmojiHighlighted",
+          )
+        ) {
           setDraggingGroup(true);
         } else {
           props.selectPerformers(noSelectionSelector);

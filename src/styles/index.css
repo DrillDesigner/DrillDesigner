@@ -19,6 +19,6 @@ body {
   margin-top: -17px;
 }
 
-.ant-space.ant-dropdown-trigger > .ant-space-item:hover{
+.ant-space.ant-dropdown-trigger > .ant-space-item:hover {
   cursor: pointer;
 }

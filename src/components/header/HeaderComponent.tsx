@@ -1,5 +1,13 @@
 import React from "react";
-import { Layout, Image, Input, Space, Dropdown, MenuProps, UploadFile } from "antd";
+import {
+  Layout,
+  Image,
+  Input,
+  Space,
+  Dropdown,
+  MenuProps,
+  UploadFile,
+} from "antd";
 import UploadButtonComponent from "./UploadButtonComponent.tsx";
 import SelectShowComponent from "./SelectShowComponent.tsx";
 
@@ -17,63 +25,63 @@ interface HeaderComponentProps {
 }
 
 const HeaderComponent = (props: HeaderComponentProps) => {
-  const selectShowOnClick: MenuProps['onClick'] = (e: Parameters<MenuProps['onClick']>[0]) => {
-    if(e.keyPath.includes('selectShow'))
-    {
+  const selectShowOnClick: MenuProps["onClick"] = (
+    e: Parameters<MenuProps["onClick"]>[0],
+  ) => {
+    if (e.keyPath.includes("selectShow")) {
       props.setShowOnClick(e.key);
     }
   };
 
-  const selectBackgroundOnClick: MenuProps['onClick'] = (e: Parameters<MenuProps['onClick']>[0]) => {
-    if(e.key === "chartBorderNums")
-    {
+  const selectBackgroundOnClick: MenuProps["onClick"] = (
+    e: Parameters<MenuProps["onClick"]>[0],
+  ) => {
+    if (e.key === "chartBorderNums") {
       props.selectBackgroundImage("src/assets/ChartBorderNums.png");
     }
-    if(e.key === "chartMiddleNums")
-    {
+    if (e.key === "chartMiddleNums") {
       props.selectBackgroundImage("src/assets/ChartMiddleNums.png");
     }
   };
 
-  const getShowsToSelect = (showTitles: string[]): MenuProps['items'] => {
+  const getShowsToSelect = (showTitles: string[]): MenuProps["items"] => {
     return [
       {
-        key: 'new', 
-        label: 'New Show'
+        key: "new",
+        label: "New Show",
       },
       {
-        key: 'selectShow',
-        label: 'Select Show',
+        key: "selectShow",
+        label: "Select Show",
         children: showTitles.map((showTitle) => ({
           key: showTitle,
           label: showTitle,
         })),
-        
       },
       {
-        key: 'saveShow',
+        key: "saveShow",
         label: "Save Show to File",
         onClick: props.saveShowOnClick,
       },
     ];
   };
 
-  const items: MenuProps['items'] = [
+  const items: MenuProps["items"] = [
     {
-      key: '1', 
-      label: 'TODO'
+      key: "1",
+      label: "TODO",
     },
   ];
 
-  const selectBackgroundItems: MenuProps['items'] = [
+  const selectBackgroundItems: MenuProps["items"] = [
     {
       key: "chartBorderNums",
-      label: "Numbers on Border"
+      label: "Numbers on Border",
     },
     {
       key: "chartMiddleNums",
-      label: "Numbers in Middle"
-    }
+      label: "Numbers in Middle",
+    },
   ];
 
   return (
@@ -83,14 +91,16 @@ const HeaderComponent = (props: HeaderComponentProps) => {
         alignItems: "center",
         justifyContent: "space-between",
         padding: "0",
-        paddingLeft: "10px"
+        paddingLeft: "10px",
       }}
     >
-      <div style={{
-        display: "flex", 
-        flexDirection: "row", 
-        height: "100%",
-        }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          height: "100%",
+        }}
+      >
         <Image
           style={{
             margin: "-6px 0 0 0",
@@ -99,49 +109,61 @@ const HeaderComponent = (props: HeaderComponentProps) => {
           width={50}
           src={props.imageSrc}
         />
-        <div style={{ 
-          flexDirection: "column",
-          alignContent: "center",
-          display: "flex",
-          paddingLeft: "8px",
-          }}>
+        <div
+          style={{
+            flexDirection: "column",
+            alignContent: "center",
+            display: "flex",
+            paddingLeft: "8px",
+          }}
+        >
           <Space.Compact size="large">
-            <Input 
+            <Input
               defaultValue={props.selectedShow}
               variant="borderless"
               style={{
                 fontSize: "18px",
                 color: "white",
                 padding: "7px 0 0 0",
-              }}>
-            </Input>
+              }}
+            ></Input>
           </Space.Compact>
-          <div style={{
-            display: "flex",
-            flexDirection: "row",
-          }}>
-            <Dropdown 
-              menu={{ items: getShowsToSelect(props.showTitles), onClick: selectShowOnClick }}
-              placement="bottomLeft">
-              <Space>
-                File
-              </Space>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+            }}
+          >
+            <Dropdown
+              menu={{
+                items: getShowsToSelect(props.showTitles),
+                onClick: selectShowOnClick,
+              }}
+              placement="bottomLeft"
+            >
+              <Space>File</Space>
             </Dropdown>
-            <Dropdown 
-              menu={{ items }}
-              placement="bottomLeft">
-              <Space style={{ 
-                marginLeft: "15px",
-              }}>
+            <Dropdown menu={{ items }} placement="bottomLeft">
+              <Space
+                style={{
+                  marginLeft: "15px",
+                }}
+              >
                 Edit
               </Space>
             </Dropdown>
-            <Dropdown 
-              menu={{ items: selectBackgroundItems, onClick: selectBackgroundOnClick }}
-              placement="bottomLeft">
-              <Space style={{ 
-                marginLeft: "15px",
-              }}>
+            <Dropdown
+              menu={{
+                items: selectBackgroundItems,
+                onClick: selectBackgroundOnClick,
+              }}
+              placement="bottomLeft"
+            >
+              <Space
+                style={{
+                  marginLeft: "15px",
+                }}
+              >
                 View
               </Space>
             </Dropdown>
@@ -151,10 +173,12 @@ const HeaderComponent = (props: HeaderComponentProps) => {
       </div>
 
       <div style={{ display: "flex", alignItems: "center" }}>
-        <div style={{ 
-          marginRight: "20px",
-          color: "white",
-           }}>
+        <div
+          style={{
+            marginRight: "20px",
+            color: "white",
+          }}
+        >
           <Space>TODO: login</Space>
         </div>
       </div>

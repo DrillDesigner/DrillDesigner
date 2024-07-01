@@ -35,12 +35,15 @@ const UploadButtonComponent: React.FC<UploadButtonProps> = (
   };
 
   return (
-    <div style={{
-      color: "white",
-      height: "44px",
-      marginTop: "-17px",
-      marginLeft: "15px",
-      cursor: "pointer",}}>
+    <div
+      style={{
+        color: "white",
+        height: "44px",
+        marginTop: "-17px",
+        marginLeft: "15px",
+        cursor: "pointer",
+      }}
+    >
       <Upload
         name="uploadShow"
         showUploadList={false}
@@ -48,9 +51,7 @@ const UploadButtonComponent: React.FC<UploadButtonProps> = (
         onChange={handleChange}
         customRequest={({ onSuccess }) => handleSuccess({ onSuccess })}
       >
-        <div style={{color: "white"}}>
-          Upload
-        </div>
+        <div style={{ color: "white" }}>Upload</div>
       </Upload>
     </div>
   );

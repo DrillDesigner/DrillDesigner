@@ -44,11 +44,16 @@ const utils = {
   },
 
   wrapPositionInsideCanvas: (coord: number, isX: boolean): number => {
-    if(isX) {
-      return(Math.max(0, Math.min(config.canvasWidth - config.performerSize, coord)));
-    }
-    else {
-      return(Math.max(0, Math.min(config.canvasHeight - config.performerSize, coord)));
+    if (isX) {
+      return Math.max(
+        0,
+        Math.min(config.canvasWidth - config.performerSize, coord),
+      );
+    } else {
+      return Math.max(
+        0,
+        Math.min(config.canvasHeight - config.performerSize, coord),
+      );
     }
   },
 

@@ -8,7 +8,7 @@ import config from "../../config/AppConfig";
 interface PerformerComponentProps {
   performer: Performer;
   imageSrc: string;
-  onUpdatePosition: (id: string, x: number, y: number) => void; // this updates the position saved in the Show object
+  onUpdatePosition: (updatedPerformers: Performer[]) => void;
   selected: boolean;
 }
 
@@ -25,7 +25,13 @@ const PerformerComponent: React.FC<PerformerComponentProps> = (
       const newX = pointerPosition.x - relativePosition.x;
       const newY = pointerPosition.y - relativePosition.y;
 
-      props.onUpdatePosition(props.performer.id, newX, newY);
+      const updatedPerformer = {
+        ...props.performer,
+        x: newX,
+        y: newY,
+      };
+
+      props.onUpdatePosition([updatedPerformer]);
     }
   };
 

@@ -16,7 +16,6 @@ export interface StageComponentProps {
   height: number;
   show?: Show;
   count: number;
-  updatePosition: (id: string, x: number, y: number) => void;
   selectorPosition?: SelectorPosition;
   selectPerformers: (selectorPosition: SelectorPosition) => boolean;
   updatePerformersPositions: (performers: Performer[]) => void;
@@ -129,7 +128,6 @@ const StageComponent: React.FC<StageComponentProps> = (
             performers={props.show?.countPositions[props.count]?.filter(
               (performer) => performer.selected,
             )}
-            updatePosition={props.updatePosition}
             updatePerformersPositions={props.updatePerformersPositions}
           />
           {props.show?.countPositions[props.count]
@@ -143,7 +141,7 @@ const StageComponent: React.FC<StageComponentProps> = (
                     ? config.performerImageHighlightedSrc
                     : config.performerImageSrc
                 }
-                onUpdatePosition={props.updatePosition}
+                onUpdatePosition={props.updatePerformersPositions}
                 selected={performer.selected}
               />
             ))}

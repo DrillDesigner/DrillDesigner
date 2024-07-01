@@ -64,38 +64,6 @@ export const useShowState = (user: User) => {
     }));
   };
 
-  // Update the position of a performer given its id, x, and y
-  const updatePerformerPosition = (id: string, x: number, y: number): void => {
-    const updatedPerformers = Object.keys(show.countPositions[count]).map(
-      (key) => {
-        const performer = show.countPositions[count][parseInt(key)];
-        if (key === id) {
-          return {
-            ...performer,
-            x: utils.wrapPositionInsideCanvas(x, true),
-            y: utils.wrapPositionInsideCanvas(y, false),
-          };
-        } else {
-          return performer;
-        }
-      },
-    );
-    const updatedShow = (
-      show: Show,
-      count: number,
-      updatedPerformers: Performer[],
-    ) => ({
-      ...show,
-      countPositions: {
-        ...show.countPositions,
-        [count]: updatedPerformers,
-      },
-    });
-
-    const newShow = updatedShow(show, count, updatedPerformers);
-    setShow(newShow);
-  };
-
   // update positions of performers when given Performer array
   const updatePerformersPositions = (performers: Performer[]): void => {
     const currentPerformers = show.countPositions[count];
@@ -254,6 +222,14 @@ export const useShowState = (user: User) => {
     }
   };
 
+  const undo = () => {
+    console.log("in undo!");
+  };
+
+  const redo = () => {
+    console.log("in redo!");
+  };
+
   // if the show being displayed is changed with setShow, update the show in user.shows
   useEffect(() => {
     user.shows[show.id] = show;
@@ -324,7 +300,8 @@ export const useShowState = (user: User) => {
     sliderPosition,
     showPlaying,
     selectPerformers,
-    updatePerformerPosition,
     updatePerformersPositions,
+    undo,
+    redo,
   };
 };

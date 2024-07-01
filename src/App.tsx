@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Layout, ConfigProvider, Menu } from "antd";
+import { Layout, ConfigProvider, Menu, Row } from "antd";
 import { useShowState } from "./utils/ShowState";
 import utils from "./utils/Utils";
 import config from "./config/AppConfig";
-import { Show } from "./types/Show";
 import StageComponent from "./components/stage/StageComponent";
-import MenuComponent from "./components/menu/MenuComponent";
-import items from "./components/menu/MenuItems";
-import { Row } from "antd";
 import HeaderComponent from "./components/header/HeaderComponent";
-import { User } from "./types/User";
 import PlayControlsComponent from "./components/stageControls/PlayControlsComponent";
+import { User } from "./types/User";
+import { Show } from "./types/Show";
+import PerformerControlsComponent from "./components/menu/PerformerControlsComponent";
 
 const { Content, Sider } = Layout;
 
@@ -75,8 +73,9 @@ const App: React.FC<object> = () => {
     sliderPosition,
     showPlaying,
     selectPerformers,
-    updatePerformerPosition,
     updatePerformersPositions,
+    undo,
+    redo,
   } = useShowState(basicUser);
 
   // empty array means invoked once, adds listener to update windowSize var on 'resize' event
@@ -108,14 +107,12 @@ const App: React.FC<object> = () => {
           selectBackgroundImage={setBackgroundImage}
         ></HeaderComponent>
         <Layout>
-          <Sider
-            width={(windowSize.width - config.canvasWidth) / 2}
-            theme="light"
-          >
-            <MenuComponent
-              menuItems={[items.positionInLineButton(positionPerformersInLine)]}
-            ></MenuComponent>
-          </Sider>
+          <PerformerControlsComponent
+            windowSize={windowSize}
+            positionPerformersInLine={positionPerformersInLine}
+            undoOnClick={undo}
+            redoOnClick={redo}
+          />
           <Content style={{ background: "#ddebe9" }}>
             <Row>
               <StageComponent
@@ -123,7 +120,6 @@ const App: React.FC<object> = () => {
                 height={config.canvasHeight}
                 show={show}
                 count={count}
-                updatePosition={updatePerformerPosition}
                 selectPerformers={selectPerformers}
                 updatePerformersPositions={updatePerformersPositions}
                 backgroundImageSrc={backgroundImageSrc}

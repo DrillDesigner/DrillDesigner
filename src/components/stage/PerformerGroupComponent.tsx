@@ -7,7 +7,6 @@ import PerformerComponent from "./PerformerComponent";
 
 interface PerformerGroupComponentProps {
   performers?: Performer[];
-  updatePosition: (id: string, x: number, y: number) => void;
   updatePerformersPositions: (performers: Performer[]) => void;
 }
 
@@ -59,7 +58,7 @@ const PerformerGroupComponent: React.FC<PerformerGroupComponentProps> = (
           key={performer.id}
           performer={performer}
           imageSrc={config.performerImageHighlightedSrc}
-          onUpdatePosition={props.updatePosition}
+          onUpdatePosition={props.updatePerformersPositions}
           selected={performer.selected}
         />
       ))}

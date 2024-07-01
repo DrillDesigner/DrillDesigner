@@ -18,7 +18,7 @@ export const useShowState = (user: User) => {
     Object.keys(show.countPositions).length - 1,
   ]);
   const [showPlaying, setShowPlaying] = useState<boolean>(false);
-  const [undoIndex, setUndoIndex] = useState<number>(0);
+  // const [undoIndex, setUndoIndex] = useState<number>(0);
 
   const saveState = (): void => {
     const serializedData = JSON.stringify(show);

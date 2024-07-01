@@ -24,21 +24,17 @@ interface HeaderComponentProps {
 }
 
 const HeaderComponent = (props: HeaderComponentProps) => {
-  const selectShowOnClick: MenuProps["onClick"] = (
-    e: Parameters<MenuProps["onClick"]>[0],
-  ) => {
-    if (e.keyPath.includes("selectShow")) {
-      props.setShowOnClick(e.key);
+  const selectShowOnClick: MenuProps["onClick"] = ({ key, keyPath }) => {
+    if (keyPath.includes("selectShow")) {
+      props.setShowOnClick(key);
     }
   };
 
-  const selectBackgroundOnClick: MenuProps["onClick"] = (
-    e: Parameters<MenuProps["onClick"]>[0],
-  ) => {
-    if (e.key === "chartBorderNums") {
+  const selectBackgroundOnClick: MenuProps["onClick"] = ({ key }) => {
+    if (key === "chartBorderNums") {
       props.selectBackgroundImage("src/assets/ChartBorderNums.png");
     }
-    if (e.key === "chartMiddleNums") {
+    if (key === "chartMiddleNums") {
       props.selectBackgroundImage("src/assets/ChartMiddleNums.png");
     }
   };

@@ -1,12 +1,9 @@
 import React from "react";
-import { Layout, Typography, Image, Button, Input, Space, Dropdown, MenuProps } from "antd";
-import { DownOutlined, SmileOutlined } from '@ant-design/icons';
+import { Layout, Image, Input, Space, Dropdown, MenuProps, UploadFile, message } from "antd";
 import UploadButtonComponent from "./UploadButtonComponent.tsx";
-import { UploadFile } from "antd";
 import SelectShowComponent from "./SelectShowComponent.tsx";
 
 const { Header } = Layout;
-const { Title } = Typography;
 
 interface HeaderComponentProps {
   imageSrc: string;
@@ -15,45 +12,47 @@ interface HeaderComponentProps {
   setShowOnClick: (showToSet: string) => void;
   showTitles: string[];
   selectedShow: string;
-  saveShowOnClick: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
+  saveShowOnClick: () => void;
 }
 
-const items: MenuProps['items'] = [
-  {
-    key: '1',
-    label: (
-      <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
-        1st menu item
-      </a>
-    ),
-  },
-  {
-    key: '2',
-    label: (
-      <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
-        2nd menu item (disabled)
-      </a>
-    ),
-    icon: <SmileOutlined />,
-    disabled: true,
-  },
-  {
-    key: '3',
-    label: (
-      <a target="_blank" rel="noopener noreferrer" href="https://www.luohanacademy.com">
-        3rd menu item (disabled)
-      </a>
-    ),
-    disabled: true,
-  },
-  {
-    key: '4',
-    danger: true,
-    label: 'a danger item',
-  },
-];
-
 const HeaderComponent = (props: HeaderComponentProps) => {
+  const selectShowOnClick: MenuProps['onClick'] = (e: Parameters<MenuProps['onClick']>[0]) => {
+    if(e.keyPath.includes('selectShow'))
+    {
+      props.setShowOnClick(e.key);
+    }
+  };
+
+  const getShowsToSelect = (showTitles: string[]): MenuProps['items'] => {
+    return [
+      {
+        key: 'new', 
+        label: 'New Show'
+      },
+      {
+        key: 'selectShow',
+        label: 'Select Show',
+        children: showTitles.map((showTitle) => ({
+          key: showTitle,
+          label: showTitle,
+        })),
+        
+      },
+      {
+        key: 'saveShow',
+        label: "Save Show to File",
+        onClick: props.saveShowOnClick,
+      },
+    ];
+  };
+
+  const items: MenuProps['items'] = [
+    {
+      key: '1', 
+      label: 'TODO'
+    },
+  ];
+
   return (
     <Header
       style={{
@@ -97,20 +96,17 @@ const HeaderComponent = (props: HeaderComponentProps) => {
           <div style={{
             display: "flex",
             flexDirection: "row",
-            
           }}>
             <Dropdown 
-              menu={{ items }}
-              placement="bottomLeft"
-              >
+              menu={{ items: getShowsToSelect(props.showTitles), onClick: selectShowOnClick }}
+              placement="bottomLeft">
               <Space>
                 File
               </Space>
             </Dropdown>
             <Dropdown 
               menu={{ items }}
-              placement="bottomLeft"
-              >
+              placement="bottomLeft">
               <Space style={{ 
                 marginLeft: "15px",
               }}>
@@ -119,31 +115,24 @@ const HeaderComponent = (props: HeaderComponentProps) => {
             </Dropdown>
             <Dropdown 
               menu={{ items }}
-              placement="bottomLeft"
-              >
+              placement="bottomLeft">
               <Space style={{ 
                 marginLeft: "15px",
               }}>
                 View
               </Space>
             </Dropdown>
+            <UploadButtonComponent loadStateOnClick={props.loadStateOnClick} />
           </div>
         </div>
       </div>
 
       <div style={{ display: "flex", alignItems: "center" }}>
-        <div>
-          <SelectShowComponent
-            setShowOnClick={props.setShowOnClick}
-            showTitles={props.showTitles}
-            selectedShow={props.selectedShow}
-          />
-        </div>
-        <Button style={{ marginLeft: "20px" }} onClick={props.saveShowOnClick}>
-          Save Show to File
-        </Button>
-        <div style={{ marginLeft: "20px" }}>
-          <UploadButtonComponent loadStateOnClick={props.loadStateOnClick} />
+        <div style={{ 
+          marginRight: "20px",
+          color: "white",
+           }}>
+          <Space>TODO: login</Space>
         </div>
       </div>
     </Header>

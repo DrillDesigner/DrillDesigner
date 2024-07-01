@@ -1,7 +1,6 @@
 import React from "react";
-import { message, Upload, UploadFile, Button } from "antd";
+import { message, Upload, UploadFile } from "antd";
 import type { GetProp, UploadProps } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
 
 interface UploadButtonProps {
   loadStateOnClick: (file: UploadFile[]) => void;
@@ -36,7 +35,12 @@ const UploadButtonComponent: React.FC<UploadButtonProps> = (
   };
 
   return (
-    <div>
+    <div style={{
+      color: "white",
+      height: "44px",
+      marginTop: "-17px",
+      marginLeft: "15px",
+      cursor: "pointer",}}>
       <Upload
         name="uploadShow"
         showUploadList={false}
@@ -44,7 +48,9 @@ const UploadButtonComponent: React.FC<UploadButtonProps> = (
         onChange={handleChange}
         customRequest={({ onSuccess }) => handleSuccess({ onSuccess })}
       >
-        <Button icon={<UploadOutlined />}>Upload Show File</Button>
+        <div style={{color: "white"}}>
+          Upload
+        </div>
       </Upload>
     </div>
   );

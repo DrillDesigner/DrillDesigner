@@ -9,7 +9,6 @@ import {
   UploadFile,
 } from "antd";
 import UploadButtonComponent from "./UploadButtonComponent.tsx";
-import SelectShowComponent from "./SelectShowComponent.tsx";
 
 const { Header } = Layout;
 

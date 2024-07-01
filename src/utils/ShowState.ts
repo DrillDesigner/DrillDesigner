@@ -18,6 +18,7 @@ export const useShowState = (user: User) => {
     Object.keys(show.countPositions).length - 1,
   ]);
   const [showPlaying, setShowPlaying] = useState<boolean>(false);
+  const [undoIndex, setUndoIndex] = useState<number>(0);
 
   const saveState = (): void => {
     const serializedData = JSON.stringify(show);
@@ -65,10 +66,11 @@ export const useShowState = (user: User) => {
   };
 
   // update positions of performers when given Performer array
-  const updatePerformersPositions = (performers: Performer[]): void => {
+  const updatePerformersPositions = (newPerformersPositions: Performer[]): void => {
     const currentPerformers = show.countPositions[count];
-
-    performers.forEach((performer) => {
+    
+    // update currentPerformers with performers passed in to be at the new position when wrapped within the canvas
+    newPerformersPositions.forEach((performer) => {
       currentPerformers[parseInt(performer.id)].x =
         utils.wrapPositionInsideCanvas(performer.x, true);
       currentPerformers[parseInt(performer.id)].y =
@@ -96,6 +98,11 @@ export const useShowState = (user: User) => {
     setCount(0);
     setShow(user.shows[showName]);
   };
+  // (show.id, count)
+  // for a given show name and modification number
+  // move performer -> 1
+  // advance count -> 
+  // move performer -> 2
 
   // Callback passed to slider component
   // if first or last slider positions are greater or less than the current count position, move the current count position to remain within the bounds

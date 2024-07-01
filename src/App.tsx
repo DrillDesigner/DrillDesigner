@@ -58,6 +58,8 @@ const App: React.FC<object> = () => {
     height: window.innerHeight,
   });
 
+  const [backgroundImageSrc, setBackgroundImage] = useState(config.backgroundImageSrc);
+
   const {
     show,
     positionPerformersInLine,
@@ -101,6 +103,7 @@ const App: React.FC<object> = () => {
           showTitles={Object.keys(basicUser.shows)}
           selectedShow={show.id}
           saveShowOnClick={saveState}
+          selectBackgroundImage={setBackgroundImage}
         ></HeaderComponent>
         <Layout>
           <Sider
@@ -121,6 +124,7 @@ const App: React.FC<object> = () => {
                 updatePosition={updatePerformerPosition}
                 selectPerformers={selectPerformers}
                 updatePerformersPositions={updatePerformersPositions}
+                backgroundImageSrc={backgroundImageSrc}
               />
             </Row>
             <Row>

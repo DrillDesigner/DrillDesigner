@@ -1,5 +1,5 @@
 import React from "react";
-import { Layout, Image, Input, Space, Dropdown, MenuProps, UploadFile, message } from "antd";
+import { Layout, Image, Input, Space, Dropdown, MenuProps, UploadFile } from "antd";
 import UploadButtonComponent from "./UploadButtonComponent.tsx";
 import SelectShowComponent from "./SelectShowComponent.tsx";
 
@@ -13,6 +13,7 @@ interface HeaderComponentProps {
   showTitles: string[];
   selectedShow: string;
   saveShowOnClick: () => void;
+  selectBackgroundImage: (background: string) => void;
 }
 
 const HeaderComponent = (props: HeaderComponentProps) => {
@@ -20,6 +21,17 @@ const HeaderComponent = (props: HeaderComponentProps) => {
     if(e.keyPath.includes('selectShow'))
     {
       props.setShowOnClick(e.key);
+    }
+  };
+
+  const selectBackgroundOnClick: MenuProps['onClick'] = (e: Parameters<MenuProps['onClick']>[0]) => {
+    if(e.key === "chartBorderNums")
+    {
+      props.selectBackgroundImage("src/assets/ChartBorderNums.png");
+    }
+    if(e.key === "chartMiddleNums")
+    {
+      props.selectBackgroundImage("src/assets/ChartMiddleNums.png");
     }
   };
 
@@ -51,6 +63,17 @@ const HeaderComponent = (props: HeaderComponentProps) => {
       key: '1', 
       label: 'TODO'
     },
+  ];
+
+  const selectBackgroundItems: MenuProps['items'] = [
+    {
+      key: "chartBorderNums",
+      label: "Numbers on Border"
+    },
+    {
+      key: "chartMiddleNums",
+      label: "Numbers in Middle"
+    }
   ];
 
   return (
@@ -114,7 +137,7 @@ const HeaderComponent = (props: HeaderComponentProps) => {
               </Space>
             </Dropdown>
             <Dropdown 
-              menu={{ items }}
+              menu={{ items: selectBackgroundItems, onClick: selectBackgroundOnClick }}
               placement="bottomLeft">
               <Space style={{ 
                 marginLeft: "15px",

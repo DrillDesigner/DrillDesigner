@@ -20,11 +20,15 @@ export interface StageComponentProps {
   selectorPosition?: SelectorPosition;
   selectPerformers: (selectorPosition: SelectorPosition) => boolean;
   updatePerformersPositions: (performers: Performer[]) => void;
+  backgroundImageSrc: string;
 }
 
 const StageComponent: React.FC<StageComponentProps> = (
   props: StageComponentProps,
 ) => {
+  console.log(props.backgroundImageSrc);
+
+
   const [selectorPosition, setSelectorPosition] = useState<SelectorPosition>({
     positionNow: { x: -1, y: -1 },
     positionStart: { x: -1, y: -1 },
@@ -109,7 +113,7 @@ const StageComponent: React.FC<StageComponentProps> = (
       >
         <Layer>
           <BackgroundComponent
-            imageSrc={config.backgroundImageSrc}
+            imageSrc={props.backgroundImageSrc}
             width={props.width}
             height={props.height}
           />

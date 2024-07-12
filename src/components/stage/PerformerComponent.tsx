@@ -10,7 +10,7 @@ interface PerformerComponentProps {
   imageSrc: string;
   onUpdatePosition: (
     updatedPerformers: Performer[],
-    addToUndoStack: boolean,
+    addToPerformedStack: boolean,
   ) => void;
   selected: boolean;
 }

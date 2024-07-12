@@ -9,7 +9,7 @@ interface PerformerGroupComponentProps {
   performers?: Performer[];
   updatePerformersPositions: (
     performers: Performer[],
-    addToUndoStack: boolean,
+    addToPerformedStack: boolean,
   ) => void;
 }
 

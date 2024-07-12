@@ -20,7 +20,7 @@ export interface StageComponentProps {
   selectPerformers: (selectorPosition: SelectorPosition) => boolean;
   updatePerformersPositions: (
     performers: Performer[],
-    addToUndoStack: boolean,
+    addToPerformedStack: boolean,
   ) => void;
   backgroundImageSrc: string;
 }

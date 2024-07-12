@@ -19,8 +19,10 @@ export const useUserState = (initialUser: User) => {
     1,
     Object.keys(show.countPositions).length - 1,
   ]);
-  const [performedIndex, setPerformedIndex] = useState<number>(-1);
-  const [redoIndex, setRedoIndex] = useState<number>(-1);
+  
+  const [performedIndex, setPerformedIndex] = useState<Record<number, number>>({});
+  const [redoIndex, setRedoIndex] = useState<Record<number, number>>({});
+
 
   const saveState = (): void => {
     const serializedData = JSON.stringify(show);
@@ -64,18 +66,21 @@ export const useUserState = (initialUser: User) => {
   // update positions of performers when given Performer array
   const updatePerformersPositions = (
     newPerformersPositions: Performer[],
-    addToUndoStack: boolean,
+    addToPerformedStack: boolean,
   ): void => {
     const currentPerformers = show.countPositions[count];
 
-    if (addToUndoStack) {
-      // save current state so it can be undone
-      setPerformedIndex(performedIndex + 1);
+    if (addToPerformedStack) {
+      // Save current state for undo
+      const newIndex = performedIndex[count] ? performedIndex[count] + 1 : 0;
+      setPerformedIndex({ ...performedIndex, [count]: newIndex });
+
       sessionStorage.setItem(
-        "performedList" + (performedIndex + 1),
+        "performed" + count + "-" + (newIndex),
         JSON.stringify({ count: count, positions: currentPerformers }),
       );
     }
+
 
     // update currentPerformers with performers passed in to be at the new position when wrapped within the canvas
     newPerformersPositions.forEach((performer) => {
@@ -102,36 +107,38 @@ export const useUserState = (initialUser: User) => {
   };
 
   const undo = () => {
-    if (performedIndex > -1) {
+    if (performedIndex[count] > -1) {
       // add undone positions to recall stack
+      const newRedoIndex = redoIndex[count] ? redoIndex[count] + 1 : 0;
       sessionStorage.setItem(
-        "redoList" + (redoIndex + 1),
+        "redo" + count + '-' + (newRedoIndex),
         JSON.stringify({ count: count, positions: show.countPositions[count] }),
       );
-      setRedoIndex(redoIndex + 1);
+      setRedoIndex({...redoIndex, [count]: newRedoIndex });
 
       // set to last position from performed stack
-      const lastPosition: { count: number; positions: Performer[] } =
-        JSON.parse(sessionStorage.getItem("performedList" + performedIndex)!);
+      const lastPosition: { count: number; positions: Performer[] } = JSON.parse(sessionStorage.getItem("performed" + performedIndex)!);
       setCount(lastPosition["count"]);
-      setPerformedIndex(performedIndex - 1);
+      const newPerformedIndex = performedIndex[count] ? performedIndex[count] + 1 : 0;
+      setPerformedIndex({...performedIndex, [count]: newPerformedIndex});
 
       updatePerformersPositions(lastPosition["positions"], false);
     }
   };
 
   const redo = () => {
-    if (redoIndex > -1) {
+    if (redoIndex[count] > -1) {
       // get redone position to be performed
       const redoPosition: { count: number; positions: Performer[] } =
-        JSON.parse(sessionStorage.getItem("redoList" + redoIndex)!);
+        JSON.parse(sessionStorage.getItem("redo" + redoIndex)!);
 
       // set to redone position
       setCount(redoPosition["count"]);
       updatePerformersPositions(redoPosition["positions"], true);
 
       // remove from redo stack
-      setRedoIndex(redoIndex - 1);
+      const newRedoIndex = redoIndex[count] ? redoIndex[count] - 1 : 0;
+      setRedoIndex({...redoIndex, [count]: newRedoIndex});
     }
   };
 

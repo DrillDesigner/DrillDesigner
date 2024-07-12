@@ -8,7 +8,7 @@ const config = {
   backgroundImageSrc: "src/assets/ChartBorderNums.png",
   defaultNumPerformers: 51,
   defaultNumCounts: 8,
-  initialShowName: "Untitled Show",
+  initialShowID: 0,
   performerSize: 20,
 };
 

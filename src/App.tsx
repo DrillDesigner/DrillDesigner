@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Layout, ConfigProvider, Menu, Row } from "antd";
-import { useShowState } from "./utils/ShowState";
+import { useUserState } from "./utils/UserState";
 import utils from "./utils/Utils";
 import config from "./config/AppConfig";
 import StageComponent from "./components/stage/StageComponent";
@@ -13,7 +13,8 @@ import PerformerControlsComponent from "./components/menu/PerformerControlsCompo
 const { Content, Sider } = Layout;
 
 const initialShow: Show = {
-  id: config.initialShowName,
+  title: "Untitled Show",
+  id: 0,
   countPositions: Object.fromEntries(
     Array.from({ length: config.defaultNumCounts }, (_, i) => {
       const stepSize = (245 + 265) / (config.defaultNumCounts - 1);
@@ -34,7 +35,8 @@ const initialShow: Show = {
 };
 
 const secondShow: Show = {
-  id: "Second Show",
+  title: "Second Show",
+  id: 1,
   countPositions: Object.fromEntries(
     Array.from({ length: config.defaultNumCounts }, (_, i) => {
       return [i, initialShow.countPositions[config.defaultNumCounts - i - 1]];
@@ -44,10 +46,10 @@ const secondShow: Show = {
 };
 
 const basicUser: User = {
-  id: "123",
+  id: 0,
   name: "Spencer",
-  shows: { [config.initialShowName]: initialShow, ["Second Show"]: secondShow },
-  initialShowName: config.initialShowName,
+  shows: { [config.initialShowID]: initialShow, [secondShow.id]: secondShow },
+  selectedShowID: initialShow.id,
 };
 
 const App: React.FC<object> = () => {
@@ -62,6 +64,7 @@ const App: React.FC<object> = () => {
 
   const {
     show,
+    user,
     positionPerformersInLine,
     saveState,
     loadState,
@@ -76,7 +79,18 @@ const App: React.FC<object> = () => {
     updatePerformersPositions,
     undo,
     redo,
-  } = useShowState(basicUser);
+    changeShowTitle,
+  } = useUserState(basicUser);
+
+  const handleKeyDown = (event: KeyboardEvent): void => {
+    if (event.code === "KeyZ" && event.ctrlKey) {
+      undo();
+    }
+
+    if (event.code === "KeyY" && event.ctrlKey) {
+      redo();
+    }
+  };
 
   // empty array means invoked once, adds listener to update windowSize var on 'resize' event
   useEffect(() => {
@@ -84,8 +98,12 @@ const App: React.FC<object> = () => {
       setWindowSize({ width: window.innerWidth, height: window.innerHeight });
     };
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [handleKeyDown]);
 
   return (
     <ConfigProvider
@@ -101,10 +119,11 @@ const App: React.FC<object> = () => {
           imageSrc={config.performerImageSrc}
           loadStateOnClick={loadState}
           setShowOnClick={setShowButtonCallback}
-          showTitles={Object.keys(basicUser.shows)}
-          selectedShow={show.id}
+          showTitles={Object.values(user.shows).map((show) => show.title)}
+          selectedShow={user.shows[user.selectedShowID].title}
           saveShowOnClick={saveState}
           selectBackgroundImage={setBackgroundImage}
+          changeShowTitle={changeShowTitle}
         ></HeaderComponent>
         <Layout>
           <PerformerControlsComponent

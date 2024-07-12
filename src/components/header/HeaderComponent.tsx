@@ -21,6 +21,7 @@ interface HeaderComponentProps {
   selectedShow: string;
   saveShowOnClick: () => void;
   selectBackgroundImage: (background: string) => void;
+  changeShowTitle: (title: string) => void;
 }
 
 const HeaderComponent = (props: HeaderComponentProps) => {
@@ -39,7 +40,7 @@ const HeaderComponent = (props: HeaderComponentProps) => {
     }
   };
 
-  const getShowsToSelect = (showTitles: string[]): MenuProps["items"] => {
+  const getFileMenuItems = (showTitles: string[]): MenuProps["items"] => {
     return [
       {
         key: "new",
@@ -70,12 +71,18 @@ const HeaderComponent = (props: HeaderComponentProps) => {
 
   const selectBackgroundItems: MenuProps["items"] = [
     {
-      key: "chartBorderNums",
-      label: "Numbers on Border",
-    },
-    {
-      key: "chartMiddleNums",
-      label: "Numbers in Middle",
+      key: "changeBackgroundImage",
+      label: "Select Background",
+      children: [
+        {
+          key: "chartBorderNums",
+          label: "Numbers on Border",
+        },
+        {
+          key: "chartMiddleNums",
+          label: "Numbers in Middle",
+        },
+      ],
     },
   ];
 
@@ -114,13 +121,14 @@ const HeaderComponent = (props: HeaderComponentProps) => {
         >
           <Space.Compact size="large">
             <Input
-              defaultValue={props.selectedShow}
+              value={props.selectedShow}
               variant="borderless"
               style={{
                 fontSize: "18px",
                 color: "white",
                 padding: "7px 0 0 0",
               }}
+              onChange={(event) => props.changeShowTitle(event.target.value)}
             ></Input>
           </Space.Compact>
           <div
@@ -131,7 +139,7 @@ const HeaderComponent = (props: HeaderComponentProps) => {
           >
             <Dropdown
               menu={{
-                items: getShowsToSelect(props.showTitles),
+                items: getFileMenuItems(props.showTitles),
                 onClick: selectShowOnClick,
               }}
               placement="bottomLeft"

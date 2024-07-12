@@ -1,7 +1,6 @@
 import React from "react";
-import { Layout, Menu } from "antd";
+import { Layout, Button, Flex, Tooltip } from "antd";
 import config from "../../config/AppConfig";
-import { MenuProps } from "antd";
 
 const { Sider } = Layout;
 
@@ -15,30 +14,30 @@ interface PerformerControlsComponentProps {
 const PerformerControlsComponent: React.FC<PerformerControlsComponentProps> = (
   props: PerformerControlsComponentProps,
 ) => {
-  const items: MenuProps["items"] = [
-    {
-      key: "1",
-      label: "Position Performers in Line",
-      onClick: props.positionPerformersInLine,
-    },
-    {
-      key: "undo",
-      label: "Undo",
-      onClick: props.undoOnClick,
-    },
-    {
-      key: "redo",
-      label: "Redo",
-      onClick: props.redoOnClick,
-    },
-  ];
-
   return (
     <Sider
       width={(props.windowSize.width - config.canvasWidth) / 2}
       theme="light"
     >
-      <Menu items={items} />
+      <Flex gap="small" vertical>
+        <Flex gap="small" justify={"center"} style={{ marginTop: "10px" }}>
+          <Button type="primary" onClick={props.positionPerformersInLine}>
+            Position Performers In a Line
+          </Button>
+        </Flex>
+        <Flex gap="small" justify={"center"}>
+          <Tooltip title="Ctrl + z">
+            <Button onClick={props.undoOnClick} type="primary">
+              Undo
+            </Button>
+          </Tooltip>
+          <Tooltip title="Ctrl + y">
+            <Button onClick={props.redoOnClick} type="primary">
+              Redo
+            </Button>
+          </Tooltip>
+        </Flex>
+      </Flex>
     </Sider>
   );
 };

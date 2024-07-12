@@ -1,8 +1,8 @@
 import { Show } from "./Show";
 
 export interface User {
-  id: string;
+  id: number;
   name: string;
-  shows: { [showName: string]: Show };
-  initialShowName: string;
+  shows: { [showID: number]: Show };
+  selectedShowID: number;
 }

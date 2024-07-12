@@ -7,7 +7,10 @@ import PerformerComponent from "./PerformerComponent";
 
 interface PerformerGroupComponentProps {
   performers?: Performer[];
-  updatePerformersPositions: (performers: Performer[]) => void;
+  updatePerformersPositions: (
+    performers: Performer[],
+    addToUndoStack: boolean,
+  ) => void;
 }
 
 const PerformerGroupComponent: React.FC<PerformerGroupComponentProps> = (
@@ -46,7 +49,7 @@ const PerformerGroupComponent: React.FC<PerformerGroupComponentProps> = (
         y: newY + performer.y,
       }));
 
-      props.updatePerformersPositions(updatedPerformers!);
+      props.updatePerformersPositions(updatedPerformers!, true);
     }
     target.absolutePosition({ x: 0, y: 0 });
   };

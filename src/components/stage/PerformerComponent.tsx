@@ -8,7 +8,10 @@ import config from "../../config/AppConfig";
 interface PerformerComponentProps {
   performer: Performer;
   imageSrc: string;
-  onUpdatePosition: (updatedPerformers: Performer[]) => void;
+  onUpdatePosition: (
+    updatedPerformers: Performer[],
+    addToUndoStack: boolean,
+  ) => void;
   selected: boolean;
 }
 
@@ -31,7 +34,7 @@ const PerformerComponent: React.FC<PerformerComponentProps> = (
         y: newY,
       };
 
-      props.onUpdatePosition([updatedPerformer]);
+      props.onUpdatePosition([updatedPerformer], true);
     }
   };
 

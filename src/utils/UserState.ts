@@ -9,16 +9,18 @@ import utils from "./Utils";
 import { SelectorPosition } from "../types/SelectorPosition";
 import { Performer } from "../types/Performer";
 
-export const useShowState = (user: User) => {
-  const [show, setShow] = useState<Show>(user.shows[user.initialShowName]);
+export const useUserState = (initialUser: User) => {
+  const [user, setUser] = useState<User>(initialUser);
+  const [show, setShow] = useState<Show>(user.shows[config.initialShowID]);
   const [count, setCount] = useState<number>(0);
+  const [showPlaying, setShowPlaying] = useState<boolean>(false);
   const [sliderPosition, setSliderPosition] = useState<number[]>([
     0,
     1,
     Object.keys(show.countPositions).length - 1,
   ]);
-  const [showPlaying, setShowPlaying] = useState<boolean>(false);
-  // const [undoIndex, setUndoIndex] = useState<number>(0);
+  const [performedIndex, setPerformedIndex] = useState<number>(-1);
+  const [redoIndex, setRedoIndex] = useState<number>(-1);
 
   const saveState = (): void => {
     const serializedData = JSON.stringify(show);
@@ -56,20 +58,24 @@ export const useShowState = (user: User) => {
       }),
     );
 
-    setShow((prevShow) => ({
-      ...prevShow,
-      countPositions: {
-        ...prevShow.countPositions,
-        [count]: updatedPerformers,
-      },
-    }));
+    updatePerformersPositions(updatedPerformers, true);
   };
 
   // update positions of performers when given Performer array
   const updatePerformersPositions = (
     newPerformersPositions: Performer[],
+    addToUndoStack: boolean,
   ): void => {
     const currentPerformers = show.countPositions[count];
+
+    if (addToUndoStack) {
+      // save current state so it can be undone
+      setPerformedIndex(performedIndex + 1);
+      sessionStorage.setItem(
+        "performedList" + (performedIndex + 1),
+        JSON.stringify({ count: count, positions: currentPerformers }),
+      );
+    }
 
     // update currentPerformers with performers passed in to be at the new position when wrapped within the canvas
     newPerformersPositions.forEach((performer) => {
@@ -95,16 +101,53 @@ export const useShowState = (user: User) => {
     setShow(newShow);
   };
 
+  const undo = () => {
+    if (performedIndex > -1) {
+      // add undone positions to recall stack
+      sessionStorage.setItem(
+        "redoList" + (redoIndex + 1),
+        JSON.stringify({ count: count, positions: show.countPositions[count] }),
+      );
+      setRedoIndex(redoIndex + 1);
+
+      // set to last position from performed stack
+      const lastPosition: { count: number; positions: Performer[] } =
+        JSON.parse(sessionStorage.getItem("performedList" + performedIndex)!);
+      setCount(lastPosition["count"]);
+      setPerformedIndex(performedIndex - 1);
+
+      updatePerformersPositions(lastPosition["positions"], false);
+    }
+  };
+
+  const redo = () => {
+    if (redoIndex > -1) {
+      // get redone position to be performed
+      const redoPosition: { count: number; positions: Performer[] } =
+        JSON.parse(sessionStorage.getItem("redoList" + redoIndex)!);
+
+      // set to redone position
+      setCount(redoPosition["count"]);
+      updatePerformersPositions(redoPosition["positions"], true);
+
+      // remove from redo stack
+      setRedoIndex(redoIndex - 1);
+    }
+  };
+
   // callback passed to the select show dropdown
   const setShowButtonCallback = (showName: string): void => {
-    setCount(0);
-    setShow(user.shows[showName]);
+    const showID = Object.values(user.shows).find(
+      (show) => show.title === showName,
+    );
+
+    if (showID) {
+      setCount(0);
+      setShow(showID);
+    } else {
+      console.error(`Show not found: ${showName}`);
+    }
   };
-  // (show.id, count)
-  // for a given show name and modification number
-  // move performer -> 1
-  // advance count ->
-  // move performer -> 2
 
   // Callback passed to slider component
   // if first or last slider positions are greater or less than the current count position, move the current count position to remain within the bounds
@@ -201,6 +244,7 @@ export const useShowState = (user: User) => {
         [count]: updatedPerformers,
       },
     });
+
     const newShow = updatedShow(show, count, updatedPerformers);
     setShow(newShow);
     return atLeastOnePerformerInBox;
@@ -211,6 +255,7 @@ export const useShowState = (user: User) => {
     if (showPlaying) {
       setShowPlaying(false);
     } else {
+      // first,
       const updatedPerformers = Object.keys(show.countPositions[count]).map(
         (key) => {
           const performer = show.countPositions[count][parseInt(key)];
@@ -231,19 +276,26 @@ export const useShowState = (user: User) => {
     }
   };
 
-  const undo = () => {
-    console.log("in undo!");
-  };
-
-  const redo = () => {
-    console.log("in redo!");
+  const changeShowTitle = (title: string) => {
+    setShow({
+      ...show,
+      title: title,
+    });
   };
 
   // if the show being displayed is changed with setShow, update the show in user.shows
   useEffect(() => {
-    user.shows[show.id] = show;
-    document.title = show.id + " - Drill Designer";
-  }, [show, user.shows]);
+    setUser((prevUser) => ({
+      ...prevUser,
+      shows: {
+        ...prevUser.shows,
+        [show.id]: show,
+      },
+      selectedShowID: show.id,
+    }));
+
+    document.title = show.title + " - Drill Designer";
+  }, [show]);
 
   // if count changes (during show playing) update the slider to match the count
   useEffect(
@@ -298,6 +350,7 @@ export const useShowState = (user: User) => {
 
   return {
     show,
+    user,
     positionPerformersInLine,
     saveState,
     loadState,
@@ -312,5 +365,6 @@ export const useShowState = (user: User) => {
     updatePerformersPositions,
     undo,
     redo,
+    changeShowTitle,
   };
 };

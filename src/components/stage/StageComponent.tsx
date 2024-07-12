@@ -18,7 +18,10 @@ export interface StageComponentProps {
   count: number;
   selectorPosition?: SelectorPosition;
   selectPerformers: (selectorPosition: SelectorPosition) => boolean;
-  updatePerformersPositions: (performers: Performer[]) => void;
+  updatePerformersPositions: (
+    performers: Performer[],
+    addToUndoStack: boolean,
+  ) => void;
   backgroundImageSrc: string;
 }
 

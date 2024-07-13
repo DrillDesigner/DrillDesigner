@@ -114,7 +114,7 @@ export const useUserState = (initialUser: User) => {
   const undo = () => {
     if (undoIndex[count] > -1) {
       // add undone positions to recall stack
-      const newRedoIndex = redoIndex[count] ? redoIndex[count] + 1 : 0;
+      const newRedoIndex = count in redoIndex ? redoIndex[count] + 1 : 0;
       sessionStorage.setItem(
         "redo" + count + '-' + (newRedoIndex),
         JSON.stringify({ count: count, positions: show.countPositions[count] }),
@@ -122,7 +122,7 @@ export const useUserState = (initialUser: User) => {
       setRedoIndex({...redoIndex, [count]: newRedoIndex });
 
       // set to last position from undo stack
-      const lastPosition: { count: number; positions: Performer[] } = JSON.parse(sessionStorage.getItem("undo" + undoIndex)!);
+      const lastPosition: { count: number; positions: Performer[] } = JSON.parse(sessionStorage.getItem("undo" + count + "-" + undoIndex)!);
       setCount(lastPosition["count"]);
       const newUndoIndex = undoIndex[count] ? undoIndex[count] + 1 : 0;
       setUndoIndex({...undoIndex, [count]: newUndoIndex});

@@ -28,8 +28,6 @@ export interface StageComponentProps {
 const StageComponent: React.FC<StageComponentProps> = (
   props: StageComponentProps,
 ) => {
-  console.log(props.backgroundImageSrc);
-
   const [selectorPosition, setSelectorPosition] = useState<SelectorPosition>({
     positionNow: { x: -1, y: -1 },
     positionStart: { x: -1, y: -1 },

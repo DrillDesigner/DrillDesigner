@@ -37,6 +37,7 @@ export const useUserState = (initialUser: User) => {
   const [undoIndex, setUndoIndex] = useState<Record<number, number>>({});
   const [redoIndex, setRedoIndex] = useState<Record<number, number>>({});
 
+  const [tempSliderBounds, setTempSliderBounds] = useState<number[]>([0, 1, Object.keys(show.countPositions).length-1]);
 
   const saveState = (): void => {
     const serializedData = JSON.stringify(show);
@@ -167,7 +168,7 @@ export const useUserState = (initialUser: User) => {
   // If first or last slider positions are greater or less than the current count position, move the current count position to remain within the bounds
   const handleCountSliderChange = (sliderBounds: number[]): void => {
     const newBounds = [sliderBounds[0], sliderBounds[1], sliderBounds[2]];
-
+    setTempSliderBounds(newBounds);
     // set middle mark to newBounds, as sliderBounds from above may be invalid (start surpassing end)
     if (sliderBounds[0] > sliderBounds[1]) {
       newBounds[1] = newBounds[0];
@@ -182,6 +183,8 @@ export const useUserState = (initialUser: User) => {
       setCount(sliderBounds[1]); // set the count to the middle circle, which represents the count the show is currently at
     }
   };
+
+
 
   // Callback passed to slider onChange to set the count
   const handleCountChange = (newCount: number): void => {

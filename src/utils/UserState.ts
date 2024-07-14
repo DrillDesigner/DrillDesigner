@@ -121,13 +121,13 @@ export const useUserState = (initialUser: User) => {
       );
       setRedoIndex({...redoIndex, [count]: newRedoIndex });
 
-      // set to last position from undo stack
-      const lastPosition: { count: number; positions: Performer[] } = JSON.parse(sessionStorage.getItem("undo" + count + "-" + undoIndex)!);
+      // set to count and last position from undo stack
+      const lastPosition: { "count": number; "positions": Performer[] } = JSON.parse(sessionStorage.getItem("undo" + count + "-" + undoIndex[count])!);
       setCount(lastPosition["count"]);
-      const newUndoIndex = undoIndex[count] ? undoIndex[count] + 1 : 0;
-      setUndoIndex({...undoIndex, [count]: newUndoIndex});
-
       updatePerformersPositions(lastPosition["positions"], false);
+
+      const newUndoIndex = lastPosition["count"] in undoIndex ? undoIndex[lastPosition["count"]] - 1 : 0;
+      setUndoIndex({...undoIndex, [lastPosition["count"]]: newUndoIndex});
     }
   };
 
@@ -137,14 +137,14 @@ export const useUserState = (initialUser: User) => {
     if (redoIndex[count] > -1) {
       // get redone position to be set
       const redoPosition: { count: number; positions: Performer[] } =
-        JSON.parse(sessionStorage.getItem("redo" + redoIndex)!);
+        JSON.parse(sessionStorage.getItem("redo" + count + "-" + redoIndex[count])!);
 
       // set to redone position
       setCount(redoPosition["count"]);
       updatePerformersPositions(redoPosition["positions"], true);
 
       // remove from redo stack
-      const newRedoIndex = redoIndex[count] ? redoIndex[count] - 1 : 0;
+      const newRedoIndex = count in redoIndex ? redoIndex[count] - 1 : 0;
       setRedoIndex({...redoIndex, [count]: newRedoIndex});
     }
   };

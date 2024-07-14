@@ -12,6 +12,17 @@ import PerformerControlsComponent from "./components/menu/PerformerControlsCompo
 
 const { Content, Sider } = Layout;
 
+// TODO: remove this before production, used for debugging
+window.onbeforeunload = function() {
+    sessionStorage.setItem("origin", window.location.href);
+};
+
+window.onload = function() {
+    if (window.location.href == sessionStorage.getItem("origin")) {
+        sessionStorage.clear();
+    }
+};
+
 const initialShow: Show = {
   title: "Untitled Show",
   id: 0,

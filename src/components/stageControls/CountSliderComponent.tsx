@@ -32,10 +32,6 @@ const CountSliderComponent: React.FC<CountSliderProps> = (
     }
   };
 
-  const handleOnChangeComplete = (value) => {
-    const foo = value;
-  };
-
   return (
     <div style={{
       width: "80%",

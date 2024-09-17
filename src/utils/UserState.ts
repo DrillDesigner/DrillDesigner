@@ -37,8 +37,6 @@ export const useUserState = (initialUser: User) => {
   const [undoIndex, setUndoIndex] = useState<Record<number, number>>({});
   const [redoIndex, setRedoIndex] = useState<Record<number, number>>({});
 
-  const [tempSliderBounds, setTempSliderBounds] = useState<number[]>([0, 1, Object.keys(show.countPositions).length-1]);
-
   const saveState = (): void => {
     const serializedData = JSON.stringify(show);
     const blob = new Blob([serializedData], { type: "application/json" });

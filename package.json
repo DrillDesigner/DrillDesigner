@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc && vite build; mkdir dist/src/assets; cp src/assets/** dist/src/assets",
     "preview": "vite preview",
     "lint": "eslint src/**",
     "prettier": "prettier --write src/**"

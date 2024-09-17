@@ -47,7 +47,6 @@ const CountSliderComponent: React.FC<CountSliderProps> = (
         min={0}
         max={props.maxCount}
         onChange={props.onCountSliderValueChange}
-        onChangeComplete={handleOnChangeComplete}
         value={props.sliderPosition}
         tooltip={{
           formatter: (value: number | undefined) => {
